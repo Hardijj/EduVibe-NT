@@ -29,7 +29,7 @@ const recorded = () => {
   const fetchLectures = async (api, name) => {
     setLoading(true);
     try {
-      const res = await fetch(`https://automate-eduvibe-nt11.wasmer.app/?api=${api}`);
+      const res = await fetch(`https://php-pearl.vercel.app/api/rcl.php?view=${api}`);
       const data = await res.json();
 
       const marker = subjectFilters[name];
