@@ -132,7 +132,7 @@ const Homepage = () => {
               alt="Aarambh Batch 2025-26"
               className="homepage-image"
             />
-            <h1 style={{ color: "#fff" }}>Aarambh Batch 2025-26</h1>
+            <h1 style={{ color: "#fff" }}>Aarambh Batch 2.0 2025-26</h1>
           </div>
 
           <div className="click-box" onClick={() => handleClick(11)}>
