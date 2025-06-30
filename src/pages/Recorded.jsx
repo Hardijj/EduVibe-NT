@@ -20,7 +20,7 @@ const subjectFilters = {
   Biology: 'Plant Kingdom L5'
 };
 
-const recorded = () => {
+const Recorded = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [lectures, setLectures] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -156,4 +156,4 @@ const recorded = () => {
   );
 };
 
-export default recorded;
+export default Recorded;
