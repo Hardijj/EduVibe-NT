@@ -145,8 +145,8 @@ const Homepage = () => {
             <h1 style={{ color: "#fff" }}>Class 11 Commerce</h1>
           </div>
           <div className="click-box" onClick={() => handleClick(9)}>
-            <img src={imageUrl9} alt="Class 9 Batch" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Class 9</h1>
+            <img src={imageUrl9} alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Class 9 Aarambh batch 2.0</h1>
           </div>
         </div>
       </div>
