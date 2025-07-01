@@ -56,19 +56,27 @@ const VideoPlayer = () => {
   /*  Live‑viewer counter via Socket.IO                                  */
   /* ------------------------------------------------------------------ */
   useEffect(() => {
-    if (!videoId) return;
+  console.log("🚩 videoId from URL =", videoId);
 
-    const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app", {
-      transports: ["websocket"],
-      secure: true,
-    });
+  if (!videoId) return;
 
+  const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app");
+
+  socket.on("connect", () => {
+    console.log("🔌 connected", socket.id);          //  <-- SHOULD PRINT   (C)
     socket.emit("joinVideo", videoId);
-    socket.on(`viewerCount-${videoId}`, setViewerCount);
+    console.log("📨 emitted joinVideo", videoId);    //  <-- SHOULD PRINT   (D)
+  });
 
-    return () => socket.disconnect();
-  }, [videoId]);
+  socket.on(`viewerCount-${videoId}`, (c) => {
+    console.log(`📡 viewerCount-${videoId}`, c);     //  <-- SHOULD PRINT   (E)
+    setViewerCount(c);
+  });
 
+  socket.on("connect_error", (err) => console.error("❌ connect_error", err));
+
+  return () => socket.disconnect();
+}, [videoId]);
   /* ------------------------------------------------------------------ */
   /*  video.js initialisation + hotkeys, quality selector, timers        */
   /* ------------------------------------------------------------------ */
