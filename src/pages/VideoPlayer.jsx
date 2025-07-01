@@ -10,7 +10,14 @@ import io from "socket.io-client";
 const VideoPlayer = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { id: videoId } = useParams(); // /video/:id/live ➜ id
+  // NEW logic ---------------------------------------------
+const { id } = useParams();           // might be undefined with your static routes
+const computedId = location.pathname  // "/video/11/bio/live"
+  .replace(/^\/video\//, "")          // "11/bio/live"
+  .replace(/\/live$/, "")             // "11/bio"
+  .replace(/\//g, "_");               // "11_bio"  ← safe event name
+const videoId = id || computedId;     // final key sent to the server
+//---------------------------------------------------------
 
   const videoRef = useRef(null);
   const playerRef = useRef(null);
