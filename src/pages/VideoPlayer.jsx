@@ -4,16 +4,22 @@ import "video.js/dist/video-js.css";
 import "videojs-contrib-quality-levels";
 import "videojs-hls-quality-selector";
 import "videojs-hotkeys";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import io from "socket.io-client";
 
 const VideoPlayer = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { id: videoId } = useParams(); // /video/:id/live ➜ id
+
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const lastTap = useRef(0);
+
   const [studiedMinutes, setStudiedMinutes] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
+  const [viewerCount, setViewerCount] = useState(0); // 👀 NEW
+
   const chaptersName = localStorage.getItem("chapterName");
   const lecturesName = localStorage.getItem("lectureName");
 
@@ -21,13 +27,17 @@ const VideoPlayer = () => {
   const isLive = location.pathname.includes("/live");
   const telegramDownloaderLink = "https://t.me/+UHFOhCOAU7xhYWY9"; // Replace with actual link
 
+  /* ------------------------------------------------------------------ */
+  /*  Guard: user must be logged‑in                                      */
+  /* ------------------------------------------------------------------ */
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
+    if (!isLoggedIn) navigate("/login");
   }, [navigate]);
 
+  /* ------------------------------------------------------------------ */
+  /*  Reset daily study‑time clock                                       */
+  /* ------------------------------------------------------------------ */
   useEffect(() => {
     const today = new Date().toLocaleDateString();
     const lastDate = localStorage.getItem("lastStudyDate");
@@ -42,49 +52,59 @@ const VideoPlayer = () => {
     setStudiedMinutes(Math.floor(stored / 60));
   }, []);
 
+  /* ------------------------------------------------------------------ */
+  /*  Live‑viewer counter via Socket.IO                                  */
+  /* ------------------------------------------------------------------ */
+  useEffect(() => {
+    if (!videoId) return;
+
+    const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app", {
+      transports: ["websocket"],
+      secure: true,
+    });
+
+    socket.emit("joinVideo", videoId);
+    socket.on(`viewerCount-${videoId}`, setViewerCount);
+
+    return () => socket.disconnect();
+  }, [videoId]);
+
+  /* ------------------------------------------------------------------ */
+  /*  video.js initialisation + hotkeys, quality selector, timers        */
+  /* ------------------------------------------------------------------ */
   useEffect(() => {
     if (!videoRef.current) return;
 
     const videoSource = m3u8Url;
 
-    playerRef.current = videojs(
-      videoRef.current,
-      {
-        controls: true,
-        preload: true,
-        autoplay: true,
-        fluid: true,
-        playbackRates: [0.5, 1, 1.25, 1.5, 1.75, 2],
-        html5: {
-          vhs: {
-            overrideNative: true,
-            enableLowInitialPlaylist: true,
-          },
+    playerRef.current = videojs(videoRef.current, {
+      controls: true,
+      preload: true,
+      autoplay: true,
+      fluid: true,
+      playbackRates: [0.5, 1, 1.25, 1.5, 1.75, 2],
+      html5: {
+        vhs: {
+          overrideNative: true,
+          enableLowInitialPlaylist: true,
         },
-        // ➜ Hot-keys plugin wired here
-        plugins: {
-          hotkeys: {
-            volumeStep: 0.1,
-            seekStep: 10,
-            enableModifiersForNumbers: false,
-          },
-        },
-        // (kept your anonymous function so nothing else changes)
-        function() {
-          this.hotkeys({
-            volumeStep: 0.1,
-            seekStep: 10,
-            enableModifiersForNumbers: false,
-          });
-        },
-      }
-    );
+      },
+      function () {
+        // Hotkeys plugin options
+        this.hotkeys({
+          volumeStep: 0.1,
+          seekStep: 10,
+          enableModifiersForNumbers: false,
+        });
+      },
+    });
 
     playerRef.current.src({
       src: videoSource,
       type: "application/x-mpegURL",
     });
 
+    /* ---------------- study‑time tracker ---------------- */
     let sessionStart = null;
     let studyTimer = null;
 
@@ -102,60 +122,69 @@ const VideoPlayer = () => {
 
     playerRef.current.ready(() => {
       playerRef.current.qualityLevels();
-      playerRef.current.hlsQualitySelector({
-        displayCurrentQuality: true,
-      });
+      playerRef.current.hlsQualitySelector({ displayCurrentQuality: true });
 
+      /* ---------- custom mini time‑display inside play‑toggle ---------- */
       const controlBar = playerRef.current.controlBar;
       const playToggleEl = controlBar.getChild("playToggle")?.el();
       if (playToggleEl) {
         const timeDisplay = document.createElement("div");
         timeDisplay.className = "vjs-custom-time-display";
-        timeDisplay.style.position = "absolute";
-        timeDisplay.style.bottom = "50px";
-        timeDisplay.style.left = "0";
-        timeDisplay.style.background = "rgba(0, 0, 0, 0.7)";
-        timeDisplay.style.color = "#fff";
-        timeDisplay.style.fontSize = "13px";
-        timeDisplay.style.padding = "4px 8px";
-        timeDisplay.style.borderRadius = "4px";
-        timeDisplay.style.whiteSpace = "nowrap";
-        timeDisplay.style.pointerEvents = "none";
-        timeDisplay.style.zIndex = "999";
+        Object.assign(timeDisplay.style, {
+          position: "absolute",
+          bottom: "50px",
+          left: "0",
+          background: "rgba(0,0,0,0.7)",
+          color: "#fff",
+          fontSize: "13px",
+          padding: "4px 8px",
+          borderRadius: "4px",
+          whiteSpace: "nowrap",
+          pointerEvents: "none",
+          zIndex: 999,
+        });
         timeDisplay.textContent = "00:00 / 00:00";
-
         playToggleEl.style.position = "relative";
         playToggleEl.appendChild(timeDisplay);
 
-        playerRef.current.on("loadedmetadata", () => {
-          const duration = formatTime(playerRef.current.duration());
-          timeDisplay.textContent = `00:00 / ${duration}`;
-        });
+        const formatTime = (sec) => {
+          if (isNaN(sec) || sec < 0) return "00:00";
+          const m = Math.floor(sec / 60)
+            .toString()
+            .padStart(2, "0");
+          const s = Math.floor(sec % 60)
+            .toString()
+            .padStart(2, "0");
+          return `${m}:${s}`;
+        };
 
+        playerRef.current.on("loadedmetadata", () => {
+          timeDisplay.textContent = `00:00 / ${formatTime(
+            playerRef.current.duration()
+          )}`;
+        });
         playerRef.current.on("timeupdate", () => {
-          const currentTime = formatTime(playerRef.current.currentTime());
-          const duration = formatTime(playerRef.current.duration());
-          timeDisplay.textContent = `${currentTime} / ${duration}`;
+          timeDisplay.textContent = `${formatTime(
+            playerRef.current.currentTime()
+          )} / ${formatTime(playerRef.current.duration())}`;
         });
       }
 
+      /* ---------- study‑time hooks ---------- */
       playerRef.current.on("play", () => {
         sessionStart = Date.now();
         clearInterval(studyTimer);
         studyTimer = setInterval(updateStudyTime, 10000);
       });
-
-      playerRef.current.on("pause", () => {
-        updateStudyTime();
-        clearInterval(studyTimer);
-      });
-
-      playerRef.current.on("ended", () => {
-        updateStudyTime();
-        clearInterval(studyTimer);
+      ["pause", "ended"].forEach((evt) => {
+        playerRef.current.on(evt, () => {
+          updateStudyTime();
+          clearInterval(studyTimer);
+        });
       });
     });
 
+    /* ---------------- mobile touch gestures ---------------- */
     const videoContainer = videoRef.current.parentElement;
     const videoEl = videoRef.current;
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -209,40 +238,43 @@ const VideoPlayer = () => {
     videoEl.addEventListener("touchend", handleTouchEnd);
     videoContainer.addEventListener("touchend", handleDoubleTap);
 
+    /* -------------- cleanup -------------- */
     return () => {
       videoEl.removeEventListener("touchstart", handleTouchStart);
       videoEl.removeEventListener("touchend", handleTouchEnd);
       videoContainer.removeEventListener("touchend", handleDoubleTap);
-    };
 
-    return () => {
-      if (playerRef.current) {
-        playerRef.current.dispose();
-      }
+      if (playerRef.current) playerRef.current.dispose();
       clearInterval(studyTimer);
     };
   }, [m3u8Url, isLive]);
 
-  const formatTime = (timeInSeconds) => {
-    if (isNaN(timeInSeconds) || timeInSeconds < 0) return "00:00";
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = Math.floor(timeInSeconds % 60);
-    return `${minutes.toString().padStart(2, "0")}:${seconds
+  /* ------------------------------------------------------------------ */
+  /*  Helpers                                                           */
+  /* ------------------------------------------------------------------ */
+  const formatTime = (sec) => {
+    if (isNaN(sec) || sec < 0) return "00:00";
+    const m = Math.floor(sec / 60)
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0");
+    const s = Math.floor(sec % 60)
+      .toString()
+      .padStart(2, "0");
+    return `${m}:${s}`;
   };
 
   const handleDownloadClick = () => {
-    const fileName = `${chaptersName} ${lecturesName}`; // You can customize filename if you want
+    const fileName = `${chaptersName} ${lecturesName}`;
     const downloadUrl = m3u8Url;
     const intentUrl = `intent:${downloadUrl}#Intent;action=android.intent.action.VIEW;package=idm.internet.download.manager;scheme=1dmdownload;S.title=${encodeURIComponent(
       fileName
     )};end`;
-
-    // Redirect to open in 1DM
     window.location.href = intentUrl;
   };
 
+  /* ------------------------------------------------------------------ */
+  /*  Render                                                            */
+  /* ------------------------------------------------------------------ */
   return (
     <div>
       <h2>
@@ -252,12 +284,26 @@ const VideoPlayer = () => {
       </h2>
 
       <div style={{ position: "relative" }}>
-        {/* ➜ tabIndex lets the element receive focus for keyboard events */}
-        <video
-          ref={videoRef}
-          className="video-js vjs-default-skin"
-          tabIndex={0}
-        />
+        <video ref={videoRef} className="video-js vjs-default-skin" />
+
+        {/* 👁 Live viewers badge */}
+        {isLive && (
+          <div
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              background: "rgba(0,0,0,0.7)",
+              color: "#fff",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "12px",
+              zIndex: 1000,
+            }}
+          >
+            🛑 {viewerCount} watching
+          </div>
+        )}
       </div>
 
       {!isLive && (
@@ -272,7 +318,7 @@ const VideoPlayer = () => {
               borderRadius: "5px",
               fontSize: "16px",
               cursor: "pointer",
-              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+              boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
             }}
           >
             Download Lecture
@@ -280,6 +326,7 @@ const VideoPlayer = () => {
         </div>
       )}
 
+      {/* Popup for Telegram downloader */}
       {showPopup && (
         <div
           style={{
@@ -290,15 +337,14 @@ const VideoPlayer = () => {
             backgroundColor: "#fff",
             padding: "20px",
             borderRadius: "10px",
-            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
+            boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
             zIndex: 1000,
             textAlign: "center",
             maxWidth: "90%",
           }}
         >
           <p style={{ marginBottom: "15px", color: "#333" }}>
-            Link copied to clipboard. Go to Telegram group, paste the link, and
-            send to download the video.
+            Link copied to clipboard. Go to Telegram group, paste the link, and send to download the video.
           </p>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button
@@ -334,6 +380,7 @@ const VideoPlayer = () => {
         </div>
       )}
 
+      {/* Notes download button */}
       {notesUrl && (
         <div style={{ marginTop: "20px", textAlign: "center" }}>
           <a
