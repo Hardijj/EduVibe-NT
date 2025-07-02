@@ -290,146 +290,147 @@ const videoId = id || computedId;     // final key sent to the server
   /* ------------------------------------------------------------------ */
   /*  Render                                                            */
   /* ------------------------------------------------------------------ */
-  return (
-    <div>
-      <h2>
-        {isLive
-          ? "🔴 Live Class"
-          : `Now Playing: ${chaptersName} - ${lecturesName || "Unknown Lecture"}`}
-      </h2>
+return (
+  <div>
+    <h2>
+      {isLive
+        ? "🔴 Live Class"
+        : `Now Playing: ${chaptersName} - ${lecturesName || "Unknown Lecture"}`}
+    </h2>
 
-      <div style={{ position: "relative" }}>
-        <video ref={videoRef} className="video-js vjs-default-skin" />
+    <div style={{ position: "relative" }}>
+      <video ref={videoRef} className="video-js vjs-default-skin" />
+    </div>
 
-           {/* Live‑viewer badge — fixed so it stays in fullscreen */}
-      {isLive && (
-        <div
-          style={{
-            position: "fixed",
-            top: 15,
-            right: 15,
-            background: "rgba(0,0,0,0.35)", // semi‑transparent
-            color: "#fff",
-            padding: "4px 8px",
-            borderRadius: "4px",
-            fontSize: "12px",
-            zIndex: 10000,
-            pointerEvents: "none", // never blocks clicks
-          }}
-        >
-          🔴 {viewerCount} watching
-        </div>
-      )}
-
-      {!isLive && (
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <button
-            onClick={handleDownloadClick}
-            style={{
-              backgroundColor: "#28a745",
-              color: "#fff",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              fontSize: "16px",
-              cursor: "pointer",
-              boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-            }}
-          >
-            Download Lecture
-          </button>
-        </div>
-      )}
-
-      {/* Popup for Telegram downloader */}
-      {showPopup && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
-            zIndex: 1000,
-            textAlign: "center",
-            maxWidth: "90%",
-          }}
-        >
-          <p style={{ marginBottom: "15px", color: "#333" }}>
-            Link copied to clipboard. Go to Telegram group, paste the link, and send to download the video.
-          </p>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <button
-              onClick={() => setShowPopup(false)}
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#ddd",
-                border: "none",
-                borderRadius: "5px",
-                color: "#333",
-                fontWeight: "bold",
-                flex: 1,
-                marginRight: "10px",
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => window.open(telegramDownloaderLink, "_blank")}
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#007bff",
-                border: "none",
-                borderRadius: "5px",
-                color: "#fff",
-                fontWeight: "bold",
-                flex: 1,
-              }}
-            >
-              Go to Downloader
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Notes download button */}
-      {notesUrl && (
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <a
-            href={notesUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "#007bff",
-              color: "#fff",
-              textDecoration: "none",
-              borderRadius: "8px",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-              fontSize: "16px",
-              fontWeight: "bold",
-            }}
-          >
-            Download Notes
-          </a>
-        </div>
-      )}
-
+    {/* ✅ Live-viewer badge – stays visible even in fullscreen */}
+    {isLive && (
       <div
         style={{
-          textAlign: "center",
+          position: "fixed",
+          top: 15,
+          right: 15,
+          background: "rgba(0,0,0,0.35)", // transparent
+          color: "#fff",
+          padding: "4px 8px",
+          borderRadius: "4px",
           fontSize: "12px",
-          marginTop: "30px",
-          color: "#ffffff",
+          zIndex: 99999,
+          pointerEvents: "none", // won’t block clicks
         }}
       >
-        Today’s Study Time: <strong>{studiedMinutes} min</strong>
+        🔴 {viewerCount} watching
       </div>
+    )}
+
+    {!isLive && (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button
+          onClick={handleDownloadClick}
+          style={{
+            backgroundColor: "#28a745",
+            color: "#fff",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "5px",
+            fontSize: "16px",
+            cursor: "pointer",
+            boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+          }}
+        >
+          Download Lecture
+        </button>
+      </div>
+    )}
+
+    {/* Popup for Telegram downloader */}
+    {showPopup && (
+      <div
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          backgroundColor: "#fff",
+          padding: "20px",
+          borderRadius: "10px",
+          boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+          zIndex: 1000,
+          textAlign: "center",
+          maxWidth: "90%",
+        }}
+      >
+        <p style={{ marginBottom: "15px", color: "#333" }}>
+          Link copied to clipboard. Go to Telegram group, paste the link, and send to download the video.
+        </p>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button
+            onClick={() => setShowPopup(false)}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#ddd",
+              border: "none",
+              borderRadius: "5px",
+              color: "#333",
+              fontWeight: "bold",
+              flex: 1,
+              marginRight: "10px",
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => window.open(telegramDownloaderLink, "_blank")}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#007bff",
+              border: "none",
+              borderRadius: "5px",
+              color: "#fff",
+              fontWeight: "bold",
+              flex: 1,
+            }}
+          >
+            Go to Downloader
+          </button>
+        </div>
+      </div>
+    )}
+
+    {/* Notes download button */}
+    {notesUrl && (
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <a
+          href={notesUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            padding: "12px 24px",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            textDecoration: "none",
+            borderRadius: "8px",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            fontSize: "16px",
+            fontWeight: "bold",
+          }}
+        >
+          Download Notes
+        </a>
+      </div>
+    )}
+
+    <div
+      style={{
+        textAlign: "center",
+        fontSize: "12px",
+        marginTop: "30px",
+        color: "#ffffff",
+      }}
+    >
+      Today’s Study Time: <strong>{studiedMinutes} min</strong>
     </div>
-  );
+  </div>
+);
 };
 
 export default VideoPlayer;
