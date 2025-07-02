@@ -320,6 +320,7 @@ return (
             🔴 {viewerCount} watching
           </div>
         )}
+        </div>>
 
     {!isLive && (
       <div style={{ textAlign: "center", marginTop: "20px" }}>
