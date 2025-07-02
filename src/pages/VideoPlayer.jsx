@@ -298,29 +298,28 @@ return (
         : `Now Playing: ${chaptersName} - ${lecturesName || "Unknown Lecture"}`}
     </h2>
 
-    <div style={{ position: "relative" }}>
-      <video ref={videoRef} className="video-js vjs-default-skin" />
-    </div>
+    {/* Player wrapper goes fullscreen, so badge inside it stays visible */}
+      <div data-vjs-player style={{ position: "relative" }}>
+        <video ref={videoRef} className="video-js vjs-default-skin" />
 
-    {/* ✅ Live-viewer badge – stays visible even in fullscreen */}
-    {isLive && (
-      <div
-        style={{
-          position: "fixed",
-          top: 15,
-          right: 15,
-          background: "rgba(0,0,0,0.35)", // transparent
-          color: "#fff",
-          padding: "4px 8px",
-          borderRadius: "4px",
-          fontSize: "12px",
-          zIndex: 99999,
-          pointerEvents: "none", // won’t block clicks
-        }}
-      >
-        🔴 {viewerCount} watching
-      </div>
-    )}
+        {isLive && (
+          <div
+            style={{
+              position: "absolute",
+              top: 15,
+              right: 15,
+              background: "rgba(0,0,0,0.35)",
+              color: "#fff",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "12px",
+              zIndex: 9999,
+              pointerEvents: "none",
+            }}
+          >
+            🔴 {viewerCount} watching
+          </div>
+        )}
 
     {!isLive && (
       <div style={{ textAlign: "center", marginTop: "20px" }}>
