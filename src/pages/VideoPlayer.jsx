@@ -301,25 +301,25 @@ const videoId = id || computedId;     // final key sent to the server
       <div style={{ position: "relative" }}>
         <video ref={videoRef} className="video-js vjs-default-skin" />
 
-        {/* 👁 Live viewers badge */}
-        {isLive && (
-          <div
-            style={{
-              position: "absolute",
-              top: 10,
-              right: 10,
-              background: "rgba(0,0,0,0.7)",
-              color: "#fff",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              fontSize: "12px",
-              zIndex: 1000,
-            }}
-          >
-            🛑 {viewerCount} watching
-          </div>
-        )}
-      </div>
+           {/* Live‑viewer badge — fixed so it stays in fullscreen */}
+      {isLive && (
+        <div
+          style={{
+            position: "fixed",
+            top: 15,
+            right: 15,
+            background: "rgba(0,0,0,0.35)", // semi‑transparent
+            color: "#fff",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontSize: "12px",
+            zIndex: 10000,
+            pointerEvents: "none", // never blocks clicks
+          }}
+        >
+          🔴 {viewerCount} watching
+        </div>
+      )}
 
       {!isLive && (
         <div style={{ textAlign: "center", marginTop: "20px" }}>
