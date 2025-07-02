@@ -425,7 +425,7 @@ return (
         fontSize: "12px",
         marginTop: "30px",
         color: "#ffffff",
-      }} >
+      }}>
       Today’s Study Time: <strong>{studiedMinutes} min</strong>
     </div>
   </div>
