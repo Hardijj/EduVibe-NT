@@ -118,6 +118,35 @@ const videoId = id || computedId;     // final key sent to the server
       src: videoSource,
       type: "application/x-mpegURL",
     });
+        /* ---------- NEW ORIENTATION-LOCK HANDLER ---------- */
+    const lockLandscape = async () => {
+      const o = screen.orientation || screen?.mozOrientation || screen?.msOrientation;
+      if (o?.lock) {
+        try {
+          await o.lock("landscape");
+        } catch (e) {
+          /* silently ignore (not supported, or user denied) */
+        }
+      }
+    };
+    const unlockOrientation = () => {
+      const o = screen.orientation || screen?.mozOrientation || screen?.msOrientation;
+      if (o?.unlock) {
+        o.unlock();
+      } else if (o?.lock) {
+        // fallback to portrait if unlock unavailable
+        o.lock("portrait").catch(() => {});
+      }
+    };
+
+    playerRef.current.on("fullscreenchange", () => {
+      if (playerRef.current.isFullscreen()) {
+        lockLandscape();
+      } else {
+        unlockOrientation();
+      }
+    });
+    /* -------------------------------------------------- */
 
     /* ---------------- study‑time tracker ---------------- */
     let sessionStart = null;
@@ -258,6 +287,7 @@ const videoId = id || computedId;     // final key sent to the server
       videoEl.removeEventListener("touchstart", handleTouchStart);
       videoEl.removeEventListener("touchend", handleTouchEnd);
       videoContainer.removeEventListener("touchend", handleDoubleTap);
+      playerRef.current?.off("fullscreenchange", lockLandscape); // tidy up
 
       if (playerRef.current) playerRef.current.dispose();
       clearInterval(studyTimer);
