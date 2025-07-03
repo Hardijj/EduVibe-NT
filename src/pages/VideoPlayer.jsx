@@ -120,24 +120,25 @@ const videoId = id || computedId;     // final key sent to the server
     });
         /* ---------- NEW ORIENTATION-LOCK HANDLER ---------- */
     const lockLandscape = async () => {
-      const o = screen.orientation || screen?.mozOrientation || screen?.msOrientation;
-      if (o?.lock) {
-        try {
-          await o.lock("landscape");
-        } catch (e) {
-          /* silently ignore (not supported, or user denied) */
-        }
-      }
-    };
-    const unlockOrientation = () => {
-      const o = screen.orientation || screen?.mozOrientation || screen?.msOrientation;
-      if (o?.unlock) {
-        o.unlock();
-      } else if (o?.lock) {
-        // fallback to portrait if unlock unavailable
-        o.lock("portrait").catch(() => {});
-      }
-    };
+    const lockLandscape = async () => {
+  const o = window.screen.orientation || window.screen?.mozOrientation || window.screen?.msOrientation;
+  if (o?.lock) {
+    try {
+      await o.lock("landscape");
+    } catch (e) {
+      // silently fail
+    }
+  }
+};
+
+const unlockOrientation = () => {
+  const o = window.screen.orientation || window.screen?.mozOrientation || window.screen?.msOrientation;
+  if (o?.unlock) {
+    o.unlock();
+  } else if (o?.lock) {
+    o.lock("portrait").catch(() => {});
+  }
+};
 
     playerRef.current.on("fullscreenchange", () => {
       if (playerRef.current.isFullscreen()) {
