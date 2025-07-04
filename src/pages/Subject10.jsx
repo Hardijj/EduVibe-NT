@@ -69,7 +69,7 @@ const Subject10 = () => {
 
   return (
     <div className="subjects-container">
-      <img src={tt} alt="Logo" className="tt" />
+      <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/sample/73677800_29.png" alt="Logo" className="tt" />
       <h2>Select Subject - Class 10</h2>
 
       <div className="live-class-container">
