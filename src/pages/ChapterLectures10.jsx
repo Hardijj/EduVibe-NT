@@ -201,10 +201,15 @@ const ChapterLectures10 = () => {
     "notesUrl": ""
   },
         {
-        "name": "Human eye L3",
+        "name": "L3",
         "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4427347/175111381865158929414/175111381865158929414_8929414.m3u8",
         "notesUrl": ""
         },
+        {
+        "name": "L4",
+        "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4465407/175163267359088929414/175163267359088929414_8929414.m3u8",
+        "notesUrl": ""
+          },
       ],
       19: [
         {
@@ -422,6 +427,11 @@ const ChapterLectures10 = () => {
           m3u8Url: "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4460159/175129788526988752407/175129788526988752407_8752407.m3u8",
           notesUrl: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/615163654802694500.pdf"
         },
+        {
+        "name": "L4",
+        "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4465547/175164427990748752407/175164427990748752407_8752407.m3u8",
+        "notesUrl": ""
+          },
       ],
       19: [
         {
