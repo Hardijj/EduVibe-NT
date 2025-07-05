@@ -694,7 +694,12 @@ const ChapterLectures10 = () => {
         "name": "L4",
         "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4419824/175086546631887125088/175086546631887125088_7125088.m3u8",
         "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/876787599850698000.pdf"
-          }
+          },
+          {
+    "name": "Sectors of the Indian Economy L5",
+    "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4460006/175128817639377125088/175128817639377125088_7125088.m3u8",
+    "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/850236030502344400.pdf"
+          },
        ],
       100:[
         {
