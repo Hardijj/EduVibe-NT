@@ -142,6 +142,10 @@ const Homepage = () => {
             <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png" alt="Class 11 Commerce" className="homepage-image" />
             <h1 style={{ color: "#fff" }}>Prarambh 2.0 Commerce Class 11</h1>
           </div>
+          <div className="click-box" onClick={() => handleClick(113)}>
+            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/216113028517_Prarambh%20BATCh%20Humanities%2011.png" alt="Class 11 Arts" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Humanities Class 11</h1>
+          </div>
           <div className="click-box" onClick={() => handleClick(9)}>
             <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/152792333113_9th%20aarambh%202.0%20banner%20app.jpg" alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
             <h1 style={{ color: "#fff" }}>Aarambh batch 2.0 Class 9 </h1>
