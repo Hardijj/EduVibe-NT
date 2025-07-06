@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/global.css";
 import imageUrl10 from "../assets/10img.jpg";
-import imageUrl9 from "../assets/9img.png";
-import imageUrl11 from "../assets/11sci.jpg";
 import mlogo from "../assets/ntmlogo.jpg";
 
 const Homepage = () => {
@@ -136,17 +134,17 @@ const Homepage = () => {
           </div>
 
           <div className="click-box" onClick={() => handleClick(11)}>
-            <img src={imageUrl11} alt="Class 11 Batch" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Prarambh Science 11</h1>
+            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/183130728609_Prarambh%20BATCh%20Science%20Class%2011.png" alt="Class 11 Batch" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Science Class 11</h1>
           </div>
 
           <div className="click-box" onClick={() => handleClick(113)}>
-            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/202309028610_11th%20prarambh%20comm%20app%20final%203499.jpg" alt="Class 11 Commerce" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Class 11 Commerce</h1>
+            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png" alt="Class 11 Commerce" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Commerce Class 11</h1>
           </div>
           <div className="click-box" onClick={() => handleClick(9)}>
-            <img src={imageUrl9} alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Class 9 Aarambh batch 2.0</h1>
+            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/152792333113_9th%20aarambh%202.0%20banner%20app.jpg" alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Aarambh batch 2.0 Class 9 </h1>
           </div>
         </div>
       </div>
