@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LecturesPage11 from './pages/LecturesPage11';
 import Subject11com from './pages/Subject11com';
 import Com11 from './pages/Com11';
+import Art11 from './pages/Art11';
 import TestPlatform from './pages/TestPlatform';
 import Class9 from './pages/Class9';
 import Recorded from './pages/Recorded';
@@ -42,6 +43,7 @@ function App() {
         <Route path="/11/lectures" element={<LecturesPage11 />} />
         <Route path="/subjects/113" element={<Subject11com />} />
         <Route path="/11/com/lectures" element={<Com11 />} />
+        <Route path="/subjects/111" element={<Art11 />} />
         <Route path="/10/test" element={<ProtectedRoute><TestPlatform /></ProtectedRoute>} />
         <Route path="/10/rc" element={<Recorded />} />
         <Route path="/11/rc" element={<Rc11 />} />
