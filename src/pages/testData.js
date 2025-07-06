@@ -195,6 +195,148 @@ const testData = {
         explanation: ""
       },
     ],
+    "Light Test":[
+  {
+    question: "Observe the ray diagram below (object placed beyond C of a concave mirror) which type of image is formed?",
+    options: [
+      "Virtual, erect, magnified",
+      "Real, inverted, diminished",
+      "Real, inverted, same size",
+      "Virtual, inverted, diminished"
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: "For two mirrors kept parallel to each other, the number of images formed is:",
+    options: [
+      "7",
+      "1",
+      "Infinity",
+      "0"
+    ],
+    correctAnswer: 3
+  },
+  {
+    question: "A concave mirror forms a virtual and erect image when the object is placed:",
+    options: [
+      "At the center of curvature",
+      "At the focus",
+      "Between the pole and the focus",
+      "Beyond the center of curvature"
+    ],
+    correctAnswer: 3
+  },
+  {
+    question: "Which mirror is used in the headlights of vehicles?",
+    options: [
+      "Convex mirror",
+      "Plane mirror",
+      "Concave mirror",
+      "None of these"
+    ],
+    correctAnswer: 3
+  },
+  {
+    question: "A ray of light enters from air into glass. The light ray bends:",
+    options: [
+      "Towards the normal",
+      "Away from the normal",
+      "Does not bend",
+      "None of these"
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: "A convex lens has a focal length of 20 cm. The power of the lens is:",
+    options: [
+      "+5 D",
+      "-5 D",
+      "+2.5 D",
+      "1.11"
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: "The power of a lens is -2.5 D. The focal length of the lens is:",
+    options: [
+      "+40 cm",
+      "-40 cm",
+      "+25 cm",
+      "-25 cm"
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: "A concave mirror forms a virtual image when the object is placed:",
+    options: [
+      "At C",
+      "Between F and pole",
+      "At infinity",
+      "Beyond C"
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: "Power of lens is measured in:",
+    options: [
+      "m",
+      "Dioptre",
+      "Watt",
+      "Newton"
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: "If a concave mirror has a focal length of 15 cm, what is the radius of curvature?",
+    options: [
+      "15 cm",
+      "30 cm",
+      "7.5 cm",
+      "45 cm"
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: "An object 5 cm high is placed at a distance of 10 cm from a convex mirror. If the image is formed 6.6 cm behind the mirror, what is the height of the image?",
+    options: [
+      "3.3 cm",
+      "6.6 cm",
+      "5 cm",
+      "2.5 cm"
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: "The bending of light when it passes from one medium to another is called:",
+    options: [
+      "Reflection",
+      "Refraction",
+      "Dispersion",
+      "Scattering"
+    ],
+    correctAnswer: 2
+  },
+  {
+    question: "The absolute refractive index of a medium is defined as the ratio of:",
+    options: [
+      "Speed of light in vacuum to speed of light in the medium",
+      "Speed of light in the medium to speed of light in vacuum",
+      "Speed of light in air to speed of light in water",
+      "None of these"
+    ],
+    correctAnswer: 1
+  },
+  {
+    question: "A concave mirror has a focal length of 15 cm. An object is placed 10 cm from the mirror. The image formed is:",
+    options: [
+      "Real and inverted",
+      "Virtual and erect",
+      "Real and erect",
+      "Virtual and inverted"
+    ],
+    correctAnswer: 2
+  }
+],
   },
   SST: {
     "Test 1": [
