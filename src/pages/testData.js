@@ -337,6 +337,188 @@ const testData = {
     correctAnswer: 2
   }
 ],
+    "Life Processes Test":[
+  {
+    question: "In human respiratory system, when a person breathes in, the position of ribs and diaphragm will be:",
+    options: [
+      "lifted ribs and curve/dome shaped diaphragm",
+      "lifted ribs and flattened diaphragm",
+      "relaxed ribs and flattened diaphragm",
+      "relaxed ribs and curve/dome shaped diaphragm"
+    ],
+    correctAnswer: 2,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "Complete the following",
+    options: [
+      "(i) Ethanol (ii) Oxygen",
+      "(i) Lactic acid (ii) Glucose",
+      "(i) Pyruvate (ii) Carbon dioxide",
+      "(i) Alcohol (ii) Water"
+    ],
+    correctAnswer: 3,
+    explanation: "",
+    image: "https://dxixtlyravvxx.cloudfront.net/admin_v1/test_management/question_bank_file/482123015_06_25_12_53_28"
+  },
+  {
+    question: "A stomata closes when: (i) It needs carbon dioxide for photosynthesis. (ii) It does not need carbon dioxide for photosynthesis. (iii) Water flows out of the guard cells. (iv) Water flows into the guard cells. The correct reason(s) in this process is/are:",
+    options: [
+      "(i) only",
+      "(i) and (iii)",
+      "(ii) and (iii)",
+      "(ii) and (iv)"
+    ],
+    correctAnswer: 3,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "Which of the following characteristics is not related to respiration?",
+    options: [
+      "Enzymatic breakdown of food",
+      "Energy production",
+      "Inhalation of air",
+      "Occurs in mitochondria"
+    ],
+    correctAnswer: 3,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "Which of the following statements is correct about arteries and veins?",
+    options: [
+      "Arteries carry blood to the heart and veins carry it away",
+      "Arteries have thin walls; veins have thick walls",
+      "Arteries carry blood away from the heart; veins carry it towards the heart",
+      "Veins have thick elastic walls; arteries do not"
+    ],
+    correctAnswer: 3,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "Refer to the diagram and choose the correct matching of labels A–D.",
+    options: [
+      "A–3, B–4, C–1, D–2",
+      "A–2, B–4, C–3, D–1",
+      "A–1, B–3, C–4, D–2",
+      "A–4, B–3, C–1, D–2"
+    ],
+    correctAnswer: 1,
+    explanation: "",
+    image: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/sample/28829980_Screenshot%202025-06-15%20at%201.03.53%E2%80%AFPM.png"
+  },
+  {
+    question: "In the human alimentary canal, specific juices and enzymes (i), (ii) and (iii) are :",
+    options: [
+      "Amylase (ii) Pepsin (iii) Bile",
+      "Amylase (ii) Bile (iii) Trypsin",
+      "Lipase (ii) Amylase (iii) Pepsin",
+      "Trypsin (ii) Bile (iii) Amylase"
+    ],
+    correctAnswer: 2,
+    explanation: "",
+    image: "https://dxixtlyravvxx.cloudfront.net/admin_v1/test_management/question_bank_file/459817815_06_25_12_53_28"
+  },
+  {
+    question: "Which one of the following conditions is true for the state of stomata of a green leaf shown in the given diagram?",
+    options: [
+      "Large amount of water flows into the guard cells.",
+      "Gaseous exchange is occurring in large amount.",
+      "Large amount of water flows out from the guard cells.",
+      "Large amount of sugar collects in the guard cells."
+    ],
+    correctAnswer: 1,
+    explanation: "",
+    image: "https://dxixtlyravvxx.cloudfront.net/admin_v1/test_management/question_bank_file/191273615_06_25_12_53_28"
+  },
+  {
+    question: "A student was asked to write a stepwise procedure to demonstrate that carbon dioxide is necessary for photosynthesis. He wrote the following steps. The wrongly worded step is:",
+    options: [
+      "Both potted plants are kept in dark room for at least three days.",
+      "Bottom of the bell jars is sealed to make them air tight",
+      "Both potted plants are kept in sunlight after the starch test.",
+      "A leaf from both the plants is taken to test the presence of starch."
+    ],
+    correctAnswer: 3,
+    explanation: "",
+    image: "https://dxixtlyravvxx.cloudfront.net/admin_v1/test_management/question_bank_file/460353215_06_25_12_53_28"
+  },
+  {
+    question: "Respiratory structures of two different animals—a fish and a human being are as shown. Observe (a) and (b) and select one characteristic that holds true for both of them.",
+    options: [
+      "Both are placed internally in the body of animal.",
+      "Both have thin and moist surface for gaseous exchange.",
+      "Both are poorly supplied with blood vessels to conserve energy.",
+      "In both the blood returns to the heart after being oxygenated."
+    ],
+    correctAnswer: 2,
+    explanation: "",
+    image: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/sample/9311750_Screenshot%202025-06-15%20at%201.52.31%E2%80%AFPM.png"
+  },
+  {
+    question: "In the human digestive system, bile does not contain enzymes, yet it plays a crucial role in digestion because it:",
+    options: [
+      "Digests proteins",
+      "Emulsifies fats to increase surface area",
+      "Breaks carbohydrates into glucose",
+      "Enhances peristalsis in the small intestine"
+    ],
+    correctAnswer: 2,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "Which of the following is the correct path of oxygenated blood in the human body?",
+    options: [
+      "Lungs → Left atrium → Left ventricle → Aorta",
+      "Lungs → Right atrium → Right ventricle → Aorta",
+      "Lungs → Left ventricle → Left atrium → Aorta",
+      "Lungs → Right ventricle → Right atrium → Aorta"
+    ],
+    correctAnswer: 1,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "Write the balanced chemical equation of photosynthesis.",
+    options: [
+      "6CO₂ + 12H₂O → C₆H₁₂O₆ + 6O₂ + 6H₂O",
+      "6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂",
+      "CO₂ + H₂O → C₆H₁₂O₆ + O₂",
+      "12CO₂ + 6H₂O → C₆H₁₂O₆ + 12O₂"
+    ],
+    correctAnswer: 2,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "Assertion (A): The small intestine is the site of complete digestion of food. Reason (R): It receives secretions from the liver and pancreas which help in digestion.",
+    options: [
+      "Both (A) and (R) are true and (R) is the correct explanation of (A).",
+      "Both (A) and (R) are true and (R) is not the correct explanation of (A).",
+      "(A) is true but (R) is false.",
+      "(A) is false but (R) is true."
+    ],
+    correctAnswer: 1,
+    explanation: "",
+    image: ""
+  },
+  {
+    question: "In double circulation, the advantage is that:",
+    options: [
+      "Blood is mixed before entering organs",
+      "Blood circulates only once through the heart",
+      "Oxygenated and deoxygenated blood are kept separate",
+      "Only deoxygenated blood enters the heart"
+    ],
+    correctAnswer: 3,
+    explanation: "",
+    image: ""
+  }
+],
   },
   SST: {
     "Test 1": [
