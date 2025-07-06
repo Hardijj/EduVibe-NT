@@ -198,17 +198,17 @@ const ChapterLectures10 = () => {
   {
     "name": "L2",
     "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4426247/175102765297458929414/175102765297458929414_8929414.m3u8",
-    "notesUrl": ""
+    "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/71000202971201150.pdf"
   },
         {
         "name": "L3",
         "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4427347/175111381865158929414/175111381865158929414_8929414.m3u8",
-        "notesUrl": ""
+        "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/589130738857175200.pdf"
         },
         {
         "name": "L4",
         "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4465407/175163267359088929414/175163267359088929414_8929414.m3u8",
-        "notesUrl": ""
+        "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/390163569437422900.pdf"
           },
       ],
       19: [
@@ -227,6 +227,10 @@ const ChapterLectures10 = () => {
         {
           name: "ACP - Acid Base & Salt with solution",
           redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/445901992631399000.pdf"
+        },
+        {
+          name: "ACP - Human Eye and the Colourful World",
+          redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/117262274904132380.pdf"
         },
       ],
     },
@@ -506,6 +510,10 @@ const ChapterLectures10 = () => {
         {
           name: "DPP 17",
           redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/535549018865754750.pdf"
+        },
+        {
+          name: "DPP 18",
+          redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/182672672685553540.pdf"
         },
       ],
     },
