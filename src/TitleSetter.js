@@ -45,13 +45,6 @@ export default function TitleSetter({ fallback = "Next Toppers" }) {
     const pageTitle = matched?.title || fallback;
     document.title = pageTitle;
 
-    // Optional: Analytics
-    if (typeof gtag === "function") {
-      gtag('event', 'page_view', {
-        page_path: location.pathname,
-        page_title: pageTitle,
-      });
-    }
   }, [location.pathname, fallback]);
 
   return null;
