@@ -18,7 +18,7 @@ const subjectFilters = {
   Economics: 'No videos found'
 };
 
-const Com11 = () => {
+const Rc11 = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [videos, setVideos] = useState([]);
   const [notes, setNotes] = useState([]);
@@ -223,4 +223,4 @@ const Com11 = () => {
   );
 };
 
-export default Com11;
+export default Rc11;
