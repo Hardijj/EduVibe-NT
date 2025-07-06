@@ -337,7 +337,7 @@ const testData = {
     correctAnswer: 2
   }
 ],
-    "Life Processes Test":[
+    "Life Processes":[
   {
     question: "In human respiratory system, when a person breathes in, the position of ribs and diaphragm will be:",
     options: [
@@ -516,6 +516,188 @@ const testData = {
     ],
     correctAnswer: 3,
     explanation: "",
+    image: ""
+  }
+],
+    "Acid Base & Salt":[
+  {
+    question: "Which of the following reactions correctly represents the reaction between metal carbonate and acid?",
+    options: [
+      "Na₂CO₃ + 2HCl → 2NaCl + CO₂ + H₂O",
+      "Na₂CO₃ + HCl → NaCl + CO₂ + H₂O",
+      "Na₂CO₃ + 2HCl → NaCl + CO₂ + H₂O",
+      "Na₂CO₃ + HCl → 2NaCl + CO₂ + H₂O"
+    ],
+    correctAnswer: 1,
+    explanation: "A metal (or sodium) carbonate reacts with an acid to give salt, water and CO₂; the stoichiometrically balanced form requires 2 moles of HCl for each mole of Na₂CO₃.",
+    image: ""
+  },
+  {
+    question: "What is formed when chlorine reacts with dry slaked lime?",
+    options: [
+      "CaCl₂",
+      "CaOCl₂",
+      "Ca(OH)Cl",
+      "CaCO₃"
+    ],
+    correctAnswer: 2,
+    explanation: "Dry slaked-lime [Ca(OH)₂] absorbs Cl₂ to give bleaching-powder, CaOCl₂ (used as a disinfectant) plus a little H₂O.",
+    image: ""
+  },
+  {
+    question: "Plaster of Paris should be stored in a moisture-proof container because:",
+    options: [
+      "It is acidic in nature",
+      "It reacts with CO₂",
+      "It becomes brittle",
+      "It sets into a hard mass in presence of moisture"
+    ],
+    correctAnswer: 4,
+    explanation: "Plaster of Paris (CaSO₄·½H₂O) quickly re-hydrates to gypsum (CaSO₄·2H₂O), converting the soft powder into a hard solid if moisture is present.",
+    image: ""
+  },
+  {
+    question: "Which of the following is correct for bleaching powder?",
+    options: [
+      "Ca(OH)₂ + Cl₂ → CaOCl₂ + HCl",
+      "CaO + Cl₂ → CaOCl₂",
+      "Ca(OH)₂ + Cl₂ → CaCl₂ + H₂O",
+      "CaCl₂ + Cl₂ → CaOCl₂"
+    ],
+    correctAnswer: 1,
+    explanation: "Bleaching powder is manufactured by passing chlorine over moist slaked lime: Ca(OH)₂ + Cl₂ → CaOCl₂ + HCl.",
+    image: ""
+  },
+  {
+    question: "A student heats a white crystalline substance and a gas with pungent smell is evolved. The substance is likely:",
+    options: [
+      "Sodium carbonate",
+      "Ammonium chloride",
+      "Bleaching powder",
+      "Zinc oxide"
+    ],
+    correctAnswer: 2,
+    explanation: "Ammonium chloride sublimes on heating, releasing a white vapour that smells strongly of ammonia (and HCl).",
+    image: ""
+  },
+  {
+    question: "Which one of the following types of medicines is used for treating indigestion?",
+    options: [
+      "Antibiotics",
+      "Analgesic",
+      "Antacid",
+      "Antiseptic"
+    ],
+    correctAnswer: 3,
+    explanation: "Indigestion is caused by excess gastric acid; antacids such as Mg(OH)₂ or NaHCO₃ neutralise the acid and give relief.",
+    image: ""
+  },
+  {
+    question: "Juice of tamarind turns blue litmus to red. It is because of the presence of an acid called:",
+    options: [
+      "Methanoic acid",
+      "Acetic acid",
+      "Tartaric acid",
+      "Oxalic acid"
+    ],
+    correctAnswer: 3,
+    explanation: "Tamarind pulp is rich in tartaric acid, a naturally strong organic acid that turns blue litmus red.",
+    image: ""
+  },
+  {
+    question: "Identify the product ‘X’ obtained in the following chemical reaction:  CaCO₃  ——heat→  X  +  CO₂",
+    options: [
+      "Quick lime",
+      "Gypsum",
+      "Lime stone",
+      "Plaster of Paris"
+    ],
+    correctAnswer: 1,
+    explanation: "Thermal decomposition of limestone (CaCO₃) produces quicklime (CaO) and carbon-dioxide.",
+    image: ""
+  },
+  {
+    question: "The name of the salt used to remove permanent hardness of water is",
+    options: [
+      "Sodium hydrogen carbonate (NaHCO₃)",
+      "Sodium chloride (NaCl)",
+      "Sodium carbonate decahydrate (Na₂CO₃·10H₂O)",
+      "Calcium sulphate hemihydrate (CaSO₄·½H₂O)"
+    ],
+    correctAnswer: 3,
+    explanation: "Washing-soda (Na₂CO₃·10H₂O) precipitates Ca²⁺/Mg²⁺ as carbonates, thereby removing permanent hardness.",
+    image: ""
+  },
+  {
+    question: "The table below has information regarding pH and the nature (acidic/basic) of four different solutions. Which of the following options in the table is correct?",
+    options: [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    correctAnswer: 2,
+    explanation: "Only option B shows pH figures consistent with the stated acidic/basic nature of each sample (low pH → acidic, high pH → basic).",
+    image: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/sample/856940_IMG_8339.jpeg"
+  },
+  {
+    question: "Anita added a drop each of diluted acetic acid and diluted hydrochloric acid on pH paper and compared the colours. Which of the following is the correct conclusion?",
+    options: [
+      "pH of acetic acid is more than that of hydrochloric acid",
+      "pH of acetic acid is less than that of hydrochloric acid",
+      "Acetic acid dissociates completely in aqueous solution",
+      "Acetic acid is a strong acid"
+    ],
+    correctAnswer: 1,
+    explanation: "HCl is a strong acid (fully ionised) → lower pH, whereas acetic acid is weak (partially ionised) → higher pH.",
+    image: ""
+  },
+  {
+    question: "An aqueous solution ‘A’ turns phenolphthalein solution pink. In addition, an aqueous solution ‘B’ makes the pink colour disappear. The following statement is true for solutions ‘A’ and ‘B’.",
+    options: [
+      "A is strongly basic and B is a weak base.",
+      "A is strongly acidic and B is a weak acid.",
+      "A has pH greater than 7 and B has pH less than 7.",
+      "A has pH less than 7 and B has pH greater than 7."
+    ],
+    correctAnswer: 3,
+    explanation: "Phenolphthalein turns pink only in basic media; adding an acid removes the colour. Therefore A is basic (pH > 7) and B is acidic (pH < 7).",
+    image: ""
+  },
+  {
+    question: "You have three aqueous solutions A, B, and C:  A = Potassium nitrate,  B = Ammonium chloride,  C = Sodium carbonate.  The ascending order of the pH of these solutions is:",
+    options: [
+      "A < B < C",
+      "B < C < A",
+      "C < A < B",
+      "B < A < C"
+    ],
+    correctAnswer: 4,
+    explanation: "B (NH₄Cl) is acidic (pH < 7), A (KNO₃) is nearly neutral (≈7), C (Na₂CO₃) is basic (pH > 7); thus B < A < C.",
+    image: ""
+  },
+  {
+    question: "Which one of the following is used for white-washing walls?",
+    options: [
+      "Slaked lime",
+      "Quick lime",
+      "Soda lime",
+      "Lime water"
+    ],
+    correctAnswer: 1,
+    explanation: "Slaked-lime [Ca(OH)₂] is brushed on; it slowly reacts with CO₂ in air to form a thin, white film of CaCO₃.",
+    image: ""
+  },
+  {
+    question: "Assertion (A): Tooth enamel gets corroded when pH in the mouth falls below 5.5.  Reason (R): Calcium phosphate present in enamel dissolves in acid.",
+    options: [
+      "Both Assertion and Reason are true, and R is the correct explanation of A.",
+      "Both A and R are true, but R is not the correct explanation of A.",
+      "A is true, but R is false.",
+      "A is false, but R is true."
+    ],
+    correctAnswer: 1,
+    explanation: "A drop in oral pH (due to bacterial acids) protonates and dissolves the calcium-phosphate mineral of enamel, so the reason correctly explains the assertion.",
     image: ""
   }
 ],
