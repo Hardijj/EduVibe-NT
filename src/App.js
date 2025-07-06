@@ -19,6 +19,7 @@ import Com11 from './pages/Com11';
 import TestPlatform from './pages/TestPlatform';
 import Class9 from './pages/Class9';
 import Recorded from './pages/Recorded';
+import Rc11 from './pages/Rc11';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/11/com/lectures" element={<Com11 />} />
         <Route path="/10/test" element={<ProtectedRoute><TestPlatform /></ProtectedRoute>} />
         <Route path="/10/rc" element={<Recorded />} />
+        <Route path="/11/rc" element={<Rc11 />} />
 
         {/* Chapter Lectures */}
         <Route path="/chapter-lectures/9/:subject/:chapterIndex" element={<ProtectedRoute><ChapterLectures9 /></ProtectedRoute>} />
