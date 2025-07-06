@@ -21,10 +21,12 @@ import TestPlatform from './pages/TestPlatform';
 import Class9 from './pages/Class9';
 import Recorded from './pages/Recorded';
 import Rc11 from './pages/Rc11';
+import TitleSetter from "./TitleSetter";  
 
 function App() {
   return (
     <Router>
+      <TitleSetter />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
