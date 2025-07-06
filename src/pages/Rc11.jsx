@@ -27,7 +27,7 @@ const Recorded = () => {
   const fetchLectures = async (api, name) => {
     setLoading(true);
     try {
-      const res = await fetch(`https://php-pearl.vercel.app/api/rcl?api=${api}`);
+      const res = await fetch(`https://php-pearl.vercel.app/api/index?api=${api}`);
       const data = await res.json();
 
       const marker = subjectFilters[name];
