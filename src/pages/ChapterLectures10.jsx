@@ -428,10 +428,15 @@ const ChapterLectures10 = () => {
           notesUrl: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/615163654802694500.pdf"
         },
         {
-        "name": "L4",
+        "name": "Quadratic Equations L4",
         "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4465547/175164427990748752407/175164427990748752407_8752407.m3u8",
-        "notesUrl": ""
-          },
+        "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/48313422477312990.pdf"
+        },
+        {
+        "name": "Quadratic Equation L5",
+        "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4474940/175173015921868752407/175173015921868752407_8752407.m3u8",
+        "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/818675100049377900.pdf"
+        },
       ],
       19: [
         {
