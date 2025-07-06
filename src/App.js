@@ -21,6 +21,7 @@ import TestPlatform from './pages/TestPlatform';
 import Class9 from './pages/Class9';
 import Recorded from './pages/Recorded';
 import Rc11 from './pages/Rc11';
+import Artsub11 from './pages/Artsub11';
 import TitleSetter from "./TitleSetter";  
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/subjects/10" element={<ProtectedRoute><Subject10 /></ProtectedRoute>} />
         <Route path="/subjects/11" element={<ProtectedRoute><Subject11 /></ProtectedRoute>} />
         <Route path="/subjectss/9" element={<Class9 />} />
+        <Route path="/subjectss/11" element={<Artsub11 />} />
 
         {/* Lecture Pages */}
         <Route path="/lectures/9/:subject" element={<ProtectedRoute><Lectures9 /></ProtectedRoute>} />
