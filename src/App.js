@@ -38,7 +38,7 @@ function App() {
         <Route path="/subjects/10" element={<ProtectedRoute><Subject10 /></ProtectedRoute>} />
         <Route path="/subjects/11" element={<ProtectedRoute><Subject11 /></ProtectedRoute>} />
         <Route path="/subjectss/9" element={<Class9 />} />
-        <Route path="/subjectss/11" element={<Artsub11 />} />
+        <Route path="/subjectss/11" element={<Art11 />} />
 
         {/* Lecture Pages */}
         <Route path="/lectures/9/:subject" element={<ProtectedRoute><Lectures9 /></ProtectedRoute>} />
@@ -47,7 +47,7 @@ function App() {
         <Route path="/11/lectures" element={<LecturesPage11 />} />
         <Route path="/subjects/113" element={<Subject11com />} />
         <Route path="/11/com/lectures" element={<Com11 />} />
-        <Route path="/subjects/111" element={<Art11 />} />
+        <Route path="/subjects/111" element={<Artsub11 />} />
         <Route path="/10/test" element={<ProtectedRoute><TestPlatform /></ProtectedRoute>} />
         <Route path="/10/rc" element={<Recorded />} />
         <Route path="/11/rc" element={<Rc11 />} />
