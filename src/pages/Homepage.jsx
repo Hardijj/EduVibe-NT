@@ -142,7 +142,7 @@ const Homepage = () => {
             <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png" alt="Class 11 Commerce" className="homepage-image" />
             <h1 style={{ color: "#fff" }}>Prarambh 2.0 Commerce Class 11</h1>
           </div>
-          <div className="click-box" onClick={() => handleClick(113)}>
+          <div className="click-box" onClick={() => handleClick(111)}>
             <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/216113028517_Prarambh%20BATCh%20Humanities%2011.png" alt="Class 11 Arts" className="homepage-image" />
             <h1 style={{ color: "#fff" }}>Prarambh 2.0 Humanities Class 11</h1>
           </div>
