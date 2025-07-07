@@ -42,7 +42,7 @@ const Artsub11 = () => {
      3) Normal subject list (unchanged)
      ———————————————————————————————————————————————— */
   const subjects = [
-    { name: "Click Here for Live's Recorded", path: "/subjects/111" },
+    { name: "Click Here for Live's Recorded", path: "/lecturess/11" },
   ];
 
   /* ————————————————————————————————————————————————
