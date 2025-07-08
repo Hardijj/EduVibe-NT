@@ -6,6 +6,7 @@ import { useLocation, matchPath } from "react-router-dom";
  * (from longest to shortest — important!)
  */
 const TITLE_MAP = [
+  { path: "/video/11/arts/live", title: "Live 11th Arts"},
   { path: "/video/11/com/live", title: "Live 11th Commerce" },
   { path: "/video/11/bio/live", title: "Live 11th Biology" },
   { path: "/video/11/live", title: "Live 11th Science" },
