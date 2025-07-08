@@ -515,6 +515,10 @@ const ChapterLectures10 = () => {
           name: "DPP 18",
           redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/182672672685553540.pdf"
         },
+        {
+          name: "DPP 19",
+          redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/700805361553841800.pdf"
+        },
       ],
     },
     SST: {
@@ -757,6 +761,10 @@ const ChapterLectures10 = () => {
         {
           name: "WPP 5",
           redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/34822217549140612.pdf"
+        },
+        {
+          name: "WPP 6",
+          redirect: "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/665478458648430000.pdf" 
         },
       ],
     },
