@@ -838,6 +838,254 @@ C. Laterite soil          3. Found in low rainfall areas, poor in nitrogen
         explanation: ""
       },
     ],
+    "Power Sharing":[
+  {
+    question: "Power sharing helps in:",
+    options: [
+      "Reducing social conflicts",
+      "Increasing dictatorship",
+      "Promoting division in society",
+      "Ignoring minority interests"
+    ],
+    correctAnswer: 1,
+    explanation: "By giving every group a stake in decision-making, power sharing removes the feeling of domination and lowers the risk of conflict.",
+    image: ""
+  },
+  {
+    question: "The idea of power-sharing is based on the principle of:",
+    options: [
+      "Concentration of power",
+      "Democratic participation",
+      "Monarchical rule",
+      "One-party dominance"
+    ],
+    correctAnswer: 2,
+    explanation: "Democracy insists that many voices participate; power therefore must be shared rather than concentrated.",
+    image: ""
+  },
+  {
+    usePre: true,
+    question: `Match the following:
+
+A) Horizontal Power Sharing   - i) Among different social groups  
+B) Vertical Power Sharing     - ii) Between different levels of government  
+C) Community Government       - iii) Among different organs of government  
+D) Coalition Government       - iv) Among political parties`,
+    options: [
+      "A-iii, B-ii, C-i, D-iv",
+      "A-i, B-iii, C-ii, D-iv",
+      "A-ii, B-iv, C-iii, D-i",
+      "A-iv, B-i, C-iii, D-ii"
+    ],
+    correctAnswer: 1,
+    explanation: "Horizontal = organs; Vertical = levels; Community govt = social groups; Coalition = parties.",
+    image: ""
+  },
+  {
+    question: "Which country adopted the concept of Community Government?",
+    options: [
+      "Sri Lanka",
+      "India",
+      "Belgium",
+      "Pakistan"
+    ],
+    correctAnswer: 3,
+    explanation: "Belgium’s 1993 Constitution created a separate ‘community government’ for Dutch, French and German speakers to manage culture & education.",
+    image: ""
+  },
+  {
+    question: "The majority community in Sri Lanka is:",
+    options: [
+      "Tamils",
+      "Sinhalese",
+      "Muslims",
+      "Christians"
+    ],
+    correctAnswer: 2,
+    explanation: "Sinhalese made up roughly three-quarters of the population (2001 census).",
+    image: ""
+  },
+  {
+    question: "What is the main cause of conflict in Sri Lanka?",
+    options: [
+      "Language policy",
+      "Religious differences",
+      "Political ideology",
+      "Economic disparity"
+    ],
+    correctAnswer: 1,
+    explanation: "The 1956 Sinhala-Only Act and later privileges to Sinhalese created Tamil alienation and triggered prolonged ethnic conflict.",
+    image: ""
+  },
+  {
+    question: "Assertion (A): Belgium has a complex power-sharing arrangement. Reason (R): It accommodates linguistic diversities through federalism.",
+    options: [
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is not the correct explanation of A",
+      "A is true, but R is false",
+      "A is false, but R is true"
+    ],
+    correctAnswer: 1,
+    explanation: "Belgium’s federation, community & regional tiers were designed precisely to manage Dutch/French/German linguistic cleavages.",
+    image: ""
+  },
+  {
+    question: "The Tamil-speaking community in Sri Lanka is primarily located in:",
+    options: [
+      "Northern and Eastern parts",
+      "Western coastal areas",
+      "Central highlands",
+      "Southern provinces"
+    ],
+    correctAnswer: 1,
+    explanation: "Sri Lankan Tamils historically live in Jaffna peninsula (north) and the eastern littoral.",
+    image: ""
+  },
+  {
+    question: "Which of the following is a prudential reason for power sharing?",
+    options: [
+      "Moral obligation",
+      "Reducing chances of conflict",
+      "Concentrating power",
+      "Strengthening authoritarian rule"
+    ],
+    correctAnswer: 2,
+    explanation: "Prudential (practical) reasons focus on preventing violence and ensuring political stability.",
+    image: ""
+  },
+  {
+    question: "Statement I: Prudential reasons focus on long-term stability. Statement II: Moral reasons focus on the principle of justice.",
+    options: [
+      "Both statements are true",
+      "Both statements are false",
+      "Statement I is true, II is false",
+      "Statement I is false, II is true"
+    ],
+    correctAnswer: 1,
+    explanation: "Stability is a practical concern; justice is a normative one—both descriptions are correct.",
+    image: ""
+  },
+  {
+    question: "Which of the following is a moral reason for power sharing?",
+    options: [
+      "Reducing chances of violence",
+      "Recognizing the voice of the minority",
+      "Centralizing political power",
+      "Ensuring economic dominance"
+    ],
+    correctAnswer: 2,
+    explanation: "Morally, every citizen or group deserves a say; sharing power honours that democratic right.",
+    image: ""
+  },
+  {
+    question: "Power sharing among political parties, pressure groups and movements is called:",
+    options: [
+      "Horizontal division",
+      "Vertical division",
+      "Community-based division",
+      "Power sharing through coalition"
+    ],
+    correctAnswer: 4,
+    explanation: "This is the coalition/competitive dimension of power sharing seen in multi-party democracies.",
+    image: ""
+  },
+  {
+    question: "Assertion (A): Federalism is a form of vertical power sharing. Reason (R): It divides power between the central and regional governments.",
+    options: [
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is not the correct explanation of A",
+      "A is true, but R is false",
+      "A is false, but R is true"
+    ],
+    correctAnswer: 1,
+    explanation: "Vertical sharing refers to different tiers; federalism is the textbook example of this division.",
+    image: ""
+  },
+  {
+    question: "Which form of power sharing helps maintain a system of checks and balances?",
+    options: [
+      "Vertical power sharing",
+      "Horizontal power sharing",
+      "Social power sharing",
+      "Coalition government"
+    ],
+    correctAnswer: 2,
+    explanation: "Horizontal sharing (legislature, executive, judiciary) allows each organ to restrain the others, preventing abuse.",
+    image: ""
+  },
+  {
+    question: "What is Majoritarianism?",
+    options: [
+      "A policy to accommodate minority interests",
+      "A belief that the majority community should dominate",
+      "A system of equal power sharing",
+      "An economic model for power distribution"
+    ],
+    correctAnswer: 2,
+    explanation: "Majoritarianism argues that numbers alone give the majority the right to rule, often sidelining minorities.",
+    image: ""
+  },
+  {
+    question: "Statement I: Belgium adopted a majoritarian approach to power sharing. Statement II: Sri Lanka's power-sharing model led to ethnic harmony.",
+    options: [
+      "Both statements are true",
+      "Both statements are false",
+      "Statement I is true, II is false",
+      "Statement I is false, II is true"
+    ],
+    correctAnswer: 2,
+    explanation: "Belgium avoided majoritarianism; Sri Lanka’s failure to share power produced conflict, not harmony—so both statements are false.",
+    image: ""
+  },
+  {
+    question: "What is the percentage of Sinhalese people in Sri Lanka according to the 2001 census?",
+    options: [
+      "50%",
+      "55%",
+      "74%",
+      "80%"
+    ],
+    correctAnswer: 3,
+    explanation: "Census data show Sinhalese at roughly three-quarters of the population in 2001.",
+    image: ""
+  },
+  {
+    question: "In Belgium, the number of seats in the federal parliament is divided between Dutch-speaking and French-speaking communities. What is the division?",
+    options: [
+      "50% Dutch, 50% French",
+      "55% Dutch, 45% French",
+      "60% Dutch, 40% French",
+      "60% French, 40% Dutch"
+    ],
+    correctAnswer: 1,
+    explanation: "An exactly equal split (50-50) was agreed to reassure the French-speaking minority state-wide.",
+    image: ""
+  },
+  {
+    question: "Which of the following is true about civil wars?",
+    options: [
+      "They often lead to a peaceful resolution of the conflict through talks.",
+      "Civil wars are resolved through international military intervention only.",
+      "Civil wars can have long-lasting social, economic, and political consequences.",
+      "Civil wars only last for a few months and are rarely prolonged."
+    ],
+    correctAnswer: 3,
+    explanation: "Protracted civil wars devastate economies, displace populations and scar politics for generations (e.g., Sri Lanka, Syria).",
+    image: ""
+  },
+  {
+    question: "The Belgium power-sharing system is often considered a success. What contributed to its success?",
+    options: [
+      "It relied on the strict enforcement of laws against linguistic discrimination.",
+      "It allowed French-speaking and Dutch-speaking communities to have equal political representation.",
+      "It was solely based on economic negotiations between the communities.",
+      "It relied on a majority vote, leaving minorities voiceless in the process."
+    ],
+    correctAnswer: 2,
+    explanation: "Guaranteed parity in key institutions convinced both language groups that they would never be out-voted, sustaining trust.",
+    image: ""
+  }
+],
   },
 };
 
