@@ -61,7 +61,7 @@ const Artsub11 = () => {
 
       <div className="live-class-container">
         <Link
-          to={liveDisabled ? "#" : "/video/111/live"}
+          to={liveDisabled ? "#" : "/video/11/arts/live"}
           state={{ chapterName: "Live Class", m3u8Url }}
           className={`subject-box live-class-section ${liveDisabled ? "disabled" : ""}`}
           onClick={(e) => liveDisabled && e.preventDefault()}
