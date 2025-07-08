@@ -723,6 +723,13 @@ const ChapterLectures10 = () => {
         "notesUrl": ""
           },
        ],
+      6:[
+        {
+        "name": " L1",
+        "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4475867/175189222398137125088/175189222398137125088_7125088.m3u8",
+        "notesUrl": ""
+        }
+      ],
       100:[
         {
           name: "Holiday Homework",
