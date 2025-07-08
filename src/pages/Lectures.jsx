@@ -44,6 +44,7 @@ const Lectures = () => {
       { name: "Rise of Nationalism in Europe", index: 3},
       { name: "Forest & Wildlife Resources", index: 4},
       { name: "Sectors of Indian economy", index: 5},
+      { name: "Federalism", index: 6},
     ],
     IT: [
       { name: "Notice", index: 0 },
