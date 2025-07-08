@@ -1087,6 +1087,257 @@ D) Coalition Government       - iv) Among political parties`,
   }
 ],
   },
+  AI: {
+    "Test 1":[
+  {
+    "question": "Visual communication among the people are dependent on?",
+    "options": [
+      "Signs, symbols and pictures",
+      "Text messages",
+      "Posture",
+      "Body language"
+    ],
+    "correctAnswer": 1,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "…… feedback is specific information, in the form of written comments or verbal conversations that help the learner understand what she or he needs to do in order to improve?",
+    "options": [
+      "Descriptive",
+      "Specific",
+      "General",
+      "Sign"
+    ],
+    "correctAnswer": 1,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "…… communication is the use of body language, gestures and facial expressions to convey information to others?",
+    "options": [
+      "Verbal",
+      "Written",
+      "Non‑verbal",
+      "Visual"
+    ],
+    "correctAnswer": 3,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "There are many reasons why interpersonal communications may fail. While communicating, the message may not be received exactly the way the sender intended and therefore it is important that the communicator seeks …… to check that their message is clearly understood?",
+    "options": [
+      "description",
+      "feedback",
+      "channel",
+      "sign"
+    ],
+    "correctAnswer": 2,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Which one of the following is not a barrier to effective communication?",
+    "options": [
+      "Physical barrier",
+      "Linguistic barrier",
+      "Interpersonal barrier",
+      "Subjective barrier"
+    ],
+    "correctAnswer": 4,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "It is a word used in place of a noun that is ……?",
+    "options": [
+      "Adverb",
+      "Verb",
+      "Pronoun",
+      "Preposition"
+    ],
+    "correctAnswer": 3,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "A word used to express emotion and is often followed by an exclamation mark is called?",
+    "options": [
+      "Pronoun",
+      "Verb",
+      "Pronoun",
+      "Preposition"
+    ],
+    "correctAnswer": 3,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "The sentence “The Sun is shining now, so I think that we can go shopping” which of the following types of sentences is this?",
+    "options": [
+      "Simple",
+      "Complex",
+      "Compound",
+      "Compound‑Complex"
+    ],
+    "correctAnswer": 4,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "…… is an instance of non‑verbal communication?",
+    "options": [
+      "A speech",
+      "Proximity",
+      "A notice",
+      "An e‑mail"
+    ],
+    "correctAnswer": 2,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "If we take into consideration both the viewpoints as well as the feelings of the receiver of a communication, which of the 7 C’s are we fulfilling?",
+    "options": [
+      "Clarity",
+      "Consideration",
+      "Courtesy",
+      "Correctness"
+    ],
+    "correctAnswer": 3,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Internal stress is a result of?",
+    "options": [
+      "physical exercise",
+      "laziness",
+      "pent‑up worries",
+      "experiences"
+    ],
+    "correctAnswer": 3,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Physical exercise is used as a stress management technique because?",
+    "options": [
+      "it improves self‑image",
+      "makes us feel better",
+      "improves blood circulation",
+      "All of the above"
+    ],
+    "correctAnswer": 4,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Self‑awareness refers to?",
+    "options": [
+      "our knowledge and understanding of ourselves",
+      "systematic efforts to direct thoughts and actions",
+      "ability to identify effective methods to move from",
+      "none of the above"
+    ],
+    "correctAnswer": 1,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Sonika gets up at 6 am and goes for her hobby classes. Then, she comes back home and finishes her homework before going to school. She does all work by herself. No one tells her to do so. This is called?",
+    "options": [
+      "self‑awareness",
+      "self‑motivation",
+      "self‑regulation",
+      "discipline"
+    ],
+    "correctAnswer": 2,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Managing stress is about making a plan to be able to cope effectively with daily pressures. Always keep in mind the ABC of stress management. The acronym ABC stands for ……?",
+    "options": [
+      "Ability, Burden, Concise",
+      "Adore, Belief, Cause",
+      "Adversity, Beliefs, Consequences",
+      "Adapt, Balance, Cooperate"
+    ],
+    "correctAnswer": 3,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Which one of the following is not a symptom of stress?",
+    "options": [
+      "Increased sweating",
+      "Dry mouth",
+      "Cold hands or feet",
+      "None of these"
+    ],
+    "correctAnswer": 4,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "Spending holidays with our family and friends to manage stress may be called as a ............ activity?",
+    "options": [
+      "nature walk",
+      "relaxation",
+      "leisure",
+      "None of these"
+    ],
+    "correctAnswer": 3,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "If we worry about matters we can do nothing about or we are worrying for no reason at all, we are having ............?",
+    "options": [
+      "environmental stress",
+      "eustress",
+      "distress",
+      "internal stress"
+    ],
+    "correctAnswer": 4,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  },
+  {
+    "question": "We have the ability to work independently if we ............?",
+    "options": [
+      "need regular feedback to make progress in our work",
+      "work best at our own pace",
+      "need a structured environment to work faster",
+      "need to be prodded to work efficiently"
+    ],
+    "correctAnswer": 2,
+    "explanation": "",
+    "image": "",
+    "usePre": false
+  }
+],
+  },
 };
 
 export default testData;
