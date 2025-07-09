@@ -1,10 +1,10 @@
 <!doctype html>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Push Admin</title>
 <style>
 body{font-family:system-ui,sans-serif;max-width:420px;margin:2rem auto;padding:1rem}
-input,button,textarea{width:100%;font-size:1rem;padding:.6rem;margin:.4rem 0;border:1px solid #ccc;border-radius:6px}
+input,textarea,button{width:100%;font-size:1rem;padding:.6rem;margin:.4rem 0;border:1px solid #ccc;border-radius:6px}
 button{background:#007bff;color:#fff;border:none}
 button:hover{background:#0056b3}
 .hidden{display:none}
@@ -14,7 +14,8 @@ button:hover{background:#0056b3}
 
 <div id="login">
   <input id="pw" type="password" placeholder="Admin password">
-  <button onclick="login()">Unlock</button>
+  <button onclick="unlock()">Unlock</button>
+  <p id="login-error" style="color:#e74c3c;display:none;">Wrong password</p>
 </div>
 
 <form id="form" class="hidden" onsubmit="send();return false;">
@@ -25,32 +26,48 @@ button:hover{background:#0056b3}
 </form>
 
 <script>
-const TOKEN_KEY='push-admin-token';
+const KEY='push-admin-token';
 
-function login(){
-  const p=document.getElementById('pw').value.trim();
-  if(!p)return;
-  localStorage.setItem(TOKEN_KEY,p);
-  showForm();
+async function ping(token){
+  const r=await fetch('/api/send', { headers:{Authorization:`Bearer ${token}`} });
+  return r.ok;
 }
-function showForm(){
+
+async function unlock(){
+  const pwd=document.getElementById('pw').value.trim();
+  if(!pwd) return;
+  const ok=await ping(pwd);
+  if(!ok){
+    document.getElementById('login-error').style.display='block';
+    return;
+  }
+  localStorage.setItem(KEY,pwd);
   document.getElementById('login').classList.add('hidden');
   document.getElementById('form').classList.remove('hidden');
 }
-if(localStorage.getItem(TOKEN_KEY)) showForm();
+
+(async ()=>{
+  const saved=localStorage.getItem(KEY);
+  if(saved && await ping(saved)){
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('form').classList.remove('hidden');
+  }
+})();
 
 async function send(){
-  const title=document.getElementById('title').value;
-  const body =document.getElementById('body').value;
-  const url  =document.getElementById('url').value.trim()||undefined;
-
+  const token=localStorage.getItem(KEY);
+  const body={
+    title:document.getElementById('title').value,
+    body :document.getElementById('body').value,
+    url  :document.getElementById('url').value.trim()||undefined
+  };
   const res=await fetch('/api/send',{
     method:'POST',
     headers:{
       'Content-Type':'application/json',
-      Authorization:`Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      Authorization:`Bearer ${token}`
     },
-    body:JSON.stringify({title,body,url})
+    body:JSON.stringify(body)
   });
   const out=await res.json();
   if(res.ok) alert(`✅ Pushed to ${out.ok}/${out.to}`);
