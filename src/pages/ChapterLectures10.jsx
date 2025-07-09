@@ -210,6 +210,11 @@ const ChapterLectures10 = () => {
         "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4465407/175163267359088929414/175163267359088929414_8929414.m3u8",
         "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/390163569437422900.pdf"
           },
+        {
+        "name": "Doubt Class",
+        "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4477928/175206364875938929414/175206364875938929414_8929414.m3u8",
+        "notesUrl": ""
+        }
       ],
       19: [
         {
