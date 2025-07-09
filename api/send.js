@@ -1,5 +1,5 @@
-import { Redis } from "@upstash/redis";
-import webpush from "web-push";
+import { Redis } from '@upstash/redis';
+import webpush from 'web-push';
 
 const redis = new Redis({
   url: process.env.KV_REST_API_URL,
@@ -7,51 +7,47 @@ const redis = new Redis({
 });
 
 webpush.setVapidDetails(
-  "mailto:you@example.com",
+  'mailto:you@example.com',
   process.env.VAPID_PUBLIC,
   process.env.VAPID_PRIVATE
 );
 
-const PASS = process.env.ADMIN_PASS; // set in Vercel
+const PASS = process.env.ADMIN_PASS;
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end();
 
   const { pass, title, body, url, test } = req.body || {};
 
-  /* ---------- password check ---------- */
-  if (pass !== PASS) {
-    return res.status(401).json({ error: "bad password" });
-  }
+  // ✅ Password Check
+  if (pass !== PASS) return res.status(401).json({ error: 'bad password' });
 
-  /* ---------- simple ping for login test ---------- */
-  if (test) {
-    return res.json({ ok: "ping" });
-  }
+  // ✅ Ping check (admin login test)
+  if (test) return res.json({ ok: 'ping' });
 
-  /* ---------- validate payload ---------- */
-  if (!title || !body) {
-    return res.status(400).json({ error: "need title & body" });
-  }
+  // ✅ Validate input
+  if (!title || !body) return res.status(400).json({ error: 'need title & body' });
 
-  /* ---------- fetch all subs ---------- */
-  const keys = await redis.keys("sub:*");
-  const subs = await Promise.all(keys.map((k) => redis.get(k)));
+  // ✅ Get all subs
+  const keys = await redis.keys('sub:*');
+  const subs = await Promise.all(keys.map(k => redis.get(k)));
 
   const payload = JSON.stringify({ title, body, url });
 
   const results = await Promise.allSettled(
-    subs.map((sub) => webpush.sendNotification(sub, payload))
+    subs.map(sub => webpush.sendNotification(sub, payload))
   );
 
-  /* clean expired endpoints (HTTP 410) */
-  results.forEach(
-    (r, i) => r.status === "rejected" && r.reason?.statusCode === 410 && redis.del(keys[i])
-  );
+  // ✅ Cleanup expired (410)
+  results.forEach((r, i) => {
+    if (r.status === 'rejected' && r.reason?.statusCode === 410) {
+      redis.del(keys[i]);
+    }
+  });
 
   res.json({
     to: subs.length,
-    ok: results.filter((r) => r.status === "fulfilled").length,
-    fail: results.filter((r) => r.status === "rejected").length,
+    ok: results.filter(r => r.status === 'fulfilled').length,
+    fail: results.filter(r => r.status === 'rejected').length
   });
-    }
+}
