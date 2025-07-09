@@ -6,15 +6,17 @@ const redis = new Redis({
 });
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end('Only POST');
 
-  // accept both body shapes
+  // Accept both { endpoint: … }  and  { subscription:{…} }
   const sub = req.body.subscription || req.body;
 
   if (!sub?.endpoint) {
     return res.status(400).json({ error: 'Bad subscription' });
   }
 
-  await redis.set(`sub:${sub.endpoint}`, sub);   // upsert
-  res.status(201).json({ ok: true });
+  // Upsert by endpoint
+  await redis.set(`sub:${sub.endpoint}`, sub);
+
+  res.status(201).json({ saved: true });
 }
