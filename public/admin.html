@@ -1,0 +1,59 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Push Admin</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:420px;margin:2rem auto;padding:1rem}
+input,button,textarea{width:100%;font-size:1rem;padding:.6rem;margin:.4rem 0;border:1px solid #ccc;border-radius:6px}
+button{background:#007bff;color:#fff;border:none}
+button:hover{background:#0056b3}
+.hidden{display:none}
+</style>
+
+<h2>📢 Send Notification</h2>
+
+<div id="login">
+  <input id="pw" type="password" placeholder="Admin password">
+  <button onclick="login()">Unlock</button>
+</div>
+
+<form id="form" class="hidden" onsubmit="send();return false;">
+  <input id="title" placeholder="Title" required>
+  <textarea id="body" placeholder="Message" required></textarea>
+  <input id="url" placeholder="Click-through URL (optional)">
+  <button>Send</button>
+</form>
+
+<script>
+const TOKEN_KEY='push-admin-token';
+
+function login(){
+  const p=document.getElementById('pw').value.trim();
+  if(!p)return;
+  localStorage.setItem(TOKEN_KEY,p);
+  showForm();
+}
+function showForm(){
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('form').classList.remove('hidden');
+}
+if(localStorage.getItem(TOKEN_KEY)) showForm();
+
+async function send(){
+  const title=document.getElementById('title').value;
+  const body =document.getElementById('body').value;
+  const url  =document.getElementById('url').value.trim()||undefined;
+
+  const res=await fetch('/api/send',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      Authorization:`Bearer ${localStorage.getItem(TOKEN_KEY)}`
+    },
+    body:JSON.stringify({title,body,url})
+  });
+  const out=await res.json();
+  if(res.ok) alert(`✅ Pushed to ${out.ok}/${out.to}`);
+  else alert('❌ '+out.error);
+}
+</script>
