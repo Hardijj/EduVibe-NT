@@ -1,82 +1,119 @@
 <!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Push Admin</title>
+
 <style>
-  body{font-family:system-ui,sans-serif;max-width:420px;margin:2rem auto;padding:1rem}
-  input,textarea,button{width:100%;font-size:1rem;padding:.6rem;margin:.4rem 0;border:1px solid #ccc;border-radius:6px}
-  button{background:#007bff;color:#fff;border:none}
-  button:hover{background:#0056b3}
-  #form{display:none}
-  #err{color:#e74c3c;display:none}
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center}
+body{background:#f2f3f5;color:#111}
+@media(prefers-color-scheme:dark){
+  body{background:#121212;color:#eee}
+}
+
+.card{
+  width:clamp(280px,90vw,420px);
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem 2rem;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+}
+@media(prefers-color-scheme:dark){
+  .card{background:#1e1e1e;box-shadow:0 6px 18px rgba(0,0,0,.6)}
+}
+input,textarea,button{
+  width:100%;font-size:1rem;padding:.65rem .8rem;margin:.4rem 0;
+  border:1px solid #ccc;border-radius:6px;background:#fff;color:inherit
+}
+@media(prefers-color-scheme:dark){
+  input,textarea{background:#2a2a2a;border:1px solid #555;color:#eee}
+}
+textarea{resize:vertical;min-height:90px}
+button{
+  cursor:pointer;border:none;background:#0069ed;color:#fff;font-weight:600;
+  transition:background .2s
+}
+button:hover{background:#0053bb}
+.msg{margin-top:.6rem;text-align:center;font-size:.9rem}
+.msg.ok{color:#28a745}
+.msg.err{color:#e74c3c}
 </style>
 
-<h2>📢 Send Push Notification</h2>
+<div class="card">
+  <h2 style="margin-top:0">🔐 Admin Login</h2>
 
-<div id="login">
-  <input id="pw" type="password" autocomplete="current-password" placeholder="Admin password">
-  <button onclick="unlock()">Unlock</button>
-  <p id="err">Wrong password</p>
+  <div id="login">
+    <input id="pw" type="password" placeholder="Admin password" required />
+    <button onclick="unlock()">Unlock</button>
+    <div id="login-msg" class="msg err" style="display:none;">❌ Wrong password</div>
+  </div>
+
+  <form id="form" style="display:none;" onsubmit="send(event)">
+    <input id="t" placeholder="Title" required />
+    <textarea id="b" placeholder="Body" required></textarea>
+    <input id="u" placeholder="Click-through URL (optional)" />
+    <button>Send</button>
+    <div id="msg" class="msg" aria-live="polite"></div>
+  </form>
 </div>
 
-<form id="form" onsubmit="send();return false;">
-  <input id="title" placeholder="Title" required>
-  <textarea id="body" placeholder="Message" required></textarea>
-  <input id="url" placeholder="Click-through URL (optional)">
-  <button>Send</button>
-</form>
-
 <script>
-  const KEY = 'push-admin-pass';
+const KEY = 'push-admin-pass';
 
-  /* test the password by calling /api/send in "test" mode */
-  async function testPass(pass){
-    const res = await fetch('/api/send', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ pass, test:true })
-    });
-    const j = await res.json().catch(()=>{});
-    return res.ok && j?.ok === 'ping';
+async function ping(pass){
+  const r = await fetch('/api/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ test:true, pass })
+  });
+  return r.ok;
+}
+
+async function unlock() {
+  const pw = document.getElementById('pw').value.trim();
+  const loginMsg = document.getElementById('login-msg');
+  const valid = await ping(pw);
+  if (valid) {
+    localStorage.setItem(KEY, pw);
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('form').style.display = 'block';
+  } else {
+    loginMsg.style.display = 'block';
   }
+}
 
-  async function unlock(){
-    const pass = document.getElementById('pw').value.trim();
-    if(!pass) return;
-    if(await testPass(pass)){
-      localStorage.setItem(KEY, pass);
-      document.getElementById('login').style.display='none';
-      document.getElementById('form').style.display='block';
-      document.getElementById('err').style.display='none';
-    } else {
-      document.getElementById('err').style.display='block';
-    }
+(async () => {
+  const saved = localStorage.getItem(KEY);
+  if (saved && await ping(saved)) {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('form').style.display = 'block';
   }
+})();
 
-  /* auto-unlock if we saved a valid pass earlier */
-  (async ()=>{
-    const saved = localStorage.getItem(KEY);
-    if(saved && await testPass(saved)){
-      document.getElementById('login').style.display='none';
-      document.getElementById('form').style.display='block';
-    }
-  })();
+async function send(e) {
+  e.preventDefault();
+  const pass = localStorage.getItem(KEY);
+  const msg = document.getElementById('msg');
+  msg.textContent = 'Sending…'; msg.className = 'msg';
 
-  async function send(){
-    const pass = localStorage.getItem(KEY);
-    const payload = {
+  const res = await fetch('/api/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
       pass,
-      title: document.getElementById('title').value,
-      body : document.getElementById('body').value,
-      url  : document.getElementById('url').value.trim() || undefined
-    };
-    const res = await fetch('/api/send', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    const out = await res.json();
-    if(res.ok) alert(`✅ Sent to ${out.ok}/${out.to}`);
-    else       alert('❌ ' + (out.error || 'Unknown error'));
+      title: document.getElementById('t').value.trim(),
+      body:  document.getElementById('b').value.trim(),
+      url:   document.getElementById('u').value.trim() || undefined
+    })
+  });
+
+  const out = await res.json();
+  if (res.ok) {
+    msg.textContent = `✅ Pushed to ${out.ok}/${out.to}`;
+    msg.className = 'msg ok';
+  } else {
+    msg.textContent = `❌ ${out.error}`;
+    msg.className = 'msg err';
   }
-        </script>
+}
+</script>
