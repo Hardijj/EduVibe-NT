@@ -441,6 +441,16 @@ const ChapterLectures10 = () => {
         "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4474940/175173015921868752407/175173015921868752407_8752407.m3u8",
         "notesUrl": "https://dxixtlyravvxx.cloudfront.net/540admin_v1/file_manager/pdf/818675100049377900.pdf"
         },
+        {
+        "name": "Quadratic Equations L6",
+        "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4476029/175190275984418752407/175190275984418752407_8752407.m3u8",
+        "notesUrl": ""
+    },
+    {
+        "name": "Quadratic Equations L7",
+        "m3u8Url": "https://d274dp7v20n4nf.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4476964/175198952916258752407/175198952916258752407_8752407.m3u8",
+        "notesUrl": ""
+    },
       ],
       19: [
         {
