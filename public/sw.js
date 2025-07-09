@@ -1,18 +1,17 @@
+/* Show the notification */
 self.addEventListener('push', event => {
   const data = event.data?.json() || {};
-  const options = {
-    body: data.body || "No body",
-    icon: '/NTapp.png',
-    data: data.url || '/'
-  };
   event.waitUntil(
-    self.registration.showNotification(data.title || 'New Notification', options)
+    self.registration.showNotification(data.title || 'New message', {
+      body: data.body,
+      icon: '/NTapp.png',
+      data: data.url || '/'
+    })
   );
 });
 
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  event.waitUntil(
-    clients.openWindow(event.notification.data)
-  );
+/* Click-through */
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  if (e.notification.data) e.waitUntil(clients.openWindow(e.notification.data));
 });
