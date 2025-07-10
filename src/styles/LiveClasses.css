@@ -1,120 +1,133 @@
-.live-classes-container {
-  padding: 24px;
-  max-width: 1000px;
-  margin: auto;
+/* 🌑 Global Container */
+.container {
+  padding: 20px;
+  background-color: #0d0d0d;
+  min-height: 100vh;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.tabs-wrapper {
+/* 🔠 Section Heading */
+.section-heading {
+  font-size: 28px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* 🟥 Tab Buttons */
+.tab-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 25px;
   flex-wrap: wrap;
 }
 
-.tab-button {
-  padding: 10px 22px;
-  font-weight: 600;
-  border-radius: 30px;
+.tab-buttons button {
+  background-color: #1f1f1f;
+  color: #fff;
   border: none;
-  background-color: #e0e0e0;
+  padding: 10px 20px;
+  margin: 8px;
+  border-radius: 10px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.tab-button.active {
-  background-color: #1e90ff;
-  color: white;
-  box-shadow: 0 0 8px rgba(30, 144, 255, 0.4);
+.tab-buttons button.active {
+  background-color: #ff3131;
+  color: #fff;
 }
 
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 20px;
+.tab-buttons button:hover {
+  background-color: #292929;
+  transform: translateY(-2px);
 }
 
-.card-link {
-  text-decoration: none;
-  color: inherit;
+/* 📦 Flex Grid for Cards */
+.batch-container, .live-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 10px 0;
 }
 
-.live-card {
+/* ✅ Modern Homepage Click Box */
+.click-box,
+.live-box {
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  width: 280px;
+  transition: transform 0.3s ease, background 0.3s ease;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  height: 100%; /* Ensure full height fit */
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
 }
 
-.live-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.click-box:hover,
+.live-box:hover {
+  background: #2a2a2a;
+  transform: translateY(-6px);
 }
 
-.color-strip {
-  height: 5px;
-  background: #1e90ff;
+/* ✅ Image (free height, full width) */
+.homepage-image,
+.live-box img,
+.thumb {
   width: 100%;
-}
-
-.card-image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  height: auto;
   object-fit: cover;
   display: block;
+  border-radius: 10px 10px 0 0;
 }
 
-.card-content {
-  padding: 16px;
+/* 🧠 Info Section in Cards */
+.live-box .info {
+  padding: 15px;
+  text-align: left;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  align-items: flex-start;
 }
 
-.card-title {
-  font-size: 17px;
-  font-weight: 600;
+/* 📌 Title */
+.live-box h4 {
   margin: 0;
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: #fff;
 }
 
-.card-subject {
-  font-size: 14px;
-  color: #555;
+/* 📚 Subject Label */
+.live-box .subject {
+  font-size: 0.85rem;
+  color: #cccccc;
 }
 
-.card-countdown,
-.card-status {
-  font-size: 14px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  background-color: #f3f3f3;
+/* 📍 Timestamp */
+.live-box .timestamp {
+  font-size: 0.85rem;
+  color: #999;
 }
 
-.card-status.live {
-  background-color: #ffebeb;
-  color: #e53935;
-  font-weight: 600;
+/* 🔴 Status (Live / Was Live / Will Live) */
+.live-box .status {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #ff5555;
 }
 
-.card-status.upcoming {
-  background-color: #fff8e1;
-  color: #ff9800;
-  font-weight: 600;
-}
-
-.card-status.completed {
-  background-color: #e8f5e9;
-  color: #43a047;
-  font-weight: 600;
-}
-
-.loading-text {
+/* ⏳ Loading Message */
+.loading-msg {
   text-align: center;
-  font-size: 16px;
-  margin-top: 40px;
+  margin-top: 30px;
+  font-size: 18px;
+  color: #999;
 }
