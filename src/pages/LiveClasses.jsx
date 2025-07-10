@@ -17,7 +17,7 @@ const LiveClasses = () => {
   useEffect(() => {
     const fetchAll = async () => {
       const token = "my_secret_key_123";
-      const base = "https://yourserver.com/api/api.php";
+      const base = "https://php-pearl.vercel.app/api/api.php";
 
       const get = async (type) => {
         const res = await fetch(`${base}?view=${type}&token=${token}`);
