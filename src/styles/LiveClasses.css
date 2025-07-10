@@ -1,19 +1,19 @@
-/* ✅ Container */
+/* ✅ Full Page Container */
 .live-classes-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 16px; /* ensures gap on left/right in all screens */
-  text-align: center;
+  padding: 24px 16px;
   background: #121212;
   color: #e0e0e0;
+  text-align: center;
 }
 
-/* ✅ Section Heading */
+/* ✅ Heading */
 .live-classes-container h2 {
-  font-size: 28px;
-  margin-bottom: 25px;
-  color: #ffffff;
+  font-size: 32px;
   font-weight: bold;
+  margin-bottom: 24px;
+  color: #fff;
 }
 
 /* ✅ Tabs */
@@ -21,19 +21,19 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 30px;
+  gap: 16px;
+  margin-bottom: 32px;
 }
 
 .tab-button {
   background: #1f1f1f;
   border: 1px solid #333;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #e0e0e0;
-  padding: 10px 20px;
-  font-weight: bold;
+  padding: 10px 22px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .tab-button.active {
@@ -46,28 +46,24 @@
   transform: scale(1.05);
 }
 
-/* ✅ Card Grid */
+/* ✅ Grid for Cards */
 .card-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
   justify-content: center;
-  gap: 25px;
-  padding: 10px 0;
 }
 
-/* ✅ Live Card */
+/* ✅ Card Styling */
 .live-card {
   background: #1f1f1f;
   border: 1px solid #333;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  width: 280px;
-  transition: transform 0.3s ease, background 0.3s ease;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: left;
-  overflow: hidden;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .live-card:hover {
@@ -75,36 +71,33 @@
   transform: translateY(-6px);
 }
 
-/* ✅ Thumbnail */
+/* ✅ Image */
 .card-image {
   width: 100%;
   height: 160px;
   object-fit: cover;
   object-position: center;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
 }
 
 /* ✅ Card Content */
 .card-content {
-  padding: 15px 18px;
-  width: 100%;
+  padding: 16px;
+  text-align: left;
 }
 
 .card-title {
   font-size: 18px;
   font-weight: bold;
-  margin: 0 0 8px;
   color: #ffffff;
+  margin-bottom: 6px;
 }
 
 .card-subject {
   font-size: 14px;
   color: #bbbbbb;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
-/* ✅ Status */
 .card-status {
   font-size: 13px;
   font-weight: 600;
@@ -114,40 +107,38 @@
 .card-countdown {
   font-size: 13px;
   color: #bbbbbb;
-  margin-bottom: 6px;
+  margin-top: 4px;
 }
 
-/* ✅ Link Wrapper */
+/* ✅ Anchor */
 .card-link {
   text-decoration: none;
   color: inherit;
   display: block;
 }
 
-/* ✅ Loading */
+/* ✅ Loading Text */
 .loading-text {
-  text-align: center;
   font-size: 16px;
   color: #cccccc;
   margin-top: 40px;
 }
 
-/* ✅ Responsive Layout */
+/* ✅ Responsive Adjustments */
 @media (max-width: 768px) {
-  .card-grid {
-    gap: 20px;
-  }
-
-  .live-card {
-    width: 100%;
-    max-width: 95vw;
+  .live-classes-container {
+    padding: 20px 12px;
   }
 
   .card-image {
     height: 140px;
   }
 
-  .card-content {
-    padding: 14px;
+  .card-title {
+    font-size: 17px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(90%, 1fr));
   }
   }
