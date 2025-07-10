@@ -1,128 +1,114 @@
-/* Container */
+/* Base Container */
 .live-classes-container {
-  padding: 20px;
-  max-width: 1000px;
+  padding: 24px;
+  max-width: 1100px;
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
-  color: #333;
+  color: #1a1a1a;
+  background-color: #f9f9f9;
 }
 
 /* Heading */
 .live-classes-container h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 28px;
-  color: #222;
+  font-size: 30px;
+  margin-bottom: 32px;
+  color: #111;
+  font-weight: 600;
 }
 
 /* Tabs */
 .tabs-wrapper {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 30px;
+  gap: 16px;
+  margin-bottom: 40px;
 }
 
 .tab-button {
-  padding: 10px 20px;
-  border: 2px solid #ccc;
-  background-color: white;
-  cursor: pointer;
+  padding: 10px 22px;
+  background: #ffffff;
+  border: 1.5px solid #dcdcdc;
   border-radius: 8px;
-  transition: all 0.3s;
+  font-size: 15px;
   font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .tab-button.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+  background: #111;
+  color: #ffffff;
+  border-color: #111;
 }
 
 .tab-button:hover {
-  background-color: #f0f0f0;
+  background-color: #f2f2f2;
 }
 
-/* Card Grid */
+/* Grid */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 20px;
+  gap: 28px;
 }
 
 /* Card */
 .live-card {
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  transition: transform 0.3s;
-  position: relative;
+  transition: transform 0.25s ease;
 }
 
 .live-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
 }
 
-/* Color Strip */
-.color-strip {
-  height: 6px;
-  width: 100%;
-  background: linear-gradient(90deg, #ff3e3e, #ff7300);
-}
+/* Strip removed for clean design */
 
-/* Image */
-/* Image */
+/* Thumbnail */
 .card-image {
   width: 100%;
-  height: 160px;  /* Fixed height for the image */
-  object-fit: cover;  /* Ensures the image covers the area without distorting */
-  object-position: center;  /* Centers the image inside the box */
+  height: 180px;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Content */
 .card-content {
-  padding: 15px;
+  padding: 18px 16px;
 }
 
 .card-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0 0 10px;
-  color: #111;
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #1a1a1a;
 }
 
 .card-subject {
   font-size: 14px;
-  color: #666;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  color: #777;
 }
 
-/* Status */
+/* Status Text */
 .card-status {
   font-size: 13px;
-  font-weight: bold;
-}
-
-.card-status.live {
-  color: #e63946;
-}
-
-.card-status.upcoming {
-  color: #ff9800;
-}
-
-.card-status.completed {
-  color: #4caf50;
+  font-weight: 500;
+  color: #444;
+  margin-top: 8px;
 }
 
 .card-countdown {
   font-size: 13px;
-  color: #333;
-  margin-bottom: 6px;
+  color: #555;
 }
 
-/* Card Link */
+/* Link Wrapper */
 .card-link {
   text-decoration: none;
   color: inherit;
@@ -131,13 +117,17 @@
 /* Loading */
 .loading-text {
   text-align: center;
-  font-size: 16px;
-  color: #666;
+  font-size: 15px;
+  color: #777;
 }
 
-/* Responsive fix */
+/* Responsive */
 @media (max-width: 600px) {
   .card-grid {
     grid-template-columns: 1fr;
   }
+
+  .card-image {
+    height: 160px;
   }
+}
