@@ -1,130 +1,82 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/LiveClasses.css";
+import tt from "../assets/tt.png";
 
-const tabs = ["live", "upcoming", "completed"];
-const subjectMap = {
-  "2151767": "maths",
-  "2154118": "science",
-  "2153529": "sst"
+const SUBJECT_IDS = {
+  maths: "2151767",
+  science: "2154118",
+  sst: "2153529"
 };
 
-const GITHUB_API_BASE = "https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=";
-
 const LiveClasses = () => {
-  const [data, setData] = useState({});
-  const [activeTab, setActiveTab] = useState("live");
-  const [loading, setLoading] = useState(true);
+  const [videos, setVideos] = useState({ live: [], upcoming: [], completed: [] });
 
   useEffect(() => {
     const fetchAll = async () => {
-      const out = {};
-      for (const tab of tabs) {
-        try {
-          const res = await fetch(`${GITHUB_API_BASE}${tab}`);
-          const json = await res.json();
-          out[tab] = json?.data || [];
-        } catch {
-          out[tab] = [];
-        }
+      const types = ["live", "upcoming", "completed"];
+      const results = {};
+      for (let type of types) {
+        const res = await fetch(`https://nexttoppers.com/api/api.php?view=${type}&token=my_secret_key_123`);
+        const json = await res.json();
+        results[type] = json.data || [];
       }
-      setData(out);
-      setLoading(false);
+      setVideos(results);
     };
     fetchAll();
   }, []);
 
-  const formatTime = (unix) => {
-    const d = new Date(parseInt(unix) * 1000);
-    return d.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-  };
-
-  const countdownTo = (unix) => {
-    const ms = parseInt(unix) * 1000 - Date.now();
-    if (ms < 0) return "🔴 Starting soon";
-    const mins = Math.floor(ms / 60000);
-    const hrs = Math.floor(mins / 60);
-    const remMin = mins % 60;
-    return `🕒 ${hrs}h ${remMin}m left`;
-  };
-
-  const renderCard = (item, tab) => {
-    const subject = subjectMap[item.id] || "unknown";
-    const fileUrl = item.file_url;
-    const title = item.title || "Untitled";
-    const thumb = item.thumbnail_url;
-    const startAt = formatTime(item.start_date);
-
-    if (tab === "live") {
-      return (
-        <Link
-          to={`/video/10/live`}
-          state={{ m3u8Url: fileUrl, chapterName: title }}
-          className="live-item"
-        >
-          <img src={thumb} alt={title} className="thumb" />
-          <div>
-            <h4>{title}</h4>
-            <p>🔴 Live Now</p>
-          </div>
-        </Link>
-      );
-    }
-
-    if (tab === "upcoming") {
-      return (
-        <div className="live-item upcoming">
-          <img src={thumb} alt={title} className="thumb" />
-          <div>
-            <h4>{title}</h4>
-            <p>{countdownTo(item.start_date)}</p>
-            <p>📅 {startAt}</p>
-          </div>
-        </div>
-      );
-    }
-
-    if (tab === "completed") {
-      return (
-        <Link
-          to={`/video/10/${subject}/0`}
-          state={{ m3u8Url: fileUrl, chapterName: title }}
-          className="live-item"
-        >
-          <img src={thumb} alt={title} className="thumb" />
-          <div>
-            <h4>{title}</h4>
-            <p>✅ Was Live At: {startAt}</p>
-          </div>
-        </Link>
-      );
-    }
-  };
+  const formatDate = (ts) => new Date(parseInt(ts) * 1000).toLocaleString();
+  const getStatus = (status) =>
+    status === "1" ? "🔴 Live Now" : status === "2" ? "✅ Was Live" : "🕓 Upcoming";
 
   return (
-    <div className="live-classes-container">
-      <h2>🔴 Live Classes</h2>
-      <div className="tab-buttons">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={activeTab === tab ? "active" : ""}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-      </div>
+    <div className="live-classes-page">
+      <img src={tt} alt="Logo" className="tt" />
+      <h2>Live Classes</h2>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="live-list">
-          {data[activeTab]?.map((item, i) => (
-            <div key={i}>{renderCard(item, activeTab)}</div>
-          ))}
+      {["live", "upcoming", "completed"].map((tab) => (
+        <div key={tab}>
+          <h3 className="tab-heading">{tab.charAt(0).toUpperCase() + tab.slice(1)} Classes</h3>
+          <div className="video-grid">
+            {videos[tab].map((v, i) => (
+              <div key={i} className="video-card">
+                <div className="card-strip" />
+                <img src={v.thumbnail_url} alt={v.title} className="thumbnail" />
+                <div className="card-content">
+                  <h4 className="title">{v.title}</h4>
+                  {tab === "live" ? (
+                    <Link
+                      to="/video/10/live"
+                      state={{ m3u8Url: v.file_url }}
+                      className="watch-btn"
+                    >
+                      Join Live
+                    </Link>
+                  ) : tab === "upcoming" ? (
+                    <div className="upcoming-time">Starts at {formatDate(v.start_date)}</div>
+                  ) : (
+                    <Link
+                      to={`/video/10/${
+                        v.id === SUBJECT_IDS.maths
+                          ? "maths"
+                          : v.id === SUBJECT_IDS.science
+                          ? "science"
+                          : "sst"
+                      }/0`}
+                      state={{ m3u8Url: v.file_url }}
+                      className="watch-btn"
+                    >
+                      Watch Now
+                    </Link>
+                  )}
+                  <div className="status-label">{getStatus(v.live_status)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
+      ))}
     </div>
   );
 };
