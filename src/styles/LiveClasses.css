@@ -1,29 +1,11 @@
-/* ✅ Full Page Container */
-/* ✅ Live Card */
-.live-card {
-  background: #1f1f1f;
-  border: 1px solid #333;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  overflow: hidden; /* 🔥 IMPORTANT for border radius */
-  transition: transform 0.3s ease, background 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  width: 280px;
-}
-/* ✅ Image Wrapper */
-.card-image-wrapper {
-  width: 100%;
-  height: 160px;
-  overflow: hidden;
-}
-/* ✅ Image Styling */
-.card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
+/* ✅ Container */
+.live-classes-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  background: #121212;
+  color: #e0e0e0;
+  text-align: center;
 }
 
 /* ✅ Heading */
@@ -31,68 +13,45 @@
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 24px;
-  color: #fff;
+  color: #ffffff;
 }
 
-/* ✅ Tabs */
-.tabs-wrapper {
+/* ✅ Grid Layout */
+.card-grid {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 32px;
+  justify-content: center;
+  gap: 24px;
 }
 
-.tab-button {
+/* ✅ Card Box */
+.live-card {
+  width: 280px;
   background: #1f1f1f;
   border: 1px solid #333;
-  border-radius: 8px;
-  color: #e0e0e0;
-  padding: 10px 22px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, background 0.3s ease;
 }
-
-.tab-button.active {
-  background: #ffffff;
-  color: #121212;
-}
-
-.tab-button:hover {
-  background: #2a2a2a;
-  transform: scale(1.05);
-}
-
-/* ✅ Grid for Cards */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  justify-content: center;
-}
-
 
 .live-card:hover {
   background: #2a2a2a;
   transform: translateY(-6px);
 }
 
-/* ✅ Image */
+/* ✅ Image — Fully Visible, No Crop */
 .card-image {
-  display: block;
   width: 100%;
-  height: 160px;
-  object-fit: cover;
-  object-position: center;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  overflow: hidden;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid #333;
 }
 
-/* ✅ Card Content */
+/* ✅ Content */
 .card-content {
   padding: 16px;
   text-align: left;
@@ -108,7 +67,7 @@
 .card-subject {
   font-size: 14px;
   color: #bbbbbb;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .card-status {
@@ -123,35 +82,17 @@
   margin-top: 4px;
 }
 
-/* ✅ Anchor */
-.card-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-/* ✅ Loading Text */
-.loading-text {
-  font-size: 16px;
-  color: #cccccc;
-  margin-top: 40px;
-}
-
-/* ✅ Responsive Adjustments */
+/* ✅ Responsive */
 @media (max-width: 768px) {
-  .live-classes-container {
-    padding: 20px 12px;
+  .live-card {
+    width: 95%;
   }
 
-  .card-image {
-    height: 140px;
+  .card-grid {
+    gap: 16px;
   }
 
   .card-title {
     font-size: 17px;
   }
-
-  .card-grid {
-    grid-template-columns: repeat(auto-fit, minmax(90%, 1fr));
-  }
-  }
+}
