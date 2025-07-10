@@ -1,6 +1,8 @@
 /* ✅ Container */
 .live-classes-container {
-  padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 16px; /* ensures gap on left/right in all screens */
   text-align: center;
   background: #121212;
   color: #e0e0e0;
@@ -18,9 +20,9 @@
 .tabs-wrapper {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 30px;
-  flex-wrap: wrap;
 }
 
 .tab-button {
@@ -46,12 +48,11 @@
 
 /* ✅ Card Grid */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 25px;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
+  padding: 10px 0;
 }
 
 /* ✅ Live Card */
@@ -133,8 +134,13 @@
 
 /* ✅ Responsive Layout */
 @media (max-width: 768px) {
+  .card-grid {
+    gap: 20px;
+  }
+
   .live-card {
-    width: 90%;
+    width: 100%;
+    max-width: 95vw;
   }
 
   .card-image {
