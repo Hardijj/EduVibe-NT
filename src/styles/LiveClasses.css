@@ -1,11 +1,29 @@
 /* ✅ Full Page Container */
-.live-classes-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 16px;
-  background: #121212;
-  color: #e0e0e0;
-  text-align: center;
+/* ✅ Live Card */
+.live-card {
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden; /* 🔥 IMPORTANT for border radius */
+  transition: transform 0.3s ease, background 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+}
+/* ✅ Image Wrapper */
+.card-image-wrapper {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+/* ✅ Image Styling */
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 /* ✅ Heading */
@@ -54,17 +72,6 @@
   justify-content: center;
 }
 
-/* ✅ Card Styling */
-.live-card {
-  background: #1f1f1f;
-  border: 1px solid #333;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
 
 .live-card:hover {
   background: #2a2a2a;
