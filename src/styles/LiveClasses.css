@@ -1,6 +1,6 @@
 /* ✅ Container */
 .live-classes-container {
-  padding: 20px;
+  padding: 20px 0;
   text-align: center;
   background: #121212;
   color: #e0e0e0;
@@ -46,10 +46,12 @@
 
 /* ✅ Card Grid */
 .card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 /* ✅ Live Card */
