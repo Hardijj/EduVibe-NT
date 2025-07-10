@@ -74,11 +74,11 @@ const Subject10 = () => {
 
       <div className="live-class-container">
         <Link
-          to={`/video/10/live`}
-          state={{ chapterName: "Live Class", m3u8Url }}
+          to={`/10/live`}
+          state={{}}
           className="subject-box live-class-section"
         >
-          🔴 Live Class (Click to Join)
+          🔴 Live Class (Click)
         </Link>
       </div>
 
