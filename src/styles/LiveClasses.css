@@ -46,6 +46,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  height: 100%; /* Ensure full height fit */
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -62,9 +63,9 @@
 
 .card-image {
   width: 100%;
-  height: 170px;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-bottom: 1px solid #f1f1f1;
+  display: block;
 }
 
 .card-content {
