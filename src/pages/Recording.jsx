@@ -34,7 +34,7 @@ const Recording = () => {
         const view = viewMap[subject] || "science";
 
         const res = await fetch(
-          `https://php-pearl.vercel.app/api.php?token=my_secret_token_123&view=${view}`
+          `https://php-pearl.vercel.app/api/api.php?token=my_secret_token_123&view=${view}`
         );
         const json = await res.json();
 
