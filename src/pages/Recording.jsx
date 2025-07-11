@@ -1,78 +1,111 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import "../styles/LiveClasses.css";
 
 const Recording = () => {
   const { subject, chapter } = useParams();
   const location = useLocation();
-  const { from, to, view } = location.state || {};
-  const [videos, setVideos] = useState([]);
+  const navigate = useNavigate();
+  const { from = null, to = null } = location.state || {};
+
+  const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Protect Route
   useEffect(() => {
-    const fetchData = async () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (!isLoggedIn) navigate("/login");
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchRecordings = async () => {
+      setLoading(true);
       try {
+        const viewMap = {
+          Science: "science",
+          Maths: "maths",
+          SST: "sst",
+          IT: "it",
+          English: "english",
+          Hindi: "hindi",
+          Sanskrit: "sanskrit",
+        };
+
+        const view = viewMap[subject] || "science";
+
         const res = await fetch(
-          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`
+          `https://php-pearl.vercel.app/api.php?token=my_secret_token_123&view=${view}`
         );
         const json = await res.json();
-        const list = json?.data?.list || [];
 
-        // Reverse order: newest first
-        let filtered = list.reverse();
+        if (json.status && json.data?.list) {
+          let list = [...json.data.list];
 
-        // Apply from/to title filtering if present
-        if (from || to) {
-          const fromIndex = filtered.findIndex((v) => v.title === from);
-          const toIndex = filtered.findIndex((v) => v.title === to);
+          // ✅ Sort by start_date (ascending)
+          list.sort((a, b) => Number(a.start_date) - Number(b.start_date));
 
-          const start = fromIndex !== -1 ? fromIndex : 0;
-          const end = toIndex !== -1 ? toIndex + 1 : filtered.length;
+          // ✅ Filter by from/to range
+          const startIdx = from
+            ? list.findIndex((item) => item.title?.trim() === from.trim())
+            : 0;
+          const endIdx = to
+            ? list.findIndex((item) => item.title?.trim() === to.trim())
+            : list.length - 1;
 
-          filtered = filtered.slice(start, end);
+          const validList = list.slice(
+            Math.max(startIdx, 0),
+            Math.max(endIdx + 1, startIdx + 1)
+          );
+
+          setRecordings(validList);
+        } else {
+          console.error("Invalid response or empty data list");
         }
-
-        setVideos(filtered);
       } catch (err) {
-        setVideos([]);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching recordings:", err);
       }
+      setLoading(false);
     };
-    fetchData();
-  }, [from, to, view]);
 
-  const formatTime = (unix) => {
-    const d = new Date(parseInt(unix) * 1000);
-    return d.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-  };
+    fetchRecordings();
+  }, [subject, from, to]);
 
   return (
     <div className="live-classes-container">
-      <h2>📼 Recordings - {chapter}</h2>
+      <h2>{subject} / {chapter}</h2>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="loading-text">Loading Recordings...</p>
+      ) : recordings.length === 0 ? (
+        <p className="loading-text">No recordings found.</p>
       ) : (
-        <div className="live-list">
-          {videos.map((item, idx) => {
-            const isLive = item.is_live === "1";
-            const title = item.title || "Untitled";
-            const thumb = item.thumbnail_url;
-            const fileUrl = item.file_url;
+        <div className="card-grid">
+          {recordings.map((item, idx) => {
+            const isLive = item.is_live !== "0";
+            const toUrl = isLive
+              ? `/video/10/live`
+              : `/video/10/${subject}/0`;
 
             return (
               <Link
+                to={toUrl}
+                state={{ m3u8Url: item.file_url, chapterName: item.title }}
                 key={idx}
-                to={isLive ? "/video/10/live" : `/video/10/${subject}/0`}
-                state={{ m3u8Url: fileUrl, chapterName: title }}
-                className="live-item"
+                className="card-link"
               >
-                <img src={thumb} alt={title} className="thumb" />
-                <div className="record-info">
-                  <h4>{title}</h4>
-                  <p>📅 {formatTime(item.start_date)}</p>
-                  <p>{isLive ? "🔴 Live Now" : "🎞️ Recorded Video"}</p>
+                <div className="live-card">
+                  <img
+                    src={item.thumbnail_url}
+                    alt={item.title}
+                    className="card-image"
+                  />
+                  <div className="card-content">
+                    <h4 className="card-title">{item.title}</h4>
+                    <p className="card-subject">{subject}</p>
+                    <p className="card-status">
+                      {isLive ? "🔴 Live Now" : "📽️ Recorded"}
+                    </p>
+                  </div>
                 </div>
               </Link>
             );
