@@ -23,6 +23,7 @@ import Recorded from './pages/Recorded';
 import Rc11 from './pages/Rc11';
 import Artsub11 from './pages/Artsub11';
 import LiveClasses from './pages/LiveClasses';
+import Recordings from './pages/Recording';
 import TitleSetter from "./TitleSetter";  
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
         <Route path="/subjects/111" element={<Artsub11 />} />
         <Route path="/10/test" element={<ProtectedRoute><TestPlatform /></ProtectedRoute>} />
         <Route path="/10/rc" element={<Recorded />} />
+        <Route path="/10/recording" element={<Recordings />} />
         <Route path="/11/rc" element={<Rc11 />} />
         <Route path="/10/live" element={<LiveClasses />} />
 
