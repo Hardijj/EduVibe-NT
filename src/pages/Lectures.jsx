@@ -39,15 +39,14 @@ const Lectures = () => {
           from: "Aarambh Batch 10th Maths - 1st FREE Class | Real Numbers Lecture 1",
           to: "Real Number L6"
         },
-        { name: "Polynomial", index: 1 },
-        { name: "Pair of Linear Eq in two var", index: 2 },
-        { name: "Trigonometry", index: 3 },
-        { name: "Applicatios of Trigonometry", index: 4 },
+        { name: "Polynomial", index: 1, from: "Polynomials L1", to: "Polynomials L6" },
+        { name: "Pair of Linear Eq in two var", index: 2, from: "Pair of Linear Equations in 2 Var. L1", to: "Pair of linear Equation in 2 Var. L8" },
+        { name: "Trigonometry", index: 3, from: "Trigonometry L1", to:"Trigonometry L8" },
+        { name: "Applicatios of Trigonometry", index: 4, from:"Some Applications of Trigonometry L1", to:"Some Applications of Trigonometry L6" },
         {
           name: "Quadratic Equations",
           index: 5,
-          from: "Quadratic Equations L1",
-          to: "Quadratic Equations L7"
+          from: "Quadratic Equations L1"
         },
       ]
     },
