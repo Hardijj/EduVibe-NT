@@ -26,15 +26,18 @@ const Lectures = () => {
       { name: "Acid Base & Salt", index: 3},
       { name: "Human eye & Colourful World", index: 4},
     ],
-    Maths: [
+    Maths: {
+      view: maths,
+      chapters: [
       { name: "DPP", index: 19 },
-      { name: "Real Number", index: 0 },
+      { name: "Real Number", index: 0, from:"Aarambh Batch 10th Maths - 1st FREE Class | Real Numbers Lecture 1", to: "Real Number L6" },
       { name: "Polynomial", index: 1 },
       { name: "Pair of Linear Eq in two var", index: 2 },
       { name: "Trigonometry", index: 3 },
       { name: "Applicatios of Trigonometry", index: 4},
       { name: "Quadratic Equations", index: 5 },
-    ],
+        ]
+},
     SST: [
       { name: "WPP", index: 19 },
       { name: "Holiday Homework", index:100 },
@@ -115,19 +118,20 @@ const Lectures = () => {
       )}
 
       <div className="lecture-boxes">
-        {chapters?.map((lecture, index) => (
-          <Link
-            key={index}
-            to={`/chapter-lectures/10/${subject}/${lecture.index}`}
-            state={{ course: isCourseSubject ? selectedCourse : null }}
-            className="lecture-box"
-            onClick={() => {
-              localStorage.setItem("chapterName", lecture.name);
-            }}
-          >
-            {lecture.name}
-          </Link>
-        ))}
+        {lectures[subject]?.map((chapter, idx) => (
+  <Link
+    key={idx}
+    to={`/10/recordings/${subject}/${chapter.name}`}
+    state={{
+      from: chapter.from || null,
+      to: chapter.to || null,
+      view: selected.view
+    }}
+    className="subject-box"
+  >
+    {chapter.name}
+  </Link>
+))}
       </div>
     </div>
   );
