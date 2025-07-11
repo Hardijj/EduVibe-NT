@@ -49,49 +49,45 @@ const LiveClasses = () => {
   };
 
   const renderCard = (item, tab) => {
-    const subject = subjectMap[item.id] || "Unknown";
-    const fileUrl = item.file_url;
-    const title = item.title || "Untitled";
-    const thumb = item.thumbnail_url;
-    const startAt = formatTime(item.start_date);
-    const path =
-      tab === "live"
-        ? `/video/10/live`
-        : tab === "completed"
-        ? `/video/10/${subject.toLowerCase()}/0`
-        : null;
+  const subject = subjectMap[item.id] || "Unknown";
+  const fileUrl = item.file_url;
+  const title = item.title || "Untitled";
+  const thumb = item.thumbnail_url;
+  const startAt = formatTime(item.start_date);
+  const path =
+    tab === "live"
+      ? `/video/10/live`
+      : tab === "completed"
+      ? `/video/10/${subject.toLowerCase()}/0`
+      : null;
 
-    const card = (
-      <div className={`live-card ${tab}`}>
-        <div className="color-strip" />
-        <img src={thumb} alt={title} className="card-image" />
-        <div className="card-content">
-          <h3 className="card-title">{title}</h3>
-          <p className="card-subject">📘 {subject}</p>
+  const card = (
+    <div className={`live-card ${tab}`}>
+      <div className="color-strip" />
+      <img src={thumb} alt={title} className="card-image" />
+      <div className="card-content">
+        <h3 className="card-title">{title}</h3>
+        <p className="card-subject">📘 {subject}</p>
 
-          {tab === "live" && (
-            <>
-              <p className="card-status live">🔴 Live Now</p>
-            </>
-          )}
-          {tab === "upcoming" && (
-            <>
-              <p className="card-countdown">{countdownTo(item.start_date)}</p>
-              <p className="card-status upcoming">Will Be Live</p>
-            </>
-          )}
-          {tab === "completed" && (
-            <>
-              <p className="card-status completed">✅ Was Live: {startAt}</p>
-            </>
-          )}
-        </div>
+        {tab === "live" && (
+          <p className="card-status live">🔴 Live Now</p>
+        )}
+        {tab === "upcoming" && (
+          <>
+            <p className="card-countdown">{countdownTo(item.start_date)}</p>
+            <p className="card-status upcoming">Will Be Live</p>
+          </>
+        )}
+        {tab === "completed" && (
+          <p className="card-status completed">✅ Was Live: {startAt}</p>
+        )}
       </div>
-    );
+    </div>
+  );
 
-    return tab === "upcoming" ? (
-      <div key={item.id}>{card}</div>
-    ) : (
+  // ✅ Wrap only live & completed in Link
+  if (tab === "live" || tab === "completed") {
+    return (
       <Link
         key={item.id}
         to={path}
@@ -101,11 +97,19 @@ const LiveClasses = () => {
         {card}
       </Link>
     );
-  };
+  }
+
+  // ❌ Upcoming: No redirect
+  return (
+    <div key={item.id} className="card-link">
+      {card}
+    </div>
+  );
+};
 
   return (
     <div className="live-classes-container">
-      <h2>🎥 Live Classes</h2>
+      <h2>🔴 Live Classes</h2>
       <div className="tabs-wrapper">
         {tabs.map((tab) => (
           <button
