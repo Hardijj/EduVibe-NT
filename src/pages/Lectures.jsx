@@ -22,11 +22,12 @@ const Lectures = () => {
       view: "science",
       chapters: [
         { name: "ACP", index: 19 },
-        { name: "Chemical Reaction & Equations", index: 0 },
-        { name: "Light", index: 1 },
-        { name: "Life Processes", index: 2 },
-        { name: "Acid Base & Salt", index: 3 },
-        { name: "Human eye & Colourful World", index: 4 },
+        { name: "Chemical Reaction & Equations", index: 0, to:"Chemical reaction and equation L8" },
+        { name: "Light", index: 1, from:"Light L1",to:"Light + Doubt Class (Part -2)" },
+        { name: "Life Processes", index: 2,from:"Life Processes L1",to:"Life Processes L8 + Doubt Class" },
+        { name: "Acid Base & Salt", index: 3,from:"Acid base and salts L1",to:"Doubt Solving Class" },
+        { name: "Human eye & Colourful World", index: 4, from:"Human eye - L1",to:"Doubt Class" },
+        { name: "Control & Coordination", index:5, from:"Control and Co-ordination L1"},
       ]
     },
     Maths: {
