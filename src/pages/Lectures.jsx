@@ -70,9 +70,7 @@ const Lectures = () => {
     IT: {
       view: "it",
       chapters: [
-        { name: "Notice", index: 0 },
-        { name: "Communication Skills II", index: 1 },
-        { name: "Skill Management II", index: 2 },
+        { name: "IT", index: 0 },
       ]
     },
     English: {
@@ -107,9 +105,9 @@ const Lectures = () => {
       ]
     },
     Sanskrit: {
-      view: "sanskrit",
+      view: "sans",
       chapters: [
-        { name: "शुचिपर्यावरणम्", index: 0 },
+        { name: "Sanskrit", index: 0 },
       ]
     }
   };
