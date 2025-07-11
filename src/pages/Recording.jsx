@@ -27,7 +27,7 @@ const Recording = () => {
           IT: "it",
           English: "english",
           Hindi: "hindi",
-          Sanskrit: "sanskrit",
+          Sanskrit: "sans",
         };
 
         const view = viewMap[subject] || "science";
