@@ -18,58 +18,79 @@ const Lectures = () => {
     Notice: [
       { name: "Introduction", index: 0 },
     ],
-    Science: [
-      { name: "ACP", index: 19 },
-      { name: "Chemical Reaction & Equations", index: 0 },
-      { name: "Light", index: 1 },
-      { name: "Life Processes", index: 2},
-      { name: "Acid Base & Salt", index: 3},
-      { name: "Human eye & Colourful World", index: 4},
-    ],
-    Maths: {
-      view: maths,
+    Science: {
+      view: "science",
       chapters: [
-      { name: "DPP", index: 19 },
-      { name: "Real Number", index: 0, from:"Aarambh Batch 10th Maths - 1st FREE Class | Real Numbers Lecture 1", to: "Real Number L6" },
-      { name: "Polynomial", index: 1 },
-      { name: "Pair of Linear Eq in two var", index: 2 },
-      { name: "Trigonometry", index: 3 },
-      { name: "Applicatios of Trigonometry", index: 4},
-      { name: "Quadratic Equations", index: 5 },
-        ]
-},
-    SST: [
-      { name: "WPP", index: 19 },
-      { name: "Holiday Homework", index:100 },
-      { name: "Development", index: 0 },
-      { name: "Resources and Development", index: 1 },
-      { name: "Power Sharing", index: 2 },
-      { name: "Rise of Nationalism in Europe", index: 3},
-      { name: "Forest & Wildlife Resources", index: 4},
-      { name: "Sectors of Indian economy", index: 5},
-      { name: "Federalism", index: 6},
-    ],
-    IT: [
-      { name: "Notice", index: 0 },
-      { name: "Communication Skills II", index: 1 },
-      { name: "Skill Management II", index: 2 },
-    ],
+        { name: "ACP", index: 19 },
+        { name: "Chemical Reaction & Equations", index: 0 },
+        { name: "Light", index: 1 },
+        { name: "Life Processes", index: 2 },
+        { name: "Acid Base & Salt", index: 3 },
+        { name: "Human eye & Colourful World", index: 4 },
+      ]
+    },
+    Maths: {
+      view: "maths",
+      chapters: [
+        { name: "DPP", index: 19 },
+        {
+          name: "Real Number",
+          index: 0,
+          from: "Aarambh Batch 10th Maths - 1st FREE Class | Real Numbers Lecture 1",
+          to: "Real Number L6"
+        },
+        { name: "Polynomial", index: 1 },
+        { name: "Pair of Linear Eq in two var", index: 2 },
+        { name: "Trigonometry", index: 3 },
+        { name: "Applicatios of Trigonometry", index: 4 },
+        {
+          name: "Quadratic Equations",
+          index: 5,
+          from: "Quadratic Equations L1",
+          to: "Quadratic Equations L7"
+        },
+      ]
+    },
+    SST: {
+      view: "sst",
+      chapters: [
+        { name: "WPP", index: 19 },
+        { name: "Holiday Homework", index: 100 },
+        { name: "Development", index: 0 },
+        { name: "Resources and Development", index: 1 },
+        { name: "Power Sharing", index: 2 },
+        { name: "Rise of Nationalism in Europe", index: 3 },
+        { name: "Forest & Wildlife Resources", index: 4 },
+        { name: "Sectors of Indian economy", index: 5 },
+        { name: "Federalism", index: 6 },
+      ]
+    },
+    IT: {
+      view: "it",
+      chapters: [
+        { name: "Notice", index: 0 },
+        { name: "Communication Skills II", index: 1 },
+        { name: "Skill Management II", index: 2 },
+      ]
+    },
     English: {
+      view: "english",
+      A: [
+        { name: "Two Gentlemen of Verona", index: 100 },
+        { name: "Frog and Nightingale", index: 101 },
+        { name: "Mr Packletide's Tiger", index: 102 },
+        { name: "Not Marble nor Glied Monuments", index: 103 },
+      ],
       B: [
         { name: "A Letter to God", index: 0 },
         { name: "A Dust of Snow", index: 1 },
         { name: "Fire & Ice", index: 2 },
         { name: "A Triumph of Surgery", index: 3 },
         { name: "Grammar", index: 19 },
-      ],
-      A: [
-        { name: "Two Gentlemen of Verona", index: 100 },
-        { name: "Frog and Nightingale", index: 101 },
-        { name: "Mr Packletide's Tiger", index: 102 },
-        { name: "Not Marble nor Glied Monuments", index: 103},
-      ],
+      ]
     },
     Hindi: {
+      view: "hindi",
       A: [
         { name: "Chapter 1", index: 0 },
         { name: "राम - लक्ष्मण - परशुराम संवाद", index: 1 },
@@ -81,15 +102,21 @@ const Lectures = () => {
         { name: "मैथिलीशरण गुप्त मनुष्यता", index: 102 },
         { name: "प्रेमचंद (बड़े भाई साहब)", index: 103 },
         { name: "सुमित्रानंदन पंत पर्वत प्रदेश में पावस", index: 104 },
-      ],
+      ]
     },
-    Sanskrit: [
-      { name: "शुचिपर्यावरणम्", index: 0 },
-    ],
+    Sanskrit: {
+      view: "sanskrit",
+      chapters: [
+        { name: "शुचिपर्यावरणम्", index: 0 },
+      ]
+    }
   };
 
-  const isCourseSubject = subject === "English" || subject === "Hindi" ;
-  const chapters = isCourseSubject ? lectures[subject][selectedCourse] : lectures[subject];
+  const isCourseSubject = subject === "English" || subject === "Hindi";
+  const selectedSubject = lectures[subject];
+  const chapters = isCourseSubject
+    ? selectedSubject[selectedCourse]
+    : selectedSubject.chapters;
 
   return (
     <div className="lectures-container">
@@ -118,20 +145,20 @@ const Lectures = () => {
       )}
 
       <div className="lecture-boxes">
-        {lectures[subject]?.map((chapter, idx) => (
-  <Link
-    key={idx}
-    to={`/10/recordings/${subject}/${chapter.name}`}
-    state={{
-      from: chapter.from || null,
-      to: chapter.to || null,
-      view: selected.view
-    }}
-    className="subject-box"
-  >
-    {chapter.name}
-  </Link>
-))}
+        {chapters?.map((chapter, idx) => (
+          <Link
+            key={idx}
+            to={`/10/recordings/${subject}/${chapter.name}`}
+            state={{
+              from: chapter.from || null,
+              to: chapter.to || null,
+              view: selectedSubject.view || null,
+            }}
+            className="subject-box"
+          >
+            {chapter.name}
+          </Link>
+        ))}
       </div>
     </div>
   );
