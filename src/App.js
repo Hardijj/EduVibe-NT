@@ -52,7 +52,7 @@ function App() {
         <Route path="/subjects/111" element={<Artsub11 />} />
         <Route path="/10/test" element={<ProtectedRoute><TestPlatform /></ProtectedRoute>} />
         <Route path="/10/rc" element={<Recorded />} />
-        <Route path="/10/recordings/:subject/:chapter" element={<Recording />} />
+        <Route path="/10/recordings/:subject/:chapter" element={<Recordings />} />
         <Route path="/11/rc" element={<Rc11 />} />
         <Route path="/10/live" element={<LiveClasses />} />
 
