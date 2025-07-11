@@ -1,81 +1,82 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
-import "../styles/Lectures.css";
+import { useParams, useLocation, Link } from "react-router-dom";
 import "../styles/LiveClasses.css";
 
 const Recording = () => {
-  const { subject, chapterName } = useParams();
-  const { state } = useLocation();
-  const navigate = useNavigate();
-  const from = state?.from || null;
-  const to = state?.to || null;
-  const view = state?.view || null;
-
-  const [recordings, setRecordings] = useState([]);
-  const [lives, setLives] = useState([]);
+  const { subject, chapter } = useParams();
+  const location = useLocation();
+  const { from, to, view } = location.state || {};
+  const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    if (!isLoggedIn) navigate("/login");
-  }, [navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`);
+        const res = await fetch(
+          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`
+        );
         const json = await res.json();
         const list = json?.data?.list || [];
 
-        const allRecordings = list.filter(item => item.is_live !== "1");
-        const allLives = list.filter(item => item.is_live === "1");
+        // Reverse order: newest first
+        let filtered = list.reverse();
 
-        let filtered = allRecordings;
-        if (from) {
-          const fromIndex = allRecordings.findIndex(item => item.title === from);
-          const toIndex = to ? allRecordings.findIndex(item => item.title === to) : allRecordings.length - 1;
+        // Apply from/to title filtering if present
+        if (from || to) {
+          const fromIndex = filtered.findIndex((v) => v.title === from);
+          const toIndex = filtered.findIndex((v) => v.title === to);
 
-          if (fromIndex !== -1) {
-            const sliceEnd = toIndex !== -1 ? toIndex + 1 : allRecordings.length;
-            filtered = allRecordings.slice(fromIndex, sliceEnd);
-          }
+          const start = fromIndex !== -1 ? fromIndex : 0;
+          const end = toIndex !== -1 ? toIndex + 1 : filtered.length;
+
+          filtered = filtered.slice(start, end);
         }
 
-        setRecordings(filtered.reverse());
-        setLives(allLives);
-        setLoading(false);
+        setVideos(filtered);
       } catch (err) {
-        console.error("Failed to fetch recordings:", err);
+        setVideos([]);
+      } finally {
         setLoading(false);
       }
     };
     fetchData();
   }, [from, to, view]);
 
-  const renderBox = (item, isLive = false) => (
-    <Link
-      to={isLive ? "/video/10/live" : `/video/10/${subject}/0`}
-      state={{ m3u8Url: item.file_url, chapterName: item.title }}
-      key={item.id}
-      className="subject-box"
-    >
-      <img src={item.thumbnail_url} alt={item.title} className="thumb" />
-      <div className="box-content">
-        <h4>{item.title}</h4>
-        {isLive ? <p className="live-tag">🔴 Live Now</p> : <p>🎬 Recorded</p>}
-      </div>
-    </Link>
-  );
+  const formatTime = (unix) => {
+    const d = new Date(parseInt(unix) * 1000);
+    return d.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+  };
 
   return (
-    <div className="lectures-container">
-      <h2>{subject} - {chapterName}</h2>
+    <div className="live-classes-container">
+      <h2>📼 Recordings - {chapter}</h2>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="lecture-boxes">
-          {lives.map(item => renderBox(item, true))}
-          {recordings.map(item => renderBox(item))}
+        <div className="live-list">
+          {videos.map((item, idx) => {
+            const isLive = item.is_live === "1";
+            const title = item.title || "Untitled";
+            const thumb = item.thumbnail_url;
+            const fileUrl = item.file_url;
+
+            return (
+              <Link
+                key={idx}
+                to={isLive ? "/video/10/live" : `/video/10/${subject}/0`}
+                state={{ m3u8Url: fileUrl, chapterName: title }}
+                className="live-item"
+              >
+                <img src={thumb} alt={title} className="thumb" />
+                <div className="record-info">
+                  <h4>{title}</h4>
+                  <p>📅 {formatTime(item.start_date)}</p>
+                  <p>{isLive ? "🔴 Live Now" : "🎞️ Recorded Video"}</p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
