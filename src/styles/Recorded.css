@@ -1,0 +1,62 @@
+.recordings-container {
+  background: #121212;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.recordings-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.recording-card {
+  background: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 270px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease;
+  text-decoration: none;
+  color: white;
+}
+
+.recording-card:hover {
+  transform: translateY(-5px);
+  background: #2a2a2a;
+}
+
+.recording-thumb {
+  width: 100%;
+  object-fit: cover;
+  height: auto;
+}
+
+.recording-details {
+  padding: 12px;
+  text-align: left;
+}
+
+.recording-details h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.recording-details p {
+  font-size: 14px;
+  margin: 3px 0;
+  color: #bbb;
+}
+
+.badge-live {
+  color: #ff5a5f;
+  font-weight: bold;
+}
+
+.badge-recorded {
+  color: #66ff99;
+  font-weight: bold;
+}
