@@ -48,7 +48,7 @@ const Lectures = () => {
           name: "Quadratic Equations",
           index: 5,
           from: "Quadratic Equations L1",
-          to: "Quadratic Equation L7"
+          to: "Quadratic Equations L7"
         },
          { name: "Arithmetic Progression", index:6, from: "AP - 1"},
       ]
