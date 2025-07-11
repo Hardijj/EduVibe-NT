@@ -11,7 +11,6 @@ const Recording = () => {
   const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Protect Route
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) navigate("/login");
@@ -41,10 +40,10 @@ const Recording = () => {
         if (json.status && json.data?.list) {
           let list = [...json.data.list];
 
-          // ✅ Sort by start_date (ascending)
+          // ✅ Sort by start_date ascending
           list.sort((a, b) => Number(a.start_date) - Number(b.start_date));
 
-          // ✅ Filter by from/to range
+          // ✅ Filter by from/to
           const startIdx = from
             ? list.findIndex((item) => item.title?.trim() === from.trim())
             : 0;
@@ -58,17 +57,25 @@ const Recording = () => {
           );
 
           setRecordings(validList);
-        } else {
-          console.error("Invalid response or empty data list");
         }
       } catch (err) {
-        console.error("Error fetching recordings:", err);
+        console.error("Error fetching:", err);
       }
       setLoading(false);
     };
 
     fetchRecordings();
   }, [subject, from, to]);
+
+  const formatDate = (timestamp) => {
+    const ts = parseInt(timestamp) * 1000;
+    if (!ts) return "—";
+    const date = new Date(ts);
+    return date.toLocaleString("en-IN", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
 
   return (
     <div className="live-classes-container">
@@ -81,30 +88,43 @@ const Recording = () => {
       ) : (
         <div className="card-grid">
           {recordings.map((item, idx) => {
-            const isLive = item.is_live !== "0";
-            const toUrl = isLive
+            const isLiveType = item.video_type === "8";
+            const isRecordedType = item.video_type === "7";
+
+            const title = item.title || "Untitled";
+            const time = formatDate(item.start_date);
+            const duration = item.video_duration || "—";
+            const liveNow = item.live_status === "1";
+
+            const toUrl = isLiveType
               ? `/video/10/live`
               : `/video/10/${subject}/0`;
 
             return (
               <Link
                 to={toUrl}
-                state={{ m3u8Url: item.file_url, chapterName: item.title }}
+                state={{
+                  m3u8Url: item.file_url,
+                  chapterName: title,
+                }}
                 key={idx}
                 className="card-link"
               >
                 <div className="live-card">
                   <img
                     src={item.thumbnail_url}
-                    alt={item.title}
+                    alt={title}
                     className="card-image"
                   />
                   <div className="card-content">
-                    <h4 className="card-title">{item.title}</h4>
-                    <p className="card-subject">{subject}</p>
+                    <h4 className="card-title">{title}</h4>
+                    <p className="card-subject">📚 {subject}</p>
                     <p className="card-status">
-                      {isLive ? "🔴 Live Now" : "📽️ Recorded"}
+                      {isRecordedType && "📽️ Recorded"}
+                      {isLiveType && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
                     </p>
+                    <p className="card-countdown">🗓️ {time}</p>
+                    <p className="card-countdown">⏱️ Duration: {duration}s</p>
                   </div>
                 </div>
               </Link>
