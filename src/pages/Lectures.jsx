@@ -74,34 +74,28 @@ const Lectures = () => {
       ]
     },
     English: {
-      view: "english",
       A: [
-        { name: "Two Gentlemen of Verona", index: 100 },
-        { name: "Frog and Nightingale", index: 101 },
-        { name: "Mr Packletide's Tiger", index: 102 },
-        { name: "Not Marble nor Glied Monuments", index: 103 },
+        { name: "LR", index: 100, view:"englr" },
+        { name: "Grammer", index: 101, view:"enggm" },
+        { name: "Writting Skill", index: 102, view:"engws" },
+        { name: "Reading Comprehension", index: 103, view:"engrc" },
       ],
       B: [
-        { name: "A Letter to God", index: 0 },
-        { name: "A Dust of Snow", index: 1 },
-        { name: "Fire & Ice", index: 2 },
-        { name: "A Triumph of Surgery", index: 3 },
-        { name: "Grammar", index: 19 },
+        { name: "First Flight", index: 0, view: "engff" },
+        { name: "Footprint Without Feet", index: 1, view:"engfoot" },
+        { name: "Grammer", index: 101, view:"enggm" },
+        { name: "Writting Skill", index: 102, view:"engws" },
+        { name: "Reading Comprehension", index: 103, view:"engrc" },
       ]
     },
     Hindi: {
-      view: "hindi",
       A: [
-        { name: "Chapter 1", index: 0 },
-        { name: "राम - लक्ष्मण - परशुराम संवाद", index: 1 },
-        { name: "कृतिका, माता का अँचल शिवपूजन सहाय", index: 2 },
+        { name: "Kshitij", index: 0, view:"hinks" },
+        { name: "kritika", index: 1, view:"hinkr" },
       ],
       B: [
-        { name: "Kabir sakhi", index: 100 },
-        { name: "मीरा बाई पद", index: 101 },
-        { name: "मैथिलीशरण गुप्त मनुष्यता", index: 102 },
-        { name: "प्रेमचंद (बड़े भाई साहब)", index: 103 },
-        { name: "सुमित्रानंदन पंत पर्वत प्रदेश में पावस", index: 104 },
+        { name: "Sparsh", index: 100, view:"hinsp" },
+        { name: "Sanchayan", index: 101, view:"hinsn" },
       ]
     },
     Sanskrit: {
@@ -147,17 +141,17 @@ const Lectures = () => {
       <div className="lecture-boxes">
         {chapters?.map((chapter, idx) => (
           <Link
-            key={idx}
-            to={`/10/recordings/${subject}/${chapter.name}`}
-            state={{
-              from: chapter.from || null,
-              to: chapter.to || null,
-              view: selectedSubject.view || null,
-            }}
-            className="subject-box"
-          >
-            {chapter.name}
-          </Link>
+  key={idx}
+  to={`/10/recordings/${subject}/${chapter.name}`}
+  state={{
+    from: chapter.from || null,
+    to: chapter.to || null,
+    view: chapter.view || subject.toLowerCase()
+  }}
+  className="subject-box"
+>
+  {chapter.name}
+</Link>
         ))}
       </div>
     </div>
