@@ -6,8 +6,8 @@ const Recording = () => {
   const { subject, chapter } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { from = null, to = null } = location.state || {};
 
+  const { from = null, to = null, view = null } = location.state || {};
   const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,56 +20,50 @@ const Recording = () => {
     const fetchRecordings = async () => {
       setLoading(true);
       try {
-        const viewMap = {
-          Science: "science",
-          Maths: "maths",
-          SST: "sst",
-          IT: "it",
-          English: "english",
-          Hindi: "hindi",
-          Sanskrit: "sans",
-        };
-
-        const view = viewMap[subject] || "science";
+        const apiView = view || subject.toLowerCase();
 
         const res = await fetch(
-          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`
+          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${apiView}`
         );
         const json = await res.json();
 
         if (json.status && json.data?.list) {
           let list = [...json.data.list];
 
-          // ✅ Sort by start_date ascending
+          // ✅ Sort by start_date (ascending)
           list.sort((a, b) => Number(a.start_date) - Number(b.start_date));
 
-          // ✅ Filter by from/to
-          const startIdx = from
-            ? list.findIndex((item) => item.title?.trim() === from.trim())
-            : 0;
-          const endIdx = to
-            ? list.findIndex((item) => item.title?.trim() === to.trim())
-            : list.length - 1;
+          // ✅ from/to filtering
+          let filtered = [...list];
 
-          const validList = list.slice(
-            Math.max(startIdx, 0),
-            Math.max(endIdx + 1, startIdx + 1)
-          );
+          if (from) {
+            const fromIndex = list.findIndex(
+              (item) => item.title?.trim() === from.trim()
+            );
+            filtered = fromIndex !== -1 ? list.slice(fromIndex) : list;
+          }
 
-          setRecordings(validList);
+          if (to) {
+            const toIndex = filtered.findIndex(
+              (item) => item.title?.trim() === to.trim()
+            );
+            filtered = toIndex !== -1 ? filtered.slice(0, toIndex + 1) : filtered;
+          }
+
+          setRecordings(filtered);
         }
       } catch (err) {
-        console.error("Error fetching:", err);
+        console.error("❌ Error fetching recordings:", err);
       }
       setLoading(false);
     };
 
     fetchRecordings();
-  }, [subject, from, to]);
+  }, [subject, from, to, view]);
 
   const formatDate = (timestamp) => {
     const ts = parseInt(timestamp) * 1000;
-    if (!ts) return "—";
+    if (!ts || isNaN(ts)) return "—";
     const date = new Date(ts);
     return date.toLocaleString("en-IN", {
       dateStyle: "medium",
@@ -88,15 +82,14 @@ const Recording = () => {
       ) : (
         <div className="card-grid">
           {recordings.map((item, idx) => {
-            const isLiveType = item.video_type === "8";
-            const isRecordedType = item.video_type === "7";
-
             const title = item.title || "Untitled";
             const time = formatDate(item.start_date);
             const duration = item.video_duration || "—";
+            const isLive = item.video_type === "8";
+            const isRecorded = item.video_type === "7";
             const liveNow = item.live_status === "1";
 
-            const toUrl = isLiveType
+            const toUrl = isLive
               ? `/video/10/live`
               : `/video/10/${subject}/0`;
 
@@ -120,8 +113,8 @@ const Recording = () => {
                     <h4 className="card-title">{title}</h4>
                     <p className="card-subject">📚 {subject}</p>
                     <p className="card-status">
-                      {isRecordedType && "📽️ Recorded"}
-                      {isLiveType && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
+                      {isRecorded && "📽️ Recorded"}
+                      {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
                     </p>
                     <p className="card-countdown">🗓️ {time}</p>
                     <p className="card-countdown">⏱️ Duration: {duration}s</p>
