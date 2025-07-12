@@ -99,9 +99,8 @@ const Lectures = () => {
       ]
     },
     Sanskrit: {
-      view: "sans",
       chapters: [
-        { name: "Sanskrit", index: 0 },
+        { name: "Sanskrit", index: 0, view: "sans" },
       ]
     }
   };
