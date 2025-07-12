@@ -57,11 +57,11 @@ const Lectures = () => {
       view: "sst",
       chapters: [
         { name: "WPP", index: 19 },
-        { name: "Holiday Homework", index: 100 },
+        { name: "All Lectures", index: 100 },
         { name: "Development", index: 0, from: "Aarambh Batch 10th Social Science - 1st FREE Class | Development Lecture 1 | Check Desc.", to:"Development - 5 & Doubt Solving Class" },
         { name: "Resources and Development", index: 1, from: "Resources and Development - 1",to:"Doubt Solving Class" },
         { name: "Power Sharing", index: 2, from:"Power Sharing L1",to:"Doubt Class + Power Sharing" },
-        { name: "Rise of Nationalism in Europe", index: 3, from:"The Rise of Nationalism L1",to:"Doubt Solving Class" },
+        { name: "Rise of Nationalism in Europe", index: 3, from:"The Rise of Nationalism L1",to:"The Rise of Nationalism in Europe L11" },
         { name: "Forest & Wildlife Resources", index: 4, from:"Forest And Wildlife Resources L1",to:"Forest And Wildlife Resources L3" },
         { name: "Sectors of Indian economy", index: 5,from:"Sectors of the Indian Economy - 1",to:"Doubt +Sectors of Indian Economy class L6" },
         { name: "Federalism", index: 6, from:"FEDERALISM- L1" },
