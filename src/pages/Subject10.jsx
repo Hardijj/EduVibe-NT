@@ -60,7 +60,6 @@ const Subject10 = () => {
     { name: "Science", path: "/lectures/10/Science" },
     { name: "Maths", path: "/lectures/10/Maths" },
     { name: "SST", path: "/lectures/10/SST" },
-    { name: "Click Here for Recorded's Lectures (Eng, etc.", path: "/10/rc"},
     { name: "English", path: "/lectures/10/English" },
     { name: "Hindi", path: "/lectures/10/Hindi" },
     { name: "IT", path: "/lectures/10/IT" },
