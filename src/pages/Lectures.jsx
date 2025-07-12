@@ -38,17 +38,19 @@ const Lectures = () => {
           name: "Real Number",
           index: 0,
           from: "Aarambh Batch 10th Maths - 1st FREE Class | Real Numbers Lecture 1",
-          to: "Real Number L6"
+          to: "Real Number L6",
+          fromNotes:"Real numbers L1",toNotes:"Real Number L6"
         },
-        { name: "Polynomial", index: 1, from: "Polynomials L1", to: "Polynomials L6" },
-        { name: "Pair of Linear Eq in two var", index: 2, from: "Pair of Linear Equations in 2 Var. L1", to: "Pair of linear Equation in 2 Var. L8" },
-        { name: "Trigonometry", index: 3, from: "Trigonometry L1", to:"Trigonometry L8" },
-        { name: "Applicatios of Trigonometry", index: 4, from:"Some Applications of Trigonometry L1", to:"Some Applications of Trigonometry L6" },
+        { name: "Polynomial", index: 1, from: "Polynomials L1", to: "Polynomials L6", fromNotes:"Polynomials L1",toNotes:"Polynomials L6" },
+        { name: "Pair of Linear Eq in two var", index: 2, from: "Pair of Linear Equations in 2 Var. L1", to: "Pair of linear Equation in 2 Var. L8", fromNotes:"Pair of linear Equation in 2 Var. L1",toNotes:"Pair of linear Equation in 2 Var. L8" },
+        { name: "Trigonometry", index: 3, from: "Trigonometry L1", to:"Trigonometry L8", fromNotes:"Trigonometry L1",toNotes:"Trigonometry L8" },
+        { name: "Applicatios of Trigonometry", index: 4, from:"Some Applications of Trigonometry L1", to:"Some Applications of Trigonometry L6", fromNotes:"Some Application of Trigonometry | L1",toNotes:"Some App Of Trigno L6" },
         {
           name: "Quadratic Equations",
           index: 5,
           from: "Quadratic Equations L1",
-          to: "Quadratic Equations L7"
+          to: "Quadratic Equations L8",
+          fromNotes:"Quadratic Equations L1", toNotes:"Quadratic Equations L8"
         },
          { name: "Arithmetic Progression", index:6, from: "AP - 1"},
       ]
@@ -143,10 +145,12 @@ const Lectures = () => {
   key={idx}
   to={`/10/recordings/${subject}/${chapter.name}`}
   state={{
-    from: chapter.from || null,
-    to: chapter.to || null,
-    view: chapter.view || subject.toLowerCase()
-  }}
+  from: chapter.from || null,
+  to: chapter.to || null,
+  fromNotes: chapter.fromNotes || null,
+  toNotes: chapter.toNotes || null,
+  view: chapter.view || subject.toLowerCase(),
+}}
   className="subject-box"
 >
   {chapter.name}
