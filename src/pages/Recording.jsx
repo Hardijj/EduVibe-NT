@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import "../styles/LiveClasses.css";
 
 const Recording = () => {
@@ -12,100 +12,103 @@ const Recording = () => {
     to = null,
     fromNotes = null,
     toNotes = null,
-    view = subject.toLowerCase(),
+    view = subject?.toLowerCase(),
   } = location.state || {};
 
   const [tab, setTab] = useState("lecture");
   const [lectures, setLectures] = useState([]);
   const [notes, setNotes] = useState([]);
-  const [loadingLectures, setLoadingLectures] = useState(true);
-  const [loadingNotes, setLoadingNotes] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) navigate("/login");
   }, [navigate]);
 
-  // Fetch Lectures
   useEffect(() => {
-    const fetchLectures = async () => {
-      setLoadingLectures(true);
+    const fetchData = async () => {
+      setLoading(true);
+
       try {
-        const res = await fetch(
-          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`
-        );
-        const json = await res.json();
+        const [lectureRes, notesRes] = await Promise.allSettled([
+          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`),
+          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}notes`)
+        ]);
 
-        if (json.status && json.data?.list) {
-          let list = [...json.data.list]
-            .filter((v) => v.video_type === "7" || v.video_type === "8")
-            .sort((a, b) => Number(a.start_date) - Number(b.start_date));
+        // ✅ Lectures
+        if (
+          lectureRes.status === "fulfilled" &&
+          lectureRes.value.ok
+        ) {
+          const lectureJson = await lectureRes.value.json();
+          if (lectureJson.status && lectureJson.data?.list) {
+            let list = [...lectureJson.data.list].filter(
+              (v) => v.video_type === "7" || v.video_type === "8"
+            );
+            list.sort((a, b) => Number(a.start_date) - Number(b.start_date));
 
-          let filtered = [...list];
+            if (from) {
+              const fromIndex = list.findIndex(
+                (item) => item.title?.trim() === from.trim()
+              );
+              list = fromIndex !== -1 ? list.slice(fromIndex) : list;
+            }
 
-          if (from) {
-            const fromIndex = list.findIndex((item) => item.title?.trim() === from.trim());
-            filtered = fromIndex !== -1 ? list.slice(fromIndex) : list;
+            if (to) {
+              const toIndex = list.findIndex(
+                (item) => item.title?.trim() === to.trim()
+              );
+              list = toIndex !== -1 ? list.slice(0, toIndex + 1) : list;
+            }
+
+            setLectures(list);
           }
+        }
 
-          if (to) {
-            const toIndex = filtered.findIndex((item) => item.title?.trim() === to.trim());
-            filtered = toIndex !== -1 ? filtered.slice(0, toIndex + 1) : filtered;
+        // ✅ Notes
+        if (
+          notesRes.status === "fulfilled" &&
+          notesRes.value.ok
+        ) {
+          const notesJson = await notesRes.value.json();
+          if (notesJson.status && notesJson.data?.list) {
+            let pdfs = notesJson.data.list.filter(
+              (item) => item.file_type === "1" && item.file_url
+            );
+            pdfs.sort((a, b) => Number(a.created) - Number(b.created));
+
+            if (fromNotes) {
+              const fromIndex = pdfs.findIndex(
+                (item) => item.title?.trim() === fromNotes.trim()
+              );
+              pdfs = fromIndex !== -1 ? pdfs.slice(fromIndex) : pdfs;
+            }
+
+            if (toNotes) {
+              const toIndex = pdfs.findIndex(
+                (item) => item.title?.trim() === toNotes.trim()
+              );
+              pdfs = toIndex !== -1 ? pdfs.slice(0, toIndex + 1) : pdfs;
+            }
+
+            setNotes(pdfs);
           }
-
-          setLectures(filtered);
         }
       } catch (err) {
-        console.error("❌ Error fetching lectures:", err);
+        console.error("❌ Error fetching:", err);
       }
-      setLoadingLectures(false);
+
+      setLoading(false);
     };
 
-    fetchLectures();
-  }, [view, from, to]);
-
-  // Fetch Notes
-  useEffect(() => {
-    const fetchNotes = async () => {
-      setLoadingNotes(true);
-      try {
-        const res = await fetch(
-          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}notes`
-        );
-        const json = await res.json();
-
-        if (json.status && json.data?.list) {
-          let list = [...json.data.list]
-            .filter((item) => item.file_type === "1" && item.file_url)
-            .sort((a, b) => Number(a.created) - Number(b.created));
-
-          let filtered = [...list];
-
-          if (fromNotes) {
-            const fromIndex = list.findIndex((item) => item.title?.trim() === fromNotes.trim());
-            filtered = fromIndex !== -1 ? list.slice(fromIndex) : list;
-          }
-
-          if (toNotes) {
-            const toIndex = filtered.findIndex((item) => item.title?.trim() === toNotes.trim());
-            filtered = toIndex !== -1 ? filtered.slice(0, toIndex + 1) : filtered;
-          }
-
-          setNotes(filtered);
-        }
-      } catch (err) {
-        console.error("❌ Error fetching notes:", err);
-      }
-      setLoadingNotes(false);
-    };
-
-    fetchNotes();
-  }, [view, fromNotes, toNotes]);
+    fetchData();
+  }, [view, from, to, fromNotes, toNotes]);
 
   const formatDate = (timestamp) => {
     const ts = parseInt(timestamp) * 1000;
     if (!ts || isNaN(ts)) return "—";
-    return new Date(ts).toLocaleString("en-IN", {
+    const date = new Date(ts);
+    return date.toLocaleString("en-IN", {
       dateStyle: "medium",
       timeStyle: "short",
     });
@@ -114,8 +117,10 @@ const Recording = () => {
   const formatDuration = (seconds) => {
     const s = parseInt(seconds || "0", 10);
     if (isNaN(s) || s <= 0) return "—";
+
     const hrs = Math.floor(s / 3600);
     const mins = Math.floor((s % 3600) / 60);
+
     if (hrs > 0 && mins > 0) return `${hrs} hr ${mins} min`;
     if (hrs > 0) return `${hrs} hr`;
     if (mins > 0) return `${mins} min`;
@@ -126,6 +131,7 @@ const Recording = () => {
     <div className="live-classes-container">
       <h2>{subject} / {chapter}</h2>
 
+      {/* ✅ Tabs */}
       <div className="tabs-wrapper">
         <button
           className={`tab-button ${tab === "lecture" ? "active" : ""}`}
@@ -141,11 +147,11 @@ const Recording = () => {
         </button>
       </div>
 
-      {tab === "lecture" ? (
-        loadingLectures ? (
-          <p className="loading-text">Loading Lectures...</p>
-        ) : lectures.length === 0 ? (
-          <p className="loading-text">No lectures found.</p>
+      {loading ? (
+        <p className="loading-text">Loading...</p>
+      ) : tab === "lecture" ? (
+        lectures.length === 0 ? (
+          <p className="loading-text">No recordings found.</p>
         ) : (
           <div className="card-grid">
             {lectures.map((item, idx) => {
@@ -157,11 +163,14 @@ const Recording = () => {
               const liveNow = item.live_status === "1";
 
               return (
-                <div
+                <Link
                   key={idx}
+                  to={isLive ? `/video/10/live` : `/video/10/${subject}/0`}
+                  state={{
+                    m3u8Url: item.file_url,
+                    chapterName: title,
+                  }}
                   className="card-link"
-                  onClick={() => (window.location.href = item.file_url)}
-                  style={{ cursor: "pointer" }}
                 >
                   <div className="live-card">
                     <img
@@ -177,16 +186,14 @@ const Recording = () => {
                         {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
                       </p>
                       <p className="card-countdown">🗓️ {time}</p>
-                      <p className="card-countdown">⏱️ {duration}</p>
+                      <p className="card-countdown">⏱️ Duration: {duration}</p>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
         )
-      ) : loadingNotes ? (
-        <p className="loading-text">Loading Notes...</p>
       ) : notes.length === 0 ? (
         <p className="loading-text">No notes found.</p>
       ) : (
@@ -195,7 +202,7 @@ const Recording = () => {
             <div
               key={idx}
               className="card-link"
-              onClick={() => (window.location.href = note.file_url)}
+              onClick={() => window.location.href = note.file_url}
               style={{ cursor: "pointer" }}
             >
               <div className="live-card">
