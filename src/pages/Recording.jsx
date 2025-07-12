@@ -18,29 +18,26 @@ const Recording = () => {
   const [tab, setTab] = useState("lecture");
   const [lectures, setLectures] = useState([]);
   const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingLectures, setLoadingLectures] = useState(true);
+  const [loadingNotes, setLoadingNotes] = useState(true);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) navigate("/login");
   }, [navigate]);
 
+  // Fetch Lectures
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchLectures = async () => {
+      setLoadingLectures(true);
       try {
-        // Fetch lectures and notes in parallel
-        const [lectureRes, notesRes] = await Promise.all([
-          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`),
-          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}notes`)
-        ]);
+        const res = await fetch(
+          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`
+        );
+        const json = await res.json();
 
-        const lectureJson = await lectureRes.json();
-        const notesJson = await notesRes.json();
-
-        // ✅ Filter and sort lectures
-        if (lectureJson.status && lectureJson.data?.list) {
-          let list = [...lectureJson.data.list]
+        if (json.status && json.data?.list) {
+          let list = [...json.data.list]
             .filter((v) => v.video_type === "7" || v.video_type === "8")
             .sort((a, b) => Number(a.start_date) - Number(b.start_date));
 
@@ -58,42 +55,57 @@ const Recording = () => {
 
           setLectures(filtered);
         }
+      } catch (err) {
+        console.error("❌ Error fetching lectures:", err);
+      }
+      setLoadingLectures(false);
+    };
 
-        // ✅ Filter and sort notes
-        if (notesJson.status && notesJson.data?.list) {
-          let pdfs = notesJson.data.list
+    fetchLectures();
+  }, [view, from, to]);
+
+  // Fetch Notes
+  useEffect(() => {
+    const fetchNotes = async () => {
+      setLoadingNotes(true);
+      try {
+        const res = await fetch(
+          `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}notes`
+        );
+        const json = await res.json();
+
+        if (json.status && json.data?.list) {
+          let list = [...json.data.list]
             .filter((item) => item.file_type === "1" && item.file_url)
             .sort((a, b) => Number(a.created) - Number(b.created));
 
-          let filteredNotes = [...pdfs];
+          let filtered = [...list];
 
           if (fromNotes) {
-            const fromIndex = pdfs.findIndex((item) => item.title?.trim() === fromNotes.trim());
-            filteredNotes = fromIndex !== -1 ? pdfs.slice(fromIndex) : pdfs;
+            const fromIndex = list.findIndex((item) => item.title?.trim() === fromNotes.trim());
+            filtered = fromIndex !== -1 ? list.slice(fromIndex) : list;
           }
 
           if (toNotes) {
-            const toIndex = filteredNotes.findIndex((item) => item.title?.trim() === toNotes.trim());
-            filteredNotes = toIndex !== -1 ? filteredNotes.slice(0, toIndex + 1) : filteredNotes;
+            const toIndex = filtered.findIndex((item) => item.title?.trim() === toNotes.trim());
+            filtered = toIndex !== -1 ? filtered.slice(0, toIndex + 1) : filtered;
           }
 
-          setNotes(filteredNotes);
+          setNotes(filtered);
         }
-
       } catch (err) {
-        console.error("❌ Fetching error:", err);
+        console.error("❌ Error fetching notes:", err);
       }
-      setLoading(false);
+      setLoadingNotes(false);
     };
 
-    fetchData();
-  }, [view, from, to, fromNotes, toNotes]);
+    fetchNotes();
+  }, [view, fromNotes, toNotes]);
 
   const formatDate = (timestamp) => {
     const ts = parseInt(timestamp) * 1000;
     if (!ts || isNaN(ts)) return "—";
-    const date = new Date(ts);
-    return date.toLocaleString("en-IN", {
+    return new Date(ts).toLocaleString("en-IN", {
       dateStyle: "medium",
       timeStyle: "short",
     });
@@ -114,7 +126,6 @@ const Recording = () => {
     <div className="live-classes-container">
       <h2>{subject} / {chapter}</h2>
 
-      {/* 🔁 Tab Switcher */}
       <div className="tabs-wrapper">
         <button
           className={`tab-button ${tab === "lecture" ? "active" : ""}`}
@@ -130,11 +141,11 @@ const Recording = () => {
         </button>
       </div>
 
-      {loading ? (
-        <p className="loading-text">Loading...</p>
-      ) : tab === "lecture" ? (
-        lectures.length === 0 ? (
-          <p className="loading-text">No recordings found.</p>
+      {tab === "lecture" ? (
+        loadingLectures ? (
+          <p className="loading-text">Loading Lectures...</p>
+        ) : lectures.length === 0 ? (
+          <p className="loading-text">No lectures found.</p>
         ) : (
           <div className="card-grid">
             {lectures.map((item, idx) => {
@@ -166,7 +177,7 @@ const Recording = () => {
                         {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
                       </p>
                       <p className="card-countdown">🗓️ {time}</p>
-                      <p className="card-countdown">⏱️ Duration: {duration}</p>
+                      <p className="card-countdown">⏱️ {duration}</p>
                     </div>
                   </div>
                 </div>
@@ -174,6 +185,8 @@ const Recording = () => {
             })}
           </div>
         )
+      ) : loadingNotes ? (
+        <p className="loading-text">Loading Notes...</p>
       ) : notes.length === 0 ? (
         <p className="loading-text">No notes found.</p>
       ) : (
