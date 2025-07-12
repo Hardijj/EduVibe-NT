@@ -21,7 +21,7 @@ const Lectures = () => {
     Science: {
       view: "science",
       chapters: [
-        { name: "ACP", index: 19 },
+        { name: "ACP", index: 19, onlyDpp: "sciencedpp" },
         { name: "Chemical Reaction & Equations", index: 0, to:"Chemical reaction and equation L8" },
         { name: "Light", index: 1, from:"Light L1",to:"Light + Doubt Class (Part -2)" },
         { name: "Life Processes", index: 2,from:"Life Processes L1",to:"Life Processes L8 + Doubt Class" },
@@ -58,7 +58,7 @@ const Lectures = () => {
     SST: {
       view: "sst",
       chapters: [
-        { name: "WPP", index: 19 },
+        { name: "WPP", index: 19, onlyDpp:"sstdpp" },
         { name: "All Lectures", index: 100 },
         { name: "Development", index: 0, from: "Aarambh Batch 10th Social Science - 1st FREE Class | Development Lecture 1 | Check Desc.", to:"Development - 5 & Doubt Solving Class" },
         { name: "Resources and Development", index: 1, from: "Resources and Development - 1",to:"Doubt Solving Class" },
