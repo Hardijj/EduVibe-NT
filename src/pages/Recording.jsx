@@ -6,6 +6,7 @@ const Recording = () => {
   const { subject, chapter } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+
   const {
     from = null,
     to = null,
@@ -28,7 +29,7 @@ const Recording = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // 🔁 Fetch both recordings and notes in parallel
+        // Fetch lectures and notes in parallel
         const [lectureRes, notesRes] = await Promise.all([
           fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}`),
           fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${view}notes`)
@@ -37,45 +38,50 @@ const Recording = () => {
         const lectureJson = await lectureRes.json();
         const notesJson = await notesRes.json();
 
+        // ✅ Filter and sort lectures
         if (lectureJson.status && lectureJson.data?.list) {
-          let list = [...lectureJson.data.list].filter(v => v.video_type === "7" || v.video_type === "8");
-          list.sort((a, b) => Number(a.start_date) - Number(b.start_date));
+          let list = [...lectureJson.data.list]
+            .filter((v) => v.video_type === "7" || v.video_type === "8")
+            .sort((a, b) => Number(a.start_date) - Number(b.start_date));
 
-          const startIdx = from
-            ? list.findIndex((item) => item.title?.trim() === from.trim())
-            : 0;
-          const endIdx = to
-            ? list.findIndex((item) => item.title?.trim() === to.trim())
-            : list.length - 1;
+          let filtered = [...list];
 
-          const validLectures = list.slice(
-            Math.max(startIdx, 0),
-            Math.max(endIdx + 1, startIdx + 1)
-          );
+          if (from) {
+            const fromIndex = list.findIndex((item) => item.title?.trim() === from.trim());
+            filtered = fromIndex !== -1 ? list.slice(fromIndex) : list;
+          }
 
-          setLectures(validLectures);
+          if (to) {
+            const toIndex = filtered.findIndex((item) => item.title?.trim() === to.trim());
+            filtered = toIndex !== -1 ? filtered.slice(0, toIndex + 1) : filtered;
+          }
+
+          setLectures(filtered);
         }
 
+        // ✅ Filter and sort notes
         if (notesJson.status && notesJson.data?.list) {
-          let pdfs = notesJson.data.list.filter((item) => item.file_type === "1" && item.file_url);
-          pdfs.sort((a, b) => Number(a.created) - Number(b.created));
+          let pdfs = notesJson.data.list
+            .filter((item) => item.file_type === "1" && item.file_url)
+            .sort((a, b) => Number(a.created) - Number(b.created));
 
-          const startNoteIdx = fromNotes
-            ? pdfs.findIndex((item) => item.title?.trim() === fromNotes.trim())
-            : 0;
-          const endNoteIdx = toNotes
-            ? pdfs.findIndex((item) => item.title?.trim() === toNotes.trim())
-            : pdfs.length - 1;
+          let filteredNotes = [...pdfs];
 
-          const validNotes = pdfs.slice(
-            Math.max(startNoteIdx, 0),
-            Math.max(endNoteIdx + 1, startNoteIdx + 1)
-          );
+          if (fromNotes) {
+            const fromIndex = pdfs.findIndex((item) => item.title?.trim() === fromNotes.trim());
+            filteredNotes = fromIndex !== -1 ? pdfs.slice(fromIndex) : pdfs;
+          }
 
-          setNotes(validNotes);
+          if (toNotes) {
+            const toIndex = filteredNotes.findIndex((item) => item.title?.trim() === toNotes.trim());
+            filteredNotes = toIndex !== -1 ? filteredNotes.slice(0, toIndex + 1) : filteredNotes;
+          }
+
+          setNotes(filteredNotes);
         }
+
       } catch (err) {
-        console.error("Fetching error:", err);
+        console.error("❌ Fetching error:", err);
       }
       setLoading(false);
     };
@@ -85,7 +91,7 @@ const Recording = () => {
 
   const formatDate = (timestamp) => {
     const ts = parseInt(timestamp) * 1000;
-    if (!ts) return "—";
+    if (!ts || isNaN(ts)) return "—";
     const date = new Date(ts);
     return date.toLocaleString("en-IN", {
       dateStyle: "medium",
@@ -93,11 +99,22 @@ const Recording = () => {
     });
   };
 
+  const formatDuration = (seconds) => {
+    const s = parseInt(seconds || "0", 10);
+    if (isNaN(s) || s <= 0) return "—";
+    const hrs = Math.floor(s / 3600);
+    const mins = Math.floor((s % 3600) / 60);
+    if (hrs > 0 && mins > 0) return `${hrs} hr ${mins} min`;
+    if (hrs > 0) return `${hrs} hr`;
+    if (mins > 0) return `${mins} min`;
+    return "0 min";
+  };
+
   return (
     <div className="live-classes-container">
       <h2>{subject} / {chapter}</h2>
 
-      {/* ✅ Tabs */}
+      {/* 🔁 Tab Switcher */}
       <div className="tabs-wrapper">
         <button
           className={`tab-button ${tab === "lecture" ? "active" : ""}`}
@@ -121,36 +138,19 @@ const Recording = () => {
         ) : (
           <div className="card-grid">
             {lectures.map((item, idx) => {
-              const isLive = item.video_type === "8";
               const title = item.title || "Untitled";
               const time = formatDate(item.start_date);
-              const formatDuration = (seconds) => {
-  const s = parseInt(seconds || "0", 10);
-  if (isNaN(s) || s <= 0) return "—";
-
-  const hrs = Math.floor(s / 3600);
-  const mins = Math.floor((s % 3600) / 60);
-
-  if (hrs > 0 && mins > 0) return `${hrs} hr ${mins} min`;
-  if (hrs > 0) return `${hrs} hr`;
-  if (mins > 0) return `${mins} min`;
-  return "0 min";
-};
-
-const duration = formatDuration(item.video_duration);
+              const duration = formatDuration(item.video_duration);
+              const isLive = item.video_type === "8";
+              const isRecorded = item.video_type === "7";
               const liveNow = item.live_status === "1";
 
-              const toUrl = isLive ? `/video/10/live` : `/video/10/${subject}/0`;
-
               return (
-                <a
-                  href={toUrl}
+                <div
                   key={idx}
                   className="card-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.href = item.file_url;
-                  }}
+                  onClick={() => (window.location.href = item.file_url)}
+                  style={{ cursor: "pointer" }}
                 >
                   <div className="live-card">
                     <img
@@ -162,13 +162,14 @@ const duration = formatDuration(item.video_duration);
                       <h4 className="card-title">{title}</h4>
                       <p className="card-subject">📚 {subject}</p>
                       <p className="card-status">
-                        {isLive ? (liveNow ? "🔴 Live Now" : "🕒 Scheduled") : "📽️ Recorded"}
+                        {isRecorded && "📽️ Recorded"}
+                        {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
                       </p>
                       <p className="card-countdown">🗓️ {time}</p>
                       <p className="card-countdown">⏱️ Duration: {duration}</p>
                     </div>
                   </div>
-                </a>
+                </div>
               );
             })}
           </div>
@@ -181,7 +182,7 @@ const duration = formatDuration(item.video_duration);
             <div
               key={idx}
               className="card-link"
-              onClick={() => window.location.href = note.file_url}
+              onClick={() => (window.location.href = note.file_url)}
               style={{ cursor: "pointer" }}
             >
               <div className="live-card">
