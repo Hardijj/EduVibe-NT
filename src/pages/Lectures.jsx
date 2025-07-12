@@ -33,7 +33,7 @@ const Lectures = () => {
     Maths: {
       view: "maths",
       chapters: [
-        { name: "DPP", index: 19, onlyDPP:"mathsdpp" },
+        { name: "DPP", index: 19, onlyDpp:"mathsdpp" },
         {
           name: "Real Number",
           index: 0,
