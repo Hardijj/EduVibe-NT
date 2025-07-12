@@ -150,6 +150,7 @@ const Lectures = () => {
   fromNotes: chapter.fromNotes || null,
   toNotes: chapter.toNotes || null,
   view: chapter.view || subject.toLowerCase(),
+  onlyDpp: chapter.onlyDpp || null,
 }}
   className="subject-box"
 >
