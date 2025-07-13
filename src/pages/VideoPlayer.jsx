@@ -236,7 +236,7 @@ const VideoPlayer = () => {
      Misc helpers
   ─────────────────────────────── */
   const handleDownloadClick = () => {
-    const fileName  = `${chaptersName} ${lecturesName}`;
+    const fileName  = `${chapterName}`;
     const intentUrl =
       `intent:${m3u8Url}` +
       "#Intent;action=android.intent.action.VIEW;" +
@@ -254,7 +254,7 @@ const VideoPlayer = () => {
       <h2>
         {isLive
           ? "🔴 Live Class"
-          : `Now Playing: $(chapterName) || "Unknown Lecture"}`}
+          : 'Now Playing: ${chapterName || "Unknown Lecture"}'}
       </h2>
 
       {/* Player wrapper goes fullscreen so badge stays visible */}
