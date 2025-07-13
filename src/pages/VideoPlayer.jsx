@@ -254,7 +254,7 @@ const VideoPlayer = () => {
       <h2>
         {isLive
           ? "🔴 Live Class"
-          : 'Now Playing: ${chapterName || "Unknown Lecture"}'}
+          : `Now Playing: ${chapterName || "Unknown Lecture"}`}
       </h2>
 
       {/* Player wrapper goes fullscreen so badge stays visible */}
