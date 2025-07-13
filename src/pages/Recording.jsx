@@ -20,48 +20,62 @@ const Recording = () => {
   const [lectures, setLectures] = useState([]);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [countdowns, setCountdowns] = useState({}); // 🆕 Countdown for each upcoming live
 
+  // Redirect if not logged in
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) navigate("/login");
   }, [navigate]);
 
+  // Real-time countdown ticking every 1 sec
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdowns((prev) => {
+        const updated = { ...prev };
+        Object.keys(updated).forEach((id) => {
+          updated[id] = Math.max(updated[id] - 1, 0);
+        });
+        return updated;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // ✅ DPP Mode Only
         if (onlyDpp) {
           const res = await fetch(
             `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${onlyDpp}`
           );
           const json = await res.json();
-
           if (json.status && json.data?.list) {
             let pdfs = json.data.list.filter(
               (item) => item.file_type === "1" && item.file_url
             );
             pdfs.sort((a, b) => Number(a.created) - Number(b.created));
-
             if (from) {
               const fromIndex = pdfs.findIndex(
                 (item) => item.title?.trim() === from.trim()
               );
               pdfs = fromIndex !== -1 ? pdfs.slice(fromIndex) : pdfs;
             }
-
             setNotes(pdfs);
           }
-
           setLoading(false);
           return;
         }
 
-        // ✅ Normal Lecture + Notes Mode
         const actualView = view || subject.toLowerCase();
         const [lectureRes, notesRes] = await Promise.all([
-          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}`),
-          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}notes`)
+          fetch(
+            `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}`
+          ),
+          fetch(
+            `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}notes`
+          ),
         ]);
 
         const lectureJson = await lectureRes.json();
@@ -88,6 +102,17 @@ const Recording = () => {
           }
 
           setLectures(list);
+
+          // 🆕 Setup countdowns for upcoming
+          const countdownInit = {};
+          list.forEach((item) => {
+            if (item.video_type === "8" && item.live_status === "0") {
+              const secondsLeft =
+                parseInt(item.start_date) - Math.floor(Date.now() / 1000);
+              countdownInit[item.id] = Math.max(secondsLeft, 0);
+            }
+          });
+          setCountdowns(countdownInit);
         }
 
         if (notesJson.status && notesJson.data?.list) {
@@ -134,19 +159,29 @@ const Recording = () => {
   const formatDuration = (seconds) => {
     const s = parseInt(seconds || "0", 10);
     if (isNaN(s) || s <= 0) return "—";
-
     const hrs = Math.floor(s / 3600);
     const mins = Math.floor((s % 3600) / 60);
-
     if (hrs > 0 && mins > 0) return `${hrs} hr ${mins} min`;
     if (hrs > 0) return `${hrs} hr`;
     if (mins > 0) return `${mins} min`;
     return "0 min";
   };
 
+  const formatCountdown = (seconds) => {
+    const s = Math.max(parseInt(seconds), 0);
+    const hrs = Math.floor(s / 3600);
+    const mins = Math.floor((s % 3600) / 60);
+    const secs = s % 60;
+    return `${hrs.toString().padStart(2, "0")} hr ${mins
+      .toString()
+      .padStart(2, "0")} min ${secs.toString().padStart(2, "0")} sec`;
+  };
+
   return (
     <div className="live-classes-container">
-      <h2>{subject} / {chapter}</h2>
+      <h2>
+        {subject} / {chapter}
+      </h2>
 
       {/* ✅ Tabs */}
       {!onlyDpp && (
@@ -204,7 +239,6 @@ const Recording = () => {
             const isRecorded = item.video_type === "7";
             const liveNow = item.live_status === "1";
             const fileUrl = item.file_url;
-
             const toUrl = isLive ? `/video/10/live` : `/video/10/${subject}/0`;
 
             return (
@@ -219,10 +253,14 @@ const Recording = () => {
               >
                 <div className="live-card">
                   <img
-                    src={item.thumbnail_url}
-                    alt={title}
-                    className="card-image"
-                  />
+  src={item.thumbnail_url || "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"}
+  alt={title}
+  className="card-image"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png";
+  }}
+/>
                   <div className="card-content">
                     <h4 className="card-title">{title}</h4>
                     <p className="card-subject">📚 {subject}</p>
@@ -230,8 +268,25 @@ const Recording = () => {
                       {isRecorded && "📽️ Recorded"}
                       {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
                     </p>
-                    <p className="card-countdown">🗓️ {time}</p>
-                    <p className="card-countdown">⏱️ Duration: {duration}</p>
+
+                    {isLive && !liveNow ? (
+                      <>
+                        <p className="card-countdown">
+                          🕒 Starts at: {formatDate(item.start_date)}
+                        </p>
+                        <p className="card-countdown">
+                          ⏱️ Ends at: {formatDate(item.end_date)}
+                        </p>
+                        <p className="card-countdown">
+                          ⏳ Starting in: {formatCountdown(countdowns[item.id] || 0)}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="card-countdown">🗓️ {time}</p>
+                        <p className="card-countdown">⏱️ Duration: {duration}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </Link>
