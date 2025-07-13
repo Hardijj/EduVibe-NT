@@ -35,7 +35,7 @@ const VideoPlayer = () => {
   const chaptersName = localStorage.getItem("chapterName");
   const lecturesName = localStorage.getItem("lectureName");
 
-  const { m3u8Url, notesUrl } = location.state || {};
+  const { m3u8Url, notesUrl, chapterName } = location.state || {};
   const isLive = location.pathname.includes("/live");
   const telegramDownloaderLink = "https://t.me/+UHFOhCOAU7xhYWY9"; // update as needed
 
@@ -254,7 +254,7 @@ const VideoPlayer = () => {
       <h2>
         {isLive
           ? "🔴 Live Class"
-          : `Now Playing: ${chaptersName} - ${lecturesName || "Unknown Lecture"}`}
+          : `Now Playing: $(chapterName) || "Unknown Lecture"}`}
       </h2>
 
       {/* Player wrapper goes fullscreen so badge stays visible */}
