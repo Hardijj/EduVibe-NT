@@ -22,6 +22,7 @@ const Lectures = () => {
       view: "science",
       chapters: [
         { name: "ACP", index: 19, onlyDpp: "sciencedpp" },
+        { name: "All Lectures" },
         { name: "Chemical Reaction & Equations", index: 0, to:"Chemical reaction and equation L8" },
         { name: "Light", index: 1, from:"Light L1",to:"Light + Doubt Class (Part -2)" },
         { name: "Life Processes", index: 2,from:"Life Processes L1",to:"Life Processes L8 + Doubt Class" },
@@ -34,6 +35,7 @@ const Lectures = () => {
       view: "maths",
       chapters: [
         { name: "DPP", index: 19, onlyDpp:"mathsdpp" },
+        { name: "All Lectures"},
         {
           name: "Real Number",
           index: 0,
