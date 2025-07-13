@@ -63,6 +63,7 @@ const Subject10 = () => {
     { name: "English", path: "/lectures/10/English" },
     { name: "Hindi", path: "/lectures/10/Hindi" },
     { name: "IT", path: "/lectures/10/IT" },
+    { name: "AI", path:"/lectures/10/AI"},
     { name: "Sanskrit", path: "/lectures/10/Sanskrit" },
   ];
 
