@@ -77,6 +77,12 @@ const Lectures = () => {
         { name: "IT", index: 0 },
       ]
     },
+    AI: {
+      view: "ai",
+      chapters: [
+        { name: "AI"}
+      ],
+    },
     English: {
       A: [
         { name: "LR", index: 100, view:"englr" },
