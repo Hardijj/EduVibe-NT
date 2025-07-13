@@ -75,7 +75,7 @@ const Recording = () => {
             `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}`
           ),
           fetch(
-            `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}notes`
+            `https://php-pearl.vercel.app/api/api.php?token=&view=${actualView}notes`
           ),
         ]);
 
