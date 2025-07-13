@@ -4,7 +4,7 @@ import "../styles/LiveClasses.css";
 
 const tabs = ["live", "upcoming", "completed"];
 const subjectMap = {
-  "2151767": "Maths",
+  "35848": "Maths",
   "2154118": "Science",
   "2153529": "SST"
 };
@@ -70,7 +70,7 @@ const LiveClasses = () => {
   };
 
   const renderCard = (item, tab) => {
-    const subject = subjectMap[item.id] || "Unknown";
+    const subject = subjectMap[item.topic_id] || "Unknown";
     const fileUrl = item.file_url;
     const title = item.title || "Untitled";
     const thumb = item.thumbnail_url || fallbackImage;
