@@ -5,8 +5,8 @@ import "../styles/LiveClasses.css";
 const tabs = ["live", "upcoming", "completed"];
 const subjectMap = {
   "35848": "Maths",
-  "2154118": "Science",
-  "2153529": "SST"
+  "35850": "Science",
+  "35849": "SST"
 };
 
 const GITHUB_API_BASE = "https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=";
