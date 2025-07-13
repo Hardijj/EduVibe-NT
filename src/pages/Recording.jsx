@@ -16,19 +16,19 @@ const Recording = () => {
     onlyDpp = null,
   } = location.state || {};
 
-  const [tab, setTab] = useState("lecture");
+  const [tab, setTab] = useState("live");
   const [lectures, setLectures] = useState([]);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [countdowns, setCountdowns] = useState({}); // 🆕 Countdown for each upcoming live
+  const [countdowns, setCountdowns] = useState({});
 
-  // Redirect if not logged in
+  const tabs = ["live", "upcoming", "completed"];
+
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) navigate("/login");
   }, [navigate]);
 
-  // Real-time countdown ticking every 1 sec
   useEffect(() => {
     const interval = setInterval(() => {
       setCountdowns((prev) => {
@@ -103,7 +103,6 @@ const Recording = () => {
 
           setLectures(list);
 
-          // 🆕 Setup countdowns for upcoming
           const countdownInit = {};
           list.forEach((item) => {
             if (item.video_type === "8" && item.live_status === "0") {
@@ -177,27 +176,35 @@ const Recording = () => {
       .padStart(2, "0")} min ${secs.toString().padStart(2, "0")} sec`;
   };
 
+  const upcomingLectures = lectures.filter(
+    (item) => item.video_type === "8" && item.live_status === "0"
+  );
+  const liveLectures = lectures.filter(
+    (item) => item.video_type === "8" && item.live_status === "1"
+  );
+  const completedLectures = lectures.filter(
+    (item) => item.video_type === "7"
+  );
+
   return (
     <div className="live-classes-container">
       <h2>
         {subject} / {chapter}
       </h2>
 
-      {/* ✅ Tabs */}
       {!onlyDpp && (
         <div className="tabs-wrapper">
-          <button
-            className={`tab-button ${tab === "lecture" ? "active" : ""}`}
-            onClick={() => setTab("lecture")}
-          >
-            🎥 Lectures
-          </button>
-          <button
-            className={`tab-button ${tab === "notes" ? "active" : ""}`}
-            onClick={() => setTab("notes")}
-          >
-            📄 Notes
-          </button>
+          {tabs.map((t) => (
+            <button
+              key={t}
+              className={`tab-button ${tab === t ? "active" : ""}`}
+              onClick={() => setTab(t)}
+            >
+              {t === "live" && "🔴 Live"}
+              {t === "upcoming" && "⏳ Upcoming"}
+              {t === "completed" && "✅ Completed"}
+            </button>
+          ))}
         </div>
       )}
 
@@ -212,7 +219,7 @@ const Recording = () => {
               <div
                 key={idx}
                 className="card-link"
-                onClick={() => window.location.href = note.file_url}
+                onClick={() => (window.location.href = note.file_url)}
                 style={{ cursor: "pointer" }}
               >
                 <div className="live-card">
@@ -227,73 +234,128 @@ const Recording = () => {
             ))}
           </div>
         )
-      ) : lectures.length === 0 ? (
-        <p className="loading-text">No lectures found.</p>
-      ) : (
-        <div className="card-grid">
-          {lectures.map((item, idx) => {
-            const title = item.title || "Untitled";
-            const time = formatDate(item.start_date);
-            const duration = formatDuration(item.video_duration);
-            const isLive = item.video_type === "8";
-            const isRecorded = item.video_type === "7";
-            const liveNow = item.live_status === "1";
-            const fileUrl = item.file_url;
-            const toUrl = isLive ? `/video/10/live` : `/video/10/${subject}/0`;
-
-            return (
-              <Link
-                to={toUrl}
-                state={{
-                  m3u8Url: fileUrl,
-                  chapterName: title,
-                }}
-                key={idx}
-                className="card-link"
-              >
+      ) : tab === "upcoming" ? (
+        upcomingLectures.length === 0 ? (
+          <p className="loading-text">No upcoming lectures.</p>
+        ) : (
+          <div className="card-grid">
+            {upcomingLectures.map((item, idx) => (
+              <div key={idx} className="card-link">
                 <div className="live-card">
                   <img
-  src={item.thumbnail_url || "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"}
-  alt={title}
-  className="card-image"
-  onError={(e) => {
-    e.target.onerror = null;
-    e.target.src = "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png";
-  }}
-/>
+                    src={item.thumbnail_url || "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"}
+                    alt={item.title || "Untitled"}
+                    className="card-image"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png";
+                    }}
+                  />
                   <div className="card-content">
-                    <h4 className="card-title">{title}</h4>
+                    <h4 className="card-title">{item.title || "Untitled"}</h4>
                     <p className="card-subject">📚 {subject}</p>
-                    <p className="card-status">
-                      {isRecorded && "📽️ Recorded"}
-                      {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
+                    <p className="card-status">🕒 Scheduled</p>
+                    <p className="card-countdown">
+                      🕒 Starts at: {formatDate(item.start_date)}
                     </p>
-
-                    {isLive && !liveNow ? (
-                      <>
-                        <p className="card-countdown">
-                          🕒 Starts at: {formatDate(item.start_date)}
-                        </p>
-                        <p className="card-countdown">
-                          ⏱️ Ends at: {formatDate(item.end_date)}
-                        </p>
-                        <p className="card-countdown">
-                          ⏳ Starting in: {formatCountdown(countdowns[item.id] || 0)}
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <p className="card-countdown">🗓️ {time}</p>
-                        <p className="card-countdown">⏱️ Duration: {duration}</p>
-                      </>
-                    )}
+                    <p className="card-countdown">
+                      ⏱️ Ends at: {formatDate(item.end_date)}
+                    </p>
+                    <p className="card-countdown">
+                      ⏳ Starting in: {formatCountdown(countdowns[item.id] || 0)}
+                    </p>
                   </div>
                 </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+              </div>
+            ))}
+          </div>
+        )
+      ) : tab === "live" ? (
+        liveLectures.length === 0 ? (
+          <p className="loading-text">No live classes right now.</p>
+        ) : (
+          <div className="card-grid">
+            {liveLectures.map((item, idx) => {
+              const toUrl = `/video/10/live`;
+              return (
+                <Link
+                  to={toUrl}
+                  state={{
+                    m3u8Url: item.file_url,
+                    chapterName: item.title,
+                  }}
+                  key={idx}
+                  className="card-link"
+                >
+                  <div className="live-card">
+                    <img
+                      src={item.thumbnail_url || "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"}
+                      alt={item.title}
+                      className="card-image"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png";
+                      }}
+                    />
+                    <div className="card-content">
+                      <h4 className="card-title">{item.title}</h4>
+                      <p className="card-subject">📚 {subject}</p>
+                      <p className="card-status">🔴 Live Now</p>
+                      <p className="card-countdown">
+                        🗓️ {formatDate(item.start_date)}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )
+      ) : tab === "completed" ? (
+        completedLectures.length === 0 ? (
+          <p className="loading-text">No completed lectures.</p>
+        ) : (
+          <div className="card-grid">
+            {completedLectures.map((item, idx) => {
+              const toUrl = `/video/10/${subject}/0`;
+              return (
+                <Link
+                  to={toUrl}
+                  state={{
+                    m3u8Url: item.file_url,
+                    chapterName: item.title,
+                  }}
+                  key={idx}
+                  className="card-link"
+                >
+                  <div className="live-card">
+                    <img
+                      src={item.thumbnail_url || "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"}
+                      alt={item.title}
+                      className="card-image"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png";
+                      }}
+                    />
+                    <div className="card-content">
+                      <h4 className="card-title">{item.title}</h4>
+                      <p className="card-subject">📚 {subject}</p>
+                      <p className="card-status">📽️ Recorded</p>
+                      <p className="card-countdown">
+                        🗓️ {formatDate(item.start_date)}
+                      </p>
+                      <p className="card-countdown">
+                        ⏱️ Duration: {formatDuration(item.video_duration)}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )
+      ) : null}
     </div>
   );
 };
