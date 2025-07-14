@@ -54,7 +54,7 @@ const Lectures = () => {
           to: "Quadratic Equations L8",
           fromNotes:"Quadratic Equations L1", toNotes:"Quadratic Equations L8"
         },
-         { name: "Arithmetic Progression", index:6, from: "AP - 1"},
+         { name: "AP", index:6, from: "AP L1"},
       ]
     },
     SST: {
