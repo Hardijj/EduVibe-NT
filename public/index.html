@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next Toppers</title>
-    <link rel="icon" type="image/png" href="NTapp.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Next Toppers</title>
+  <link rel="icon" type="image/png" href="NTapp.png" />
 
-    <!-- ✅ Video.js CSS -->
-    <link rel="stylesheet" href="https://vjs.zencdn.net/8.22.0/video-js.css">
+  <!-- ✅ Video.js CSS -->
+  <link rel="stylesheet" href="https://vjs.zencdn.net/8.22.0/video-js.css" />
 </head>
-    <!-- Google tag (gtag.js) -->
+
+<!-- ✅ Google Tag Manager -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0WZ4K2WQ4"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-P0WZ4K2WQ4');
-      </script>
-<body>
-    <body oncopy="return false" oncut="return false" onpaste="return false" oncontextmenu="return false">
-    <div id="root"></div>
-          <!-- ✅ Notification Button (visible before React loads) -->
-  <button onclick="enablePush()" style="position:fixed;bottom:20px;right:20px;z-index:999">
-    🔔 Enable Notifications
-  </button>
+</script>
 
-    <!-- ✅ Video.js JS -->
-    <script src="https://vjs.zencdn.net/8.22.0/video.js"></script>
+<body oncopy="return false" oncut="return false" onpaste="return false" oncontextmenu="return false">
+  <div id="root"></div>
 
-    <!-- ✅ Optional: Additional video.js Plugins -->
-    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-quality-levels@2.0.2/dist/videojs-contrib-quality-levels.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@0.1.0/dist/videojs-hls-quality-selector.min.js"></script>
-        <!-- ✅ Push Notification Script -->
+  <!-- ✅ Notification Button (ONLY on homepage) -->
+  <script>
+    if (location.pathname === '/' || location.pathname === '/index.html') {
+      const btn = document.createElement('button');
+      btn.innerText = '🔔 Enable Notifications';
+      btn.onclick = () => window.enablePush?.();
+      btn.style.position = 'fixed';
+      btn.style.bottom = '20px';
+      btn.style.right = '20px';
+      btn.style.zIndex = '999';
+      document.body.appendChild(btn);
+    }
+  </script>
+
+  <!-- ✅ Video.js JS -->
+  <script src="https://vjs.zencdn.net/8.22.0/video.js"></script>
+
+  <!-- ✅ Optional video.js Plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-quality-levels@2.0.2/dist/videojs-contrib-quality-levels.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@0.1.0/dist/videojs-hls-quality-selector.min.js"></script>
+
+  <!-- ✅ Push Notification Logic -->
   <script type="module" src="/pushClient.js"></script>
 </body>
 </html>
