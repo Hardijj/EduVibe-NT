@@ -301,97 +301,6 @@ const VideoPlayer = () => {
           </div>
         )}
       </div>
-      {/* ...existing code above remains unchanged */}
-
-{isLive && (
-
-  <div
-    style={{
-      marginTop: "20px",
-      background: "#1e1e1e",
-      borderRadius: "12px",
-      padding: "16px",
-      maxHeight: "320px",
-      overflowY: "auto",
-      fontSize: "14px",
-      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-    }}
-  >
-    <div style={{ marginBottom: "12px" }}>
-      {chatMessages.map((msg, idx) => (
-        <div
-          key={idx}
-          style={{
-            background: "#2a2a2a",
-            padding: "10px 14px",
-            borderRadius: "8px",
-            marginBottom: "8px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
-        >
-          <div style={{
-            background: "#444",
-            color: "#fff",
-            padding: "4px 8px",
-            borderRadius: "6px",
-            fontWeight: "bold",
-            fontSize: "12px",
-            minWidth: "60px",
-            textAlign: "center",
-            flexShrink: 0,
-          }}>
-            {msg.username}
-          </div>
-          <div style={{ color: "#ccc" }}>{msg.message}</div>
-        </div>
-      ))}
-      <div ref={chatBottomRef} />
-    </div>
-    <div
-      style={{
-        display: "flex",
-        gap: "10px",
-        marginTop: "12px",
-        borderTop: "1px solid #333",
-        paddingTop: "10px",
-      }}
-    >
-      <input
-        value={chatInput}
-        onChange={(e) => setChatInput(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
-        placeholder="Type your message..."
-        style={{
-          flex: 1,
-          padding: "10px 14px",
-          borderRadius: "8px",
-          border: "1px solid #444",
-          backgroundColor: "#2c2c2c",
-          color: "#fff",
-          outline: "none",
-          fontSize: "14px",
-        }}
-      />
-      <button
-        onClick={sendChatMessage}
-        style={{
-          padding: "10px 16px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "8px",
-          fontWeight: "bold",
-          fontSize: "14px",
-          cursor: "pointer",
-        }}
-      >
-        Send
-      </button>
-    </div>
-  </div>
-)}
 
       {!isLive && (
         <div style={{ textAlign: "center", marginTop: 20 }}>
@@ -493,6 +402,100 @@ const VideoPlayer = () => {
       <div style={{ textAlign: "center", fontSize: 12, marginTop: 30, color: "#fff" }}>
         Today’s Study Time: <strong>{studiedMinutes} min</strong>
       </div>
+      {/* ...existing code above remains unchanged */}
+
+{isLive && (
+
+  <div
+    style={{
+      marginTop: "20px",
+      background: "#0f0f0f",
+      borderRadius: "10px",
+      overflow: "hidden",
+      maxHeight: "380px",
+      display: "flex",
+      flexDirection: "column",
+      boxShadow: "0 0 12px rgba(0,0,0,0.6)",
+      border: "1px solid #222",
+    }}
+  >
+    {/* Message List */}
+    <div
+      style={{
+        flex: 1,
+        padding: "12px",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+      }}
+    >
+      {chatMessages.map((msg, idx) => (
+        <div
+          key={idx}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            backgroundColor: "#1a1a1a",
+            padding: "10px 14px",
+            borderRadius: "8px",
+            borderLeft: "4px solid #2196f3",
+            color: "#fff",
+            fontSize: "14px",
+            maxWidth: "85%",
+          }}
+        >
+          <span style={{ fontWeight: "bold", color: "#2196f3", marginBottom: "2px" }}>{msg.username}</span>
+          <span>{msg.message}</span>
+        </div>
+      ))}
+      <div ref={chatBottomRef} />
+    </div>{/* Input Bar */}
+<div
+  style={{
+    display: "flex",
+    borderTop: "1px solid #333",
+    backgroundColor: "#121212",
+    padding: "10px",
+    gap: "8px",
+  }}
+>
+  <input
+    value={chatInput}
+    onChange={(e) => setChatInput(e.target.value)}
+    onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
+    placeholder="Type a message..."
+    style={{
+      flex: 1,
+      padding: "10px 14px",
+      borderRadius: "6px",
+      border: "1px solid #333",
+      backgroundColor: "#1e1e1e",
+      color: "#fff",
+      fontSize: "14px",
+      outline: "none",
+    }}
+  />
+  <button
+    onClick={sendChatMessage}
+    style={{
+      padding: "10px 18px",
+      backgroundColor: "#2196f3",
+      border: "none",
+      borderRadius: "6px",
+      fontWeight: "bold",
+      fontSize: "14px",
+      color: "white",
+      cursor: "pointer",
+    }}
+  >
+    Send
+  </button>
+</div>
+
+  </div>
+)}
     </div>
   );
 };
