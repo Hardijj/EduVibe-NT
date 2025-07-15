@@ -8,7 +8,7 @@ const TestPlatform = () => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [timer, setTimer] = useState(600);
+  const [timer, setTimer] = useState(1200);
 
   useEffect(() => {
     let interval;
