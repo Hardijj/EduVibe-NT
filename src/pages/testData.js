@@ -1338,6 +1338,260 @@ D) Coalition Government       - iv) Among political parties`,
   }
 ],
   },
+  Extra_Test_by_me:{
+    "Quadratic Equations":[
+  {
+    question: "Which of the following is a quadratic equation?",
+    options: ["x + 2 = 0", "x² + 3x + 2 = 0", "2x - 5 = 0", "3x + 4 = 2x"],
+    correctAnswer: 2,
+  },
+  {
+    question: "What is the standard form of a quadratic equation?",
+    options: ["ax + b = 0", "ax² + bx + c = 0", "a + bx² = 0", "abx² + c = 0"],
+    correctAnswer: 2,
+  },
+  {
+    question: "The value of the discriminant for the equation x² - 4x + 4 = 0 is:",
+    options: ["0", "4", "8", "16"],
+    correctAnswer: 1,
+  },
+  {
+    question: "If α and β are roots of the equation x² - 5x + 6 = 0, then α + β =",
+    options: ["6", "5", "-6", "-5"],
+    correctAnswer: 2,
+  },
+  {
+    question: "The roots of the equation x² - 2x - 15 = 0 are:",
+    options: ["5, -3", "3, 5", "-5, 3", "-3, -5"],
+    correctAnswer: 1,
+  },
+  {
+    question: "If the roots of the quadratic equation are real and equal, then the value of discriminant is:",
+    options: ["< 0", "> 0", "= 0", "Not defined"],
+    correctAnswer: 3,
+  },
+  {
+    question: "Which method would you use to solve x² + 7x + 10 = 0?",
+    options: ["Completing square", "Quadratic formula", "Factorisation", "Graphical"],
+    correctAnswer: 3,
+  },
+  {
+    question: "The roots of x² - 6x + 9 = 0 are:",
+    options: ["3, 3", "-3, -3", "3, -3", "0, 9"],
+    correctAnswer: 1,
+  },
+  {
+    question: "For which value of k will the equation x² + kx + 9 = 0 have equal roots?",
+    options: ["k² = 36", "k = 3", "k² = 36", "k² = 36"],
+    correctAnswer: 1,
+  },
+  {
+    question: "Find the discriminant of the equation 2x² - 4x + 3 = 0.",
+    options: ["-8", "4", "16", "0"],
+    correctAnswer: 1,
+  },
+  {
+    question: "What is the nature of roots for x² + 2x + 5 = 0?",
+    options: ["Real and distinct", "Real and equal", "Imaginary", "None of these"],
+    correctAnswer: 3,
+  },
+  {
+    question: "The sum and product of the roots of x² - 3x + 2 = 0 are:",
+    options: ["3, 2", "2, 3", "-3, 2", "-2, 3"],
+    correctAnswer: 1,
+  },
+  {
+    question: "The quadratic equation with roots 2 and -3 is:",
+    options: ["x² - x - 6 = 0", "x² + x - 6 = 0", "x² + x + 6 = 0", "x² - x + 6 = 0"],
+    correctAnswer: 1,
+  },
+  {
+    question: "Solve using quadratic formula: x² + 4x - 5 = 0",
+    options: ["1, -5", "-1, 5", "1, 5", "-1, -5"],
+    correctAnswer: 1,
+  },
+  {
+    question: "If one root of x² + px + 12 = 0 is 3, find p.",
+    options: ["-7", "7", "-5", "5"],
+    correctAnswer: 1,
+  },
+  {
+    question: "The graph of a quadratic equation is always a:",
+    options: ["Line", "Circle", "Parabola", "Hyperbola"],
+    correctAnswer: 3,
+  },
+  {
+    question: "The roots of x² - 10x + 25 = 0 are:",
+    options: ["5, -5", "5, 5", "-5, -5", "0, 25"],
+    correctAnswer: 2,
+  },
+  {
+    question: "The value of k for which the equation 2x² + kx + 3 = 0 has equal roots is:",
+    options: ["±2√3", "±√6", "±6", "±√3"],
+    correctAnswer: 3,
+  },
+  {
+    question: "Which of the following is not a quadratic equation?",
+    options: ["x² + 2x + 1 = 0", "x³ + x² = 0", "2x² - 3 = 0", "x² + 1 = 0"],
+    correctAnswer: 2,
+  },
+  {
+    question: "The equation x² + 7x + 10 = 0 has:",
+    options: ["Real & equal roots", "Imaginary roots", "Real & distinct roots", "Only one root"],
+    correctAnswer: 3,
+  },
+  {
+    question: "Find the roots of 3x² - 2x - 1 = 0 using factorisation.",
+    options: ["1, -1/3", "1/3, -1", "1, 1/3", "-1, 1/3"],
+    correctAnswer: 1,
+  },
+  {
+    question: "The roots of ax² + bx + c = 0 are given by:",
+    options: [
+      "-b ± √(b² - 4ac)/2a",
+      "-b ± √(b² + 4ac)/2a",
+      "b ± √(b² - 4ac)/2a",
+      "None of these"
+    ],
+    correctAnswer: 1,
+  },
+  {
+    question: "A train travels 360 km at a uniform speed. If speed is decreased by 5 km/h, it takes 48 min more. Find the original speed.",
+    options: ["40 km/h", "45 km/h", "60 km/h", "36 km/h"],
+    correctAnswer: 1,
+  },
+  {
+    question: "Find two consecutive positive integers whose product is 132.",
+    options: ["10 and 11", "11 and 12", "12 and 13", "13 and 14"],
+    correctAnswer: 2,
+  },
+  {
+    question: "The roots of the equation 4x² + 12x + 9 = 0 are:",
+    options: ["-3/2, -3/2", "3/2, 3/2", "-3, -3", "-3, 3"],
+    correctAnswer: 1,
+  },
+  {
+    question: "If the product of the roots is 6 and the sum is 5, the quadratic equation is:",
+    options: ["x² + 5x + 6 = 0", "x² - 5x + 6 = 0", "x² - 5x - 6 = 0", "x² + 5x - 6 = 0"],
+    correctAnswer: 2,
+  },
+  {
+    question: "If roots of x² + x + c = 0 are imaginary, c must be:",
+    options: ["0", "1", "Positive", "Greater than 1/4"],
+    correctAnswer: 3,
+  },
+  {
+    question: "If a quadratic equation has two equal roots, then its graph:",
+    options: ["Touches x-axis at one point", "Cuts x-axis at two points", "Never touches x-axis", "Cuts y-axis"],
+    correctAnswer: 1,
+  },
+  {
+    question: "For which value of k is the equation x² + kx + 16 = 0 having equal roots?",
+    options: ["±8", "±4", "±2", "±6"],
+    correctAnswer: 1,
+  },
+  {
+    question: "If the roots of a quadratic equation are -2 and 5, the equation is:",
+    options: ["x² - 3x + 10 = 0", "x² - 3x - 10 = 0", "x² - 3x + 10 = 0", "x² - 3x - 10 = 0"],
+    correctAnswer: 2,
+  },
+  {
+    question: "Nature of roots of 5x² + 6x + 1 = 0 is:",
+    options: ["Real & equal", "Real & distinct", "Imaginary", "Cannot be found"],
+    correctAnswer: 2,
+  },
+  {
+    question: "Discriminant of x² + 3x + 2 = 0 is:",
+    options: ["1", "9", "4", "1"],
+    correctAnswer: 3,
+  },
+  {
+    question: "If roots of x² - kx + 25 = 0 are equal, then value of k is:",
+    options: ["5", "-5", "10", "-10"],
+    correctAnswer: 3,
+  },
+  {
+    question: "If 3x² + 5x - 2 = 0, then roots are:",
+    options: ["1/3, -2", "1, -2/3", "2, -1/3", "2/3, -1"],
+    correctAnswer: 1,
+  },
+  {
+    question: "A number exceeds its reciprocal by 2. The number is:",
+    options: ["2", "1", "3", "None of these"],
+    correctAnswer: 1,
+  },
+  {
+    question: "The solution of 2x² + 7x + 3 = 0 by completing square is:",
+    options: ["-3, -1/2", "-1, -3/2", "1, -3/2", "3, -1/2"],
+    correctAnswer: 1,
+  },
+  {
+    question: "What is the sum of roots of x² - 7x + 10 = 0?",
+    options: ["-7", "7", "10", "-10"],
+    correctAnswer: 2,
+  },
+  {
+    question: "If x² + 4x - 5 = 0, then x = ?",
+    options: ["-5, 1", "5, -1", "1, -5", "-1, 5"],
+    correctAnswer: 1,
+  },
+  {
+    question: "What is the product of roots of x² - 6x + 9 = 0?",
+    options: ["6", "9", "3", "-9"],
+    correctAnswer: 2,
+  },
+  {
+    question: "If the product of two numbers is 15 and their sum is 8, find the numbers.",
+    options: ["3, 5", "5, 3", "Both a & b", "None"],
+    correctAnswer: 3,
+  },
+  {
+    question: "Find the roots of x² - 8x + 16 = 0.",
+    options: ["4, 4", "-4, -4", "4, -4", "0, 16"],
+    correctAnswer: 1,
+  },
+  {
+    question: "The equation x² + x + 1 = 0 has roots that are:",
+    options: ["Real", "Equal", "Imaginary", "Zero"],
+    correctAnswer: 3,
+  },
+  {
+    question: "x² + 10x + 25 = 0 has roots:",
+    options: ["-5, -5", "5, 5", "0, 25", "-5, 5"],
+    correctAnswer: 1,
+  },
+  {
+    question: "Which of the following roots are irrational?",
+    options: ["x² - 2 = 0", "x² + 2x + 1 = 0", "x² - 4 = 0", "x² - 1 = 0"],
+    correctAnswer: 1,
+  },
+  {
+    question: "Solve: x² - 13x + 36 = 0",
+    options: ["9, 4", "4, 9", "Both a & b", "6, 6"],
+    correctAnswer: 3,
+  },
+  {
+    question: "If D > 0 and is a perfect square, roots are:",
+    options: ["Real, equal", "Imaginary", "Rational, unequal", "Irrational"],
+    correctAnswer: 3,
+  },
+  {
+    question: "Solve x² - x - 20 = 0",
+    options: ["5, -4", "4, -5", "-5, 4", "None"],
+    correctAnswer: 1,
+  },
+  {
+    question: "If α and β are roots of x² + 6x + 8 = 0, then αβ = ?",
+    options: ["8", "-8", "6", "-6"],
+    correctAnswer: 1,
+  },
+  {
+    question: "Find the nature of roots of 4x² + 4x + 1 = 0",
+    options: ["Real & equal", "Imaginary", "Rational & distinct", "None"],
+    correctAnswer: 1,
+  }
+    ],
+  },
 };
 
 export default testData;
