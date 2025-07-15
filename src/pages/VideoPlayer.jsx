@@ -11,48 +11,39 @@ const VideoPlayer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  /* ───────────────────────────────
-     Route / URL helpers
-  ─────────────────────────────── */
-  const { id } = useParams(); // may be undefined on static routes
-  const computedId = location.pathname          // e.g. "/video/11/bio/live"
-    .replace(/^\/video\//, "")                  // "11/bio/live"
-    .replace(/\/live$/, "")                     // "11/bio"
-    .replace(/\//g, "_");                       // "11_bio"
-  const videoId = id || computedId;             // final key for Socket.IO
+  const { id } = useParams();
+  const computedId = location.pathname
+    .replace(/^\/video\//, "")
+    .replace(/\/live$/, "")
+    .replace(/\//g, "_");
+  const videoId = id || computedId;
 
-  /* ───────────────────────────────
-     Refs & State
-  ─────────────────────────────── */
-  const videoRef  = useRef(null);
+  const videoRef = useRef(null);
   const playerRef = useRef(null);
-  const lastTap   = useRef(0);
+  const lastTap = useRef(0);
+  const chatBottomRef = useRef(null);
 
   const [studiedMinutes, setStudiedMinutes] = useState(0);
-  const [showPopup,     setShowPopup]       = useState(false);
-  const [viewerCount,   setViewerCount]     = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [viewerCount, setViewerCount] = useState(0);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState("");
+  const [chatUsername, setChatUsername] = useState(localStorage.getItem("chatUsername") || "");
 
   const chaptersName = localStorage.getItem("chapterName");
   const lecturesName = localStorage.getItem("lectureName");
 
   const { m3u8Url, notesUrl, chapterName } = location.state || {};
   const isLive = location.pathname.includes("/live");
-  const telegramDownloaderLink = "https://t.me/+UHFOhCOAU7xhYWY9"; // update as needed
+  const telegramDownloaderLink = "https://t.me/+UHFOhCOAU7xhYWY9";
 
-  /* ───────────────────────────────
-     Login guard
-  ─────────────────────────────── */
   useEffect(() => {
     if (localStorage.getItem("isLoggedIn") !== "true") navigate("/login");
   }, [navigate]);
 
-  /* ───────────────────────────────
-     Reset study-time daily
-  ─────────────────────────────── */
   useEffect(() => {
-    const today    = new Date().toLocaleDateString();
+    const today = new Date().toLocaleDateString();
     const lastDate = localStorage.getItem("lastStudyDate");
-
     if (lastDate !== today) {
       Object.keys(localStorage).forEach((k) => k.startsWith("studyTime_") && localStorage.removeItem(k));
       localStorage.setItem("lastStudyDate", today);
@@ -61,20 +52,46 @@ const VideoPlayer = () => {
     setStudiedMinutes(Math.floor(stored / 60));
   }, []);
 
-  /* ───────────────────────────────
-     Live-viewer counter (Socket.IO)
-  ─────────────────────────────── */
+  useEffect(() => {
+    if (!chatUsername && isLive) {
+      const name = prompt("Enter your name for chat:");
+      if (name) {
+        setChatUsername(name);
+        localStorage.setItem("chatUsername", name);
+      }
+    }
+  }, [chatUsername, isLive]);
+
   useEffect(() => {
     if (!videoId) return;
 
     const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app");
-
     socket.on("connect", () => socket.emit("joinVideo", videoId));
     socket.on(`viewerCount-${videoId}`, setViewerCount);
+    socket.on(`chatMessage-${videoId}`, (data) => {
+      setChatMessages((prev) => [...prev, data]);
+    });
     socket.on("connect_error", console.error);
 
-    return () => socket.disconnect();
+    return () => {
+      socket.disconnect();
+    };
   }, [videoId]);
+
+  useEffect(() => {
+    chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
+
+  const sendChatMessage = () => {
+    if (!chatInput.trim()) return;
+    const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app");
+    socket.emit("chatMessage", {
+      videoId,
+      username: chatUsername || "Anonymous",
+      message: chatInput.trim(),
+    });
+    setChatInput("");
+  };
 
   /* ───────────────────────────────
      Video.js initialisation
@@ -284,6 +301,55 @@ const VideoPlayer = () => {
           </div>
         )}
       </div>
+      {isLive && (
+        <div style={{
+          marginTop: "20px",
+          background: "#111",
+          color: "#fff",
+          borderRadius: "8px",
+          padding: "10px",
+          maxHeight: "300px",
+          overflowY: "auto",
+          fontSize: "14px",
+        }}>
+          <div style={{ marginBottom: "10px" }}>
+            {chatMessages.map((msg, idx) => (
+              <div key={idx}>
+                <strong>{msg.username}</strong>: {msg.message}
+              </div>
+            ))}
+            <div ref={chatBottomRef} />
+          </div>
+          <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+            <input
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
+              placeholder="Type a message..."
+              style={{
+                flex: 1,
+                padding: "8px",
+                borderRadius: "4px",
+                border: "none",
+                backgroundColor: "#222",
+                color: "#fff",
+              }}
+            />
+            <button
+              onClick={sendChatMessage}
+              style={{
+                padding: "8px 12px",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+              }}
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      )}
 
       {!isLive && (
         <div style={{ textAlign: "center", marginTop: 20 }}>
