@@ -11,39 +11,48 @@ const VideoPlayer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { id } = useParams();
-  const computedId = location.pathname
-    .replace(/^\/video\//, "")
-    .replace(/\/live$/, "")
-    .replace(/\//g, "_");
-  const videoId = id || computedId;
+  /* ───────────────────────────────
+     Route / URL helpers
+  ─────────────────────────────── */
+  const { id } = useParams(); // may be undefined on static routes
+  const computedId = location.pathname          // e.g. "/video/11/bio/live"
+    .replace(/^\/video\//, "")                  // "11/bio/live"
+    .replace(/\/live$/, "")                     // "11/bio"
+    .replace(/\//g, "_");                       // "11_bio"
+  const videoId = id || computedId;             // final key for Socket.IO
 
-  const videoRef = useRef(null);
+  /* ───────────────────────────────
+     Refs & State
+  ─────────────────────────────── */
+  const videoRef  = useRef(null);
   const playerRef = useRef(null);
-  const lastTap = useRef(0);
-  const chatBottomRef = useRef(null);
+  const lastTap   = useRef(0);
 
   const [studiedMinutes, setStudiedMinutes] = useState(0);
-  const [showPopup, setShowPopup] = useState(false);
-  const [viewerCount, setViewerCount] = useState(0);
-  const [chatMessages, setChatMessages] = useState([]);
-  const [chatInput, setChatInput] = useState("");
-  const [chatUsername, setChatUsername] = useState(localStorage.getItem("chatUsername") || "");
+  const [showPopup,     setShowPopup]       = useState(false);
+  const [viewerCount,   setViewerCount]     = useState(0);
 
   const chaptersName = localStorage.getItem("chapterName");
   const lecturesName = localStorage.getItem("lectureName");
 
   const { m3u8Url, notesUrl, chapterName } = location.state || {};
   const isLive = location.pathname.includes("/live");
-  const telegramDownloaderLink = "https://t.me/+UHFOhCOAU7xhYWY9";
+  const telegramDownloaderLink = "https://t.me/+UHFOhCOAU7xhYWY9"; // update as needed
 
+  /* ───────────────────────────────
+     Login guard
+  ─────────────────────────────── */
   useEffect(() => {
     if (localStorage.getItem("isLoggedIn") !== "true") navigate("/login");
   }, [navigate]);
 
+  /* ───────────────────────────────
+     Reset study-time daily
+  ─────────────────────────────── */
   useEffect(() => {
-    const today = new Date().toLocaleDateString();
+    const today    = new Date().toLocaleDateString();
     const lastDate = localStorage.getItem("lastStudyDate");
+
     if (lastDate !== today) {
       Object.keys(localStorage).forEach((k) => k.startsWith("studyTime_") && localStorage.removeItem(k));
       localStorage.setItem("lastStudyDate", today);
@@ -52,46 +61,20 @@ const VideoPlayer = () => {
     setStudiedMinutes(Math.floor(stored / 60));
   }, []);
 
-  useEffect(() => {
-    if (!chatUsername && isLive) {
-      const name = prompt("Enter your name for chat:");
-      if (name) {
-        setChatUsername(name);
-        localStorage.setItem("chatUsername", name);
-      }
-    }
-  }, [chatUsername, isLive]);
-
+  /* ───────────────────────────────
+     Live-viewer counter (Socket.IO)
+  ─────────────────────────────── */
   useEffect(() => {
     if (!videoId) return;
 
     const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app");
+
     socket.on("connect", () => socket.emit("joinVideo", videoId));
     socket.on(`viewerCount-${videoId}`, setViewerCount);
-    socket.on(`chatMessage-${videoId}`, (data) => {
-      setChatMessages((prev) => [...prev, data]);
-    });
     socket.on("connect_error", console.error);
 
-    return () => {
-      socket.disconnect();
-    };
+    return () => socket.disconnect();
   }, [videoId]);
-
-  useEffect(() => {
-    chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatMessages]);
-
-  const sendChatMessage = () => {
-    if (!chatInput.trim()) return;
-    const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app");
-    socket.emit("chatMessage", {
-      videoId,
-      username: chatUsername || "Anonymous",
-      message: chatInput.trim(),
-    });
-    setChatInput("");
-  };
 
   /* ───────────────────────────────
      Video.js initialisation
@@ -402,100 +385,6 @@ const VideoPlayer = () => {
       <div style={{ textAlign: "center", fontSize: 12, marginTop: 30, color: "#fff" }}>
         Today’s Study Time: <strong>{studiedMinutes} min</strong>
       </div>
-      {/* ...existing code above remains unchanged */}
-
-{isLive && (
-
-  <div
-    style={{
-      marginTop: "20px",
-      background: "#0f0f0f",
-      borderRadius: "10px",
-      overflow: "hidden",
-      maxHeight: "380px",
-      display: "flex",
-      flexDirection: "column",
-      boxShadow: "0 0 12px rgba(0,0,0,0.6)",
-      border: "1px solid #222",
-    }}
-  >
-    {/* Message List */}
-    <div
-      style={{
-        flex: 1,
-        padding: "12px",
-        overflowY: "auto",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-      }}
-    >
-      {chatMessages.map((msg, idx) => (
-        <div
-          key={idx}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            backgroundColor: "#1a1a1a",
-            padding: "10px 14px",
-            borderRadius: "8px",
-            borderLeft: "4px solid #2196f3",
-            color: "#fff",
-            fontSize: "14px",
-            maxWidth: "85%",
-          }}
-        >
-          <span style={{ fontWeight: "bold", color: "#2196f3", marginBottom: "2px" }}>{msg.username}</span>
-          <span>{msg.message}</span>
-        </div>
-      ))}
-      <div ref={chatBottomRef} />
-    </div>{/* Input Bar */}
-<div
-  style={{
-    display: "flex",
-    borderTop: "1px solid #333",
-    backgroundColor: "#121212",
-    padding: "10px",
-    gap: "8px",
-  }}
->
-  <input
-    value={chatInput}
-    onChange={(e) => setChatInput(e.target.value)}
-    onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
-    placeholder="Type a message..."
-    style={{
-      flex: 1,
-      padding: "10px 14px",
-      borderRadius: "6px",
-      border: "1px solid #333",
-      backgroundColor: "#1e1e1e",
-      color: "#fff",
-      fontSize: "14px",
-      outline: "none",
-    }}
-  />
-  <button
-    onClick={sendChatMessage}
-    style={{
-      padding: "10px 18px",
-      backgroundColor: "#2196f3",
-      border: "none",
-      borderRadius: "6px",
-      fontWeight: "bold",
-      fontSize: "14px",
-      color: "white",
-      cursor: "pointer",
-    }}
-  >
-    Send
-  </button>
-</div>
-
-  </div>
-)}
     </div>
   );
 };
