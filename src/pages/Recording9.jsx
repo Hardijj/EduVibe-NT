@@ -33,7 +33,7 @@ const Recording9 = () => {
         // ✅ DPP Mode Only
         if (onlyDpp) {
           const res = await fetch(
-            `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${onlyDpp}`
+            `https://automation9thphp.vercel.app/api/api.php?token=my_secret_key_123&view=${onlyDpp}`
           );
           const json = await res.json();
 
