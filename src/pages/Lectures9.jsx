@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import "../styles/Lectures.css";
 
-const Lectures = () => {
+const Lectures9 = () => {
   const { subject } = useParams();
   const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState("A");
