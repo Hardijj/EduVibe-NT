@@ -112,7 +112,7 @@ const LiveClasses9 = () => {
       return (
         <Link
           key={item.id}
-          to={`/video/10/${tab === "live" ? "live" : subject.toLowerCase()}/0`}
+          to={`/video/9/${tab === "live" ? "live" : subject.toLowerCase()}/0`}
           state={{ m3u8Url: fileUrl, chapterName: title }}
           className="card-link"
         >
