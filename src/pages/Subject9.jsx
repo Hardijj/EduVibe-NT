@@ -67,12 +67,19 @@ const Subject9 = () => {
 
       <div className="live-class-container">
         <Link
-          to={`/video/9/live`}
-          state={{ chapterName: "Live Class", m3u8Url }}
+          to={`/9/live`}
+          state={{}}
           className="subject-box live-class-section"
         >
-          🔴 Live Class (Click to Join)
+          🔴 Live Class (Click)
         </Link>
+      </div>
+
+      <div className="subject-boxes">
+        {subjects.map((subject, index) => (
+          <Link key={index} to={subject.path} className="subject-box">
+            {subject.name}
+          </Link>
       </div>
 
       <div className="subject-boxes">
