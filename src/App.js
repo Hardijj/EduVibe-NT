@@ -25,6 +25,7 @@ import Artsub11 from './pages/Artsub11';
 import LiveClasses from './pages/LiveClasses';
 import LiveClasses9 from './pages/LiveClasses9';
 import Recordings from './pages/Recording';
+import Recordings9 from './pages/Recording9';
 import TitleSetter from "./TitleSetter";  
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Route path="/10/test" element={<ProtectedRoute><TestPlatform /></ProtectedRoute>} />
         <Route path="/10/rc" element={<Recorded />} />
         <Route path="/10/recordings/:subject/:chapter" element={<Recordings />} />
+        <Route path="/9/recordings/:subject/:chapter" element={<Recordings9 />} />
         <Route path="/11/rc" element={<Rc11 />} />
         <Route path="/10/live" element={<LiveClasses />} />
         <Route path="/9/live" element={<LiveClasses9 />} />
