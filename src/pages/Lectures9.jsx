@@ -79,7 +79,7 @@ const Lectures9 = () => {
   };
 
   const isCourseSubject = subject === "English" || subject === "Hindi";
-  const selectedSubject = lectures[subject];
+  const selectedSubject = lectures9[subject];
   const chapters = isCourseSubject
     ? selectedSubject[selectedCourse]
     : selectedSubject.chapters;
