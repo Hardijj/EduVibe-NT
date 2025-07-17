@@ -38,7 +38,11 @@ const Subject9 = () => {
       ];
 
       for (let slot of slots) {
-        if (slot.subject && currentMinutes >= slot.start - 15 && currentMinutes < slot.start + 120) {
+        if (
+          slot.subject &&
+          currentMinutes >= slot.start - 15 &&
+          currentMinutes < slot.start + 120
+        ) {
           setM3u8Url(subjectLinks[slot.subject] || "");
           return;
         }
@@ -53,7 +57,7 @@ const Subject9 = () => {
   }, []);
 
   const subjects = [
-    { name: "Clcik Here for automated Lectures", path: "/subjectss/9"},
+    { name: "Click Here for Automated Lectures", path: "/subjectss/9" },
   ];
 
   return (
@@ -66,20 +70,9 @@ const Subject9 = () => {
       <h2>Select Subject - Class 9</h2>
 
       <div className="live-class-container">
-        <Link
-          to={`/9/live`}
-          state={{}}
-          className="subject-box live-class-section"
-        >
+        <Link to="/9/live" className="subject-box live-class-section">
           🔴 Live Class (Click)
         </Link>
-      </div>
-
-      <div className="subject-boxes">
-        {subjects.map((subject, index) => (
-          <Link key={index} to={subject.path} className="subject-box">
-            {subject.name}
-          </Link>
       </div>
 
       <div className="subject-boxes">
