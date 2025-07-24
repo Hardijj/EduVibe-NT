@@ -25,6 +25,7 @@ const LiveClasses = () => {
           const res = await fetch(`${GITHUB_API_BASE}${tab}`);
           const json = await res.json();
           result[tab] = json?.data || [];
+          timeMap[tab] = json?.time || ""; // ⏱️ Save time for each tab
         } catch {
           result[tab] = [];
         }
@@ -61,6 +62,7 @@ const LiveClasses = () => {
   const renderCard = (item, tab) => {
     const subject = subjectMap[item.payload.topic_id] || "Unknown";
     const fileUrl = item.file_url;
+    const fileUrlWithStart = `${file_url}?start=${time}`;
     const title = item.title || "Untitled";
     const thumb =
       item.thumbnail_url ||
@@ -113,7 +115,7 @@ const LiveClasses = () => {
         <Link
           key={item.id}
           to={`/video/10/${tab === "live" ? "live" : subject.toLowerCase()}/0`}
-          state={{ m3u8Url: fileUrl, chapterName: title }}
+          state={{ m3u8Url: fileUrlWithStart, chapterName: title }}
           className="card-link"
         >
           {card}
