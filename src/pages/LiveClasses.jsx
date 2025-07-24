@@ -16,21 +16,25 @@ const LiveClasses = () => {
   const [data, setData] = useState({});
   const [activeTab, setActiveTab] = useState("live");
   const [loading, setLoading] = useState(true);
+  const [timeMap, setTimeMap] = useState({});
 
   useEffect(() => {
     const fetchAll = async () => {
       const result = {};
+      const times = {};
       for (const tab of tabs) {
         try {
           const res = await fetch(`${GITHUB_API_BASE}${tab}`);
           const json = await res.json();
           result[tab] = json?.data || [];
-          timeMap[tab] = json?.time || ""; // ⏱️ Save time for each tab
+          times[tab] = json?.time || "";
         } catch {
           result[tab] = [];
+          times[tab] = "";
         }
       }
       setData(result);
+      setTimeMap(times); // ✅ Save time for each tab
       setLoading(false);
     };
     fetchAll();
@@ -62,7 +66,8 @@ const LiveClasses = () => {
   const renderCard = (item, tab) => {
     const subject = subjectMap[item.payload.topic_id] || "Unknown";
     const fileUrl = item.file_url;
-    const fileUrlWithStart = `${fileurl}?start=${time}`;
+    const time = timeMap[tab] || ""; // ✅ get time for current tab
+    const fileUrlWithStart = `${fileUrl}?start=${time}`;
     const title = item.title || "Untitled";
     const thumb =
       item.thumbnail_url ||
