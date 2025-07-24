@@ -62,7 +62,7 @@ const LiveClasses = () => {
   const renderCard = (item, tab) => {
     const subject = subjectMap[item.payload.topic_id] || "Unknown";
     const fileUrl = item.file_url;
-    const fileUrlWithStart = `${file_url}?start=${time}`;
+    const fileUrlWithStart = `${fileurl}?start=${time}`;
     const title = item.title || "Untitled";
     const thumb =
       item.thumbnail_url ||
