@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 const subjects = [
   { name: 'Maths', api: 'maths' },
   { name: 'Economics', api: 'eco' },
-  { name: 'Buisness Studies', api: 'bcom' },
+  { name: 'Business Studies', api: 'bcom' },
   { name: 'Accounts', api: 'acc' }
 ];
 
-// Define where to start for each subject
 const subjectFilters = {
   Accounts: 'No videos found',
   Maths: 'No videos found',
@@ -44,10 +43,6 @@ const Com11 = () => {
     }
   };
 
-  const handleSubjectClick = (subject) => {
-    fetchLectures(subject.api, subject.name);
-  };
-
   const goToVideo = (lecture) => {
     if (lecture.youtubeUrl) {
       window.open(lecture.youtubeUrl, "_blank");
@@ -74,7 +69,7 @@ const Com11 = () => {
       style={{
         minHeight: '100vh',
         backgroundColor: '#121212',
-        color: '#ffffff',
+        color: '#fff',
         fontFamily: 'Poppins, sans-serif',
         padding: 20
       }}
@@ -85,10 +80,10 @@ const Com11 = () => {
 
       {!selectedSubject && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20 }}>
-          {subjects.map((subject) => (
+          {subjects.map(subject => (
             <div
               key={subject.api}
-              onClick={() => handleSubjectClick(subject)}
+              onClick={() => fetchLectures(subject.api, subject.name)}
               style={{
                 background: '#1f1f1f',
                 padding: 30,
@@ -97,11 +92,11 @@ const Com11 = () => {
                 fontSize: 20,
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'transform 0.2s',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
+                boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                transition: 'transform 0.2s, background 0.2s'
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+              onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
+              onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
             >
               {subject.name}
             </div>
@@ -127,42 +122,51 @@ const Com11 = () => {
             ← Back
           </button>
 
-          <h2 style={{ fontWeight: 600 }}>{selectedSubject} Lectures</h2>
+          <h2 style={{ fontWeight: 600, marginBottom: 20 }}>{selectedSubject} Lectures</h2>
 
-          {/* Tabs */}
+          {/* Tab Selector */}
           <div style={{ display: 'flex', gap: 20, marginBottom: 20 }}>
-            <button
-              onClick={() => setActiveTab('videos')}
-              style={{
-                backgroundColor: activeTab === 'videos' ? '#333' : '#1e1e1e',
-                color: '#fff',
-                border: 'none',
-                padding: '10px 20px',
-                borderRadius: 8,
-                cursor: 'pointer',
-                fontWeight: 600
-              }}
-            >
-              Videos
-            </button>
-            <button
-              onClick={() => setActiveTab('notes')}
-              style={{
-                backgroundColor: activeTab === 'notes' ? '#333' : '#1e1e1e',
-                color: '#fff',
-                border: 'none',
-                padding: '10px 20px',
-                borderRadius: 8,
-                cursor: 'pointer',
-                fontWeight: 600
-              }}
-            >
-              Notes
-            </button>
+            {['videos', 'notes'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  backgroundColor: activeTab === tab ? '#333' : '#1e1e1e',
+                  color: '#fff',
+                  border: 'none',
+                  padding: '10px 20px',
+                  borderRadius: 8,
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
           </div>
 
           {loading ? (
-            <p>Loading...</p>
+            <div style={{ textAlign: 'center', marginTop: 40 }}>
+              <div className="spinner" />
+              <style>
+                {`
+                  .spinner {
+                    margin: 0 auto;
+                    width: 40px;
+                    height: 40px;
+                    border: 5px solid rgba(255, 255, 255, 0.2);
+                    border-top-color: #fff;
+                    border-radius: 50%;
+                    animation: spin 0.8s linear infinite;
+                  }
+
+                  @keyframes spin {
+                    to { transform: rotate(360deg); }
+                  }
+                `}
+              </style>
+            </div>
           ) : (
             <div>
               {activeTab === 'videos' &&
@@ -177,13 +181,13 @@ const Com11 = () => {
                       borderRadius: 10,
                       border: '1px solid #333',
                       cursor: 'pointer',
-                      transition: 'background 0.2s',
-                      fontWeight: 500
+                      fontWeight: 500,
+                      transition: 'all 0.2s ease'
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = '#292929')}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = '#1e1e1e')}
+                    onMouseEnter={e => (e.currentTarget.style.background = '#292929')}
+                    onMouseLeave={e => (e.currentTarget.style.background = '#1e1e1e')}
                   >
-                    {lecture.name}
+                    🎥 {lecture.name}
                   </div>
                 ))}
 
@@ -191,7 +195,7 @@ const Com11 = () => {
                 notes.map((note, index) => (
                   <a
                     key={index}
-                    href={note.youtubeUrl || note.url}
+                    href={note.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -203,13 +207,13 @@ const Com11 = () => {
                       border: '1px solid #333',
                       textDecoration: 'none',
                       color: '#fff',
-                      transition: 'background 0.2s',
-                      fontWeight: 500
+                      fontWeight: 500,
+                      transition: 'all 0.2s ease'
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = '#292929')}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = '#1e1e1e')}
+                    onMouseEnter={e => (e.currentTarget.style.background = '#292929')}
+                    onMouseLeave={e => (e.currentTarget.style.background = '#1e1e1e')}
                   >
-                    {note.title}
+                    📄 {note.title}
                   </a>
                 ))}
             </div>
