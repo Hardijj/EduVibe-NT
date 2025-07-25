@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 const subjects = [
   { name: 'Maths', api: 'maths' },
-  { name: 'Science', api: 'science' },
-  { name: 'SST', api: 'sst' }
+  { name: 'SST', api: 'science' },
+  { name: 'Science', api: 'sst' }
 ];
 
 const subjectFilters = {
