@@ -1,154 +1,97 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/LiveClasses.css";
+import { useNavigate } from "react-router-dom";
+import "../styles/global.css"
 
-const tabs = ["live", "upcoming", "completed"];
-const subjectMap = {
-  "35848": "Maths",
-  "35850": "Science",
-  "35849": "SST"
+// ✅ Replace with your teacher-specific M3U8 links
+const teacherLinks = {
+  Science: {
+    "Prashant sir": "https://d133w6ldrek1er.cloudfront.net/out/v1/f15d86916b1f404baeb09967b920d86a/index.m3u8",
+    "Tapur Ma'am": "https://dga9kme080o0w.cloudfront.net/out/v1/ac361b0bc5c84abba22ce98a674f14a3/index.m3u8",
+  },
+  SST: {
+    "DSR": "https://dga9kme080o0w.cloudfront.net/out/v1/90ab1354cfcd4c5b83cf78a87d96041e/index.m3u8",
+    "Teacher": "https://sst-desai.live/link.m3u8",
+  },
+  Maths: {
+    "Shobhit Bhaiya": "https://dga9kme080o0w.cloudfront.net/out/v1/5c7cfedca3df4fc99ea383b5f2e6a7a8/index.m3u8",
+    "Kuldeep Sir": "https://d133w6ldrek1er.cloudfront.net/out/v1/49856fa811d3403facbfba24d0db04ab/index.m3u8",
+  }
 };
 
-const GITHUB_API_BASE =
-  "https://automation9thphp.vercel.app/api/api.php?token=my_secret_key_123&view=";
+// ✅ Your subject time-table
+const timetable = {
+  Monday: { "17:00": "Science", "20:00": "SST" },
+  Tuesday: { "17:00": "Science", "20:00": "SST" },
+  Wednesday: { "17:00": "SST", "20:00": "Science" },
+  Thursday: { "17:00": "SST", "20:00": "Maths" },
+  Friday: { "17:00": "Maths" },
+  Saturday: { "17:00": "Maths" }
+};
 
 const LiveClasses9 = () => {
-  const [data, setData] = useState({});
-  const [activeTab, setActiveTab] = useState("live");
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [teacherOptions, setTeacherOptions] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState(null);
 
   useEffect(() => {
-    const fetchAll = async () => {
-      const result = {};
-      for (const tab of tabs) {
-        try {
-          const res = await fetch(`${GITHUB_API_BASE}${tab}`);
-          const json = await res.json();
-          result[tab] = json?.data || [];
-        } catch {
-          result[tab] = [];
-        }
+    const now = new Date();
+    const dayName = now.toLocaleDateString("en-US", { weekday: "long" });
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+
+    const currentTime = `${hours}:${minutes}`;
+    const todaySchedule = timetable[dayName] || {};
+    const allSlots = Object.keys(todaySchedule);
+
+    // Check closest matching slot
+    let matchedSlot = null;
+    for (let time of allSlots) {
+      const [slotHour, slotMin] = time.split(":").map(Number);
+      const slotDate = new Date(now);
+      slotDate.setHours(slotHour, slotMin, 0, 0);
+      if (now.getTime() >= slotDate.getTime() && now.getTime() <= slotDate.getTime() + 3600000) {
+        matchedSlot = time;
+        break;
       }
-      setData(result);
-      setLoading(false);
-    };
-    fetchAll();
-  }, []);
-
-  const formatTime = (unix) => {
-    const d = new Date(parseInt(unix) * 1000);
-    return d.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-  };
-
-  const formatDuration = (seconds) => {
-    const s = parseInt(seconds || "0", 10);
-    if (isNaN(s) || s <= 0) return "—";
-    const mins = Math.floor(s / 60);
-    const hrs = Math.floor(mins / 60);
-    const remMin = mins % 60;
-    return hrs > 0 ? `${hrs}h ${remMin}m` : `${remMin}m`;
-  };
-
-  const countdownTo = (unix) => {
-    const ms = parseInt(unix) * 1000 - Date.now();
-    if (ms < 0) return "🔴 Starting soon";
-    const mins = Math.floor(ms / 60000);
-    const hrs = Math.floor(mins / 60);
-    const remMin = mins % 60;
-    return `🕒 ${hrs}h ${remMin}m left`;
-  };
-
-  const renderCard = (item, tab) => {
-    const subject = subjectMap[item.payload.topic_id] || "Unknown";
-    const fileUrl = item.file_url;
-    const title = item.title || "Untitled";
-    const thumb =
-      item.thumbnail_url ||
-      "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png";
-    const startAt = formatTime(item.start_date);
-    const endAt = formatTime(item.end_date);
-    const duration = formatDuration(item.video_length || item.playtime || 0);
-
-    const card = (
-      <div className={`live-card ${tab}`}>
-        <div className="color-strip" />
-        <img src={thumb} alt={title} className="card-image" />
-        <div className="card-content">
-          <h3 className="card-title">{title}</h3>
-          <p className="card-subject">📘 {subject}</p>
-
-          {tab === "live" && (
-            <>
-              <p className="card-status live">🔴 Live Now</p>
-              <p className="card-countdown">🗓️ Start: {startAt}</p>
-              <p className="card-countdown">🕓 End: {endAt}</p>
-              <p className="card-countdown">⏱️ Duration: {duration}</p>
-            </>
-          )}
-
-          {tab === "upcoming" && (
-            <>
-              <p className="card-countdown">{countdownTo(item.start_date)}</p>
-              <p className="card-countdown">🗓️ Start: {startAt}</p>
-              <p className="card-countdown">🕓 End: {endAt}</p>
-              <p className="card-status upcoming">🟡 Scheduled</p>
-            </>
-          )}
-
-          {tab === "completed" && (
-            <>
-              <p className="card-status completed">✅ Completed</p>
-              <p className="card-countdown">🗓️ Start: {startAt}</p>
-              <p className="card-countdown">🕓 End: {endAt}</p>
-              <p className="card-countdown">⏱️ Duration: {duration}</p>
-            </>
-          )}
-        </div>
-      </div>
-    );
-
-    // ✅ Wrap only live & completed in Link
-    if (tab === "live" || tab === "completed") {
-      return (
-        <Link
-          key={item.id}
-          to={`/video/9/${tab === "live" ? "live" : subject.toLowerCase()}/0`}
-          state={{ m3u8Url: fileUrl, chapterName: title }}
-          className="card-link"
-        >
-          {card}
-        </Link>
-      );
     }
 
-    return (
-      <div key={item.id} className="card-link">
-        {card}
-      </div>
-    );
+    if (!matchedSlot) {
+      alert("No live class right now.");
+      return;
+    }
+
+    const subject = todaySchedule[matchedSlot];
+    setSelectedSubject(subject);
+    setTeacherOptions(Object.keys(teacherLinks[subject]));
+  }, []);
+
+  const handleTeacherSelection = (teacherName) => {
+    const now = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
+    const m3u8Url = `${teacherLinks[selectedSubject][teacherName]}?start=${now}`;
+
+    navigate(`/video/9/live`, {
+      state: {
+        m3u8Url: m3u8Url,
+      }
+    });
   };
 
   return (
-    <div className="live-classes-container">
-      <h2>🔴 Live Classes</h2>
-      <div className="tabs-wrapper">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`tab-button ${activeTab === tab ? "active" : ""}`}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      {loading ? (
-        <p className="loading-text">⏳ Loading...</p>
-      ) : (
-        <div className="card-grid">
-          {data[activeTab]?.map((item) => renderCard(item, activeTab))}
-        </div>
+    <div style={{ padding: "20px", textAlign: "center" }}>
+      {selectedSubject && (
+        <>
+          <h2>Live Class: {selectedSubject}</h2>
+          <p>Choose your teacher:</p>
+          {teacherOptions.map((teacher) => (
+            <button
+              key={teacher}
+              onClick={() => handleTeacherSelection(teacher)}
+              style={{ margin: "10px", padding: "10px 20px", cursor: "pointer" }}
+            >
+              {teacher}
+            </button>
+          ))}
+        </>
       )}
     </div>
   );
