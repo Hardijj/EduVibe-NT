@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const subjects = [
   { name: 'Maths', api: 'maths' },
-  { name: 'Science', api: 'sci' },
+  { name: 'Science', api: 'science' },
   { name: 'SST', api: 'sst' }
 ];
 
@@ -47,11 +47,11 @@ const Class9 = () => {
       window.open(lecture.youtubeUrl, "_blank");
     } else {
       const noteMatch = notes.find(n => n.title === lecture.name);
-      navigate(`/video/113/${selectedSubject}/0`, {
+      navigate(`/video/9/${selectedSubject}/0`, {
         state: {
           m3u8Url: lecture.m3u8Url,
           notesUrl: noteMatch?.url || null,
-          title: lecture.name
+          chapterName: lecture.name
         }
       });
     }
@@ -186,7 +186,7 @@ const Class9 = () => {
                     onMouseEnter={e => (e.currentTarget.style.background = '#292929')}
                     onMouseLeave={e => (e.currentTarget.style.background = '#1e1e1e')}
                   >
-                    🎥 {lecture.name}
+                     {lecture.name}
                   </div>
                 ))}
 
