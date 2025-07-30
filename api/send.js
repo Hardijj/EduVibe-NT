@@ -15,17 +15,25 @@ webpush.setVapidDetails(
 const PASS = process.env.ADMIN_PASS;
 
 // Async iterator to scan all keys matching a pattern
-async function scanKeys(pattern) {
+async function scanKeys(redis, pattern) {
+  const keys = [];
   let cursor = 0;
-  let allKeys = [];
 
-  do {
-    const { cursor: nextCursor, keys } = await redis.scan(cursor, { match: pattern, count: 100 });
+  while (true) {
+    const [nextCursor, foundKeys] = await redis.scan(cursor, {
+      match: pattern,
+      count: 100,
+    });
+
+    if (Array.isArray(foundKeys)) {
+      keys.push(...foundKeys);
+    }
+
     cursor = Number(nextCursor);
-    allKeys.push(...keys);
-  } while (cursor !== 0);
+    if (cursor === 0) break;
+  }
 
-  return allKeys;
+  return keys;
 }
 
 export default async function handler(req, res) {
