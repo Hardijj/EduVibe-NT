@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/LiveClasses.css";
 
 const tabs = ["live", "upcoming", "completed"];
@@ -17,6 +17,8 @@ const LiveClasses = () => {
   const [activeTab, setActiveTab] = useState("live");
   const [loading, setLoading] = useState(true);
   const [timeMap, setTimeMap] = useState({});
+  const [liveError, setLiveError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -34,7 +36,7 @@ const LiveClasses = () => {
         }
       }
       setData(result);
-      setTimeMap(times); // ✅ Save time for each tab
+      setTimeMap(times);
       setLoading(false);
     };
     fetchAll();
@@ -66,8 +68,10 @@ const LiveClasses = () => {
   const renderCard = (item, tab) => {
     const subject = subjectMap[item.payload.topic_id] || "Unknown";
     const fileUrl = item.file_url;
-    const time = timeMap[tab] || ""; // ✅ get time for current tab
-    const fileUrlWithStart = `${fileUrl}?start=${time}`;
+    const time = timeMap[tab] || "";
+    const fileUrlWithStart = fileUrl.includes("?")
+      ? `${fileUrl}&start=${time}`
+      : `${fileUrl}?start=${time}`;
     const title = item.title || "Untitled";
     const thumb =
       item.thumbnail_url ||
@@ -114,12 +118,39 @@ const LiveClasses = () => {
       </div>
     );
 
-    // ✅ Wrap only live & completed in Link
-    if (tab === "live" || tab === "completed") {
+    if (tab === "live") {
+      return (
+        <div
+          key={item.id}
+          className="card-link"
+          onClick={async () => {
+            setLiveError("");
+            try {
+              const res = await fetch(fileUrlWithStart, { method: "HEAD" });
+              if (res.ok) {
+                navigate(`/video/10/live/0`, {
+                  state: { m3u8Url: fileUrlWithStart, chapterName: title },
+                });
+              } else {
+                setLiveError("🔴 Live class hasn't started yet. Please try again shortly.");
+                setTimeout(() => setLiveError(""), 4000);
+              }
+            } catch {
+              setLiveError("⚠️ Unable to check live status. Please try again.");
+              setTimeout(() => setLiveError(""), 4000);
+            }
+          }}
+        >
+          {card}
+        </div>
+      );
+    }
+
+    if (tab === "completed") {
       return (
         <Link
           key={item.id}
-          to={`/video/10/${tab === "live" ? "live" : subject.toLowerCase()}/0`}
+          to={`/video/10/${subject.toLowerCase()}/0`}
           state={{ m3u8Url: fileUrlWithStart, chapterName: title }}
           className="card-link"
         >
@@ -137,6 +168,11 @@ const LiveClasses = () => {
 
   return (
     <div className="live-classes-container">
+      {liveError && (
+        <div className="live-error-banner">
+          🚫 {liveError}
+        </div>
+      )}
       <h2>🔴 Live Classes</h2>
       <div className="tabs-wrapper">
         {tabs.map((tab) => (
