@@ -129,3 +129,29 @@
     gap: 16px;
   }
   }
+
+.live-error-banner {
+  background: #ffe0e0;
+  color: #b80000;
+  border: 1px solid #b80000;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 8px;
+  margin: 10px auto;
+  width: 90%;
+  animation: fadeInDown 0.4s ease-out;
+  z-index: 999;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
