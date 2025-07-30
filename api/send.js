@@ -14,36 +14,22 @@ webpush.setVapidDetails(
 
 const PASS = process.env.ADMIN_PASS;
 
-// Async iterator to scan all keys matching a pattern
-async function scanKeys(redis, pattern) {
-  const keys = [];
-  let cursor = 0;
-
-  while (true) {
-    const [nextCursor, foundKeys] = await redis.scan(cursor, "MATCH", pattern, "COUNT", 100);
-
-    if (Array.isArray(foundKeys)) {
-      keys.push(...foundKeys);
-    }
-
-    cursor = Number(nextCursor);
-    if (cursor === 0) break;
-  }
-
-  return keys;
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { pass, title, body, url, test } = req.body || {};
 
+  // ✅ Password Check
   if (pass !== PASS) return res.status(401).json({ error: 'bad password' });
+
+  // ✅ Ping check (admin login test)
   if (test) return res.json({ ok: 'ping' });
+
+  // ✅ Validate input
   if (!title || !body) return res.status(400).json({ error: 'need title & body' });
 
-  // ✅ Use SCAN instead of KEYS
-  const keys = await scanKeys('sub:*');
+  // ✅ Get all subs
+  const keys = await redis.keys('sub:*');
   const subs = await Promise.all(keys.map(k => redis.get(k)));
 
   const payload = JSON.stringify({ title, body, url });
@@ -52,6 +38,7 @@ export default async function handler(req, res) {
     subs.map(sub => webpush.sendNotification(sub, payload))
   );
 
+  // ✅ Cleanup expired (410)
   results.forEach((r, i) => {
     if (r.status === 'rejected' && r.reason?.statusCode === 410) {
       redis.del(keys[i]);
@@ -63,4 +50,4 @@ export default async function handler(req, res) {
     ok: results.filter(r => r.status === 'fulfilled').length,
     fail: results.filter(r => r.status === 'rejected').length
   });
-                       }
+    }
