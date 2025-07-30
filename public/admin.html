@@ -94,7 +94,8 @@ async function send(e) {
   e.preventDefault();
   const pass = localStorage.getItem(KEY);
   const msg = document.getElementById('msg');
-  msg.textContent = 'Sending…'; msg.className = 'msg';
+  msg.textContent = 'Sending…';
+  msg.className = 'msg';
 
   const res = await fetch('/api/send', {
     method: 'POST',
@@ -107,13 +108,22 @@ async function send(e) {
     })
   });
 
-  const out = await res.json();
+  let out;
+  try {
+    out = await res.json();
+  } catch (e) {
+    const raw = await res.text();
+    msg.textContent = `❌ Invalid response from server: ${raw.slice(0, 80)}`;
+    msg.className = 'msg err';
+    return;
+  }
+
   if (res.ok) {
     msg.textContent = `✅ Pushed to ${out.ok}/${out.to}`;
     msg.className = 'msg ok';
   } else {
-    msg.textContent = `❌ ${out.error}`;
+    msg.textContent = `❌ ${out.error || 'Unknown error'}`;
     msg.className = 'msg err';
   }
-}
+  }
 </script>
