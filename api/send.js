@@ -20,10 +20,7 @@ async function scanKeys(redis, pattern) {
   let cursor = 0;
 
   while (true) {
-    const [nextCursor, foundKeys] = await redis.scan(cursor, {
-      match: pattern,
-      count: 100,
-    });
+    const [nextCursor, foundKeys] = await redis.scan(cursor, "MATCH", pattern, "COUNT", 100);
 
     if (Array.isArray(foundKeys)) {
       keys.push(...foundKeys);
