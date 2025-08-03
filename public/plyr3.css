@@ -1,0 +1,383 @@
+
+.plyr__controls {
+    padding-bottom: .5rem;
+    background: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, .7));
+    padding: 1rem;
+    margin: 0 20px;
+    
+}
+.plyr__controls__item[type="button" ]:hover{
+    scale: 1.1;
+}
+.plyr--video {
+    height: 10vh;
+}
+
+.plyr--video {
+    height: calc(var(--vh, 1vh) * 100);
+    overflow: hidden;
+}
+
+::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+    display: none;
+}
+
+.player {
+    width: 100%;
+}
+
+.plyr__menu__container {
+    background-color: #17171C;
+  
+
+}
+.plyr__menu__container>div{
+    max-height: 80vh;
+    overflow:scroll;
+}
+.plyr__menu__container .plyr__control {
+    color: #d9d9da;
+}
+
+.plyr__menu__container .plyr__menu__value {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    border-radius: .375rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(35 35 42/1);
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: .75rem;
+    padding-right: 6px;
+    cursor: pointer;
+}
+
+.plyr__control[role=menuitemradio][aria-checked=true]:before {
+    background-color: #B2A9FF;
+}
+
+.plyr__control[aria-checked="true"] {
+    background-color: #332E56;
+}
+
+
+.plyr__menu__container {
+    font-family: 'RedditSans', 'sans-serif';
+    line-height: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(255 255 255/1);
+    border: 0 solid #e5e7eb;
+    box-sizing: border-box;
+    z-index: 10;
+    margin-top: .75rem;
+    width: 360px;
+    opacity: 1;
+    overflow-y: scroll;
+    scrollbar-width: 0;
+}
+
+.plyr__menu__container .plyr__control--back {
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    tab-size: 4;
+    font-family: 'RedditSans', 'sans-serif';
+    line-height: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255/var(--tw-text-opacity));
+    border: 0 solid #e5e7eb;
+    box-sizing: border-box;
+    margin-bottom: .25rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .75rem;
+    padding-bottom: .75rem;
+    cursor: pointer;
+}
+
+.plyr__menu__container .plyr__control[role=menuitemradio] {
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    tab-size: 4;
+    font-family: 'RedditSans', 'sans-serif';
+    line-height: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255/var(--tw-text-opacity));
+    border: 0 solid #e5e7eb;
+    box-sizing: border-box;
+    margin-bottom: .25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: .5rem;
+    padding-top: .5rem;
+    padding-right: .5rem;
+    cursor: pointer;
+    overflow: scroll;
+    max-height: 100vh;
+    border-radius: .25rem;
+}
+
+.plyr__menu__container .plyr__control>span {
+    font-size: 1rem;
+    line-height: 28px;
+    font-weight: 600;
+}
+
+.plyr__progress__container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: calc(100% - 1.5em);
+    margin-left: 1.5em;
+}
+
+.plyr__time--current {
+    position: absolute;
+    top: -2rem;
+    font-size: .85em;
+    line-height: 1.8em;
+    left: 0;
+    border-radius: .25rem;
+}
+
+.plyr__time--duration {
+    position: absolute;
+    top: -2rem;
+    font-size: .85em;
+    line-height: 1.8em;
+    right: 10;
+    border-radius: .25rem;
+}
+
+.plyr--full-ui input[type=range] {
+    color: #5a4bda;
+}
+
+.plyr__controls__item[data-plyr="play"] {
+    position: absolute;
+    left: 0;
+}
+
+.plyr__controls__item[data-plyr="rewind"] {
+    position: absolute;
+    left: 3.5rem;
+}
+
+.plyr__controls__item[data-plyr="fast-forward"] {
+    position: absolute;
+    left: 6rem;
+}
+
+.plyr--full-ui.plyr--video .plyr__control--overlaid {
+    padding: 1rem;
+}
+
+.plyr__control svg {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.plyr__control[role=menuitemradio] span .plyr__menu__value {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .plyr__time+.plyr__time {
+        display: block;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .plyr__volume {
+        display: none;
+    }
+
+    .plyr__control {
+        padding: 4px;
+    }
+
+    .plyr__menu__container {
+        width: 80vw;
+        right: -18px;
+    }
+
+    .plyr__controls {
+        padding: .5rem;
+        margin: 0 5px;
+    }
+
+    .plyr__menu__container .plyr__control>span {
+        font-size: .75rem;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.relative {
+    position: relative;
+}
+
+.block {
+    display: block;
+}
+
+.h-screen {
+    height: 100vh;
+}
+
+.plyr__controls__item[data-plyr="fast-forward"] {
+    background-image: url('https://www.pw.live/watch/forward.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 2rem;
+    width: 2rem;
+    --tw-space-x-reverse: 0;
+    margin-left: calc(.75rem*(1 - var(--tw-space-x-reverse)));
+    margin-right: calc(.75rem* var(--tw-space-x-reverse));
+}
+
+.plyr__controls__item[data-plyr="rewind"] {
+    background-image: url('https://www.pw.live/watch/backward.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 2rem;
+    width: 2rem;
+    --tw-space-x-reverse: 0;
+    margin-left: calc(.75rem*(1 - var(--tw-space-x-reverse)));
+    margin-right: calc(.75rem* var(--tw-space-x-reverse));
+}  
+.plyr__controls__item[data-plyr="fullscreen"] {
+    background-image: url('https://www.pw.live/watch/maximize.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 2rem;
+    width: 2rem;
+    --tw-space-x-reverse: 0;
+    margin-left: calc(.75rem*(1 - var(--tw-space-x-reverse)));
+    margin-right: calc(.75rem* var(--tw-space-x-reverse));
+}  
+.plyr__control--pressed[data-plyr="fullscreen"]{
+    background-image: url('https://raw.githubusercontent.com/nexttoppers/nexttoppers.github.io/d7aa8a83f9bef4cc09d81509cb80438acc65f1ae/minimize.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 2rem;
+    width: 2rem;
+    --tw-space-x-reverse: 0;
+    margin-left: calc(.75rem*(1 - var(--tw-space-x-reverse)));
+    margin-right: calc(.75rem* var(--tw-space-x-reverse));
+}
+
+.plyr__controls__item[data-plyr="rewind"] svg,
+.plyr__controls__item[data-plyr="fast-forward"] svg,   .plyr__controls__item[data-plyr="fullscreen"] svg{
+    display: none;
+}
+
+.plyr__controls__item[data-plyr="fast-forward"]:active {
+    rotate: 90deg;
+}
+
+.plyr__controls__item[data-plyr="rewind"]:active {
+    rotate: -90deg;
+}
+
+.player-header {
+    background: linear-gradient(0deg, transparent 0, rgba(0, 0, 0, .5));
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.player-header {
+    transition: opacity 0.3s ease;
+    /* Smooth fade in/out */
+    opacity: 1;
+    /* Initially visible */
+    pointer-events: auto;
+    /* Initially interactive */
+}
+
+:-webkit-full-screen .player-header,
+/* For Chrome, Safari */
+:-moz-full-screen .player-header,
+/* For Firefox */
+:-ms-fullscreen .player-header,
+/* For IE */
+:fullscreen .player-header {
+    z-index: 9999;
+}
+
+.player-icon {
+    font-size: 1.25rem;
+    height: 2.25rem;
+    line-height: 1.75rem;
+    width: 2.25rem;
+}
+
+.player-icon path {
+    stroke: white;
+}
+
+
+@media (max-width: 768px) {
+    .plyr--video {
+        height: 100%;
+    }
+
+    .plyr__menu__container {
+        right: -18px;
+        overflow: scroll;
+    }
+
+    .plyr__controls {
+        margin: 0 .1rem;
+        background: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, 0.314));
+    }
+
+    .plyr__progress__container {
+        top: 0px;
+    }
+
+    .plyr__time--duration,
+    .plyr__time--current {
+        top: -1.75rem;
+    }
+
+    @media (max-width: 480px) {
+        .plyr__controls {
+            margin: 0;
+            padding-bottom: .5rem;
+        }
+
+        .plyr__progress__container {
+            top: -5px;
+        }
+
+        .plyr__control>span {
+            font-size: .75rem;
+        }
+    }
+
+    @media only screen and (max-height: 480px) {
+        .plyr__menu__container {
+            max-height: 12rem;
+        }
+    }
+
+}
