@@ -86,26 +86,33 @@ const Lectures = () => {
     English: {
       A: [
         { name: "LR", index: 100, view:"englr" },
-        { name: "Grammer", index: 101, view:"enggm" },
+        { name: "Grammar", index: 101, view:"enggm" },
         { name: "Writting Skill", index: 102, view:"engws" },
         { name: "Reading Comprehension", index: 103, view:"engrc" },
+        { name: "Live", view:"engalive"},
       ],
       B: [
         { name: "First Flight", index: 0, view: "engff" },
         { name: "Footprint Without Feet", index: 1, view:"engfoot" },
-        { name: "Grammer", index: 101, view:"enggm" },
+        { name: "Grammar", index: 101, view:"enggm" },
         { name: "Writting Skill", index: 102, view:"engws" },
         { name: "Reading Comprehension", index: 103, view:"engrc" },
+        { name: "Live", view:"engblive"},
+        { name: "Extra content", view:"engextra"}
       ]
     },
     Hindi: {
       A: [
         { name: "Kshitij", index: 0, view:"hinks" },
         { name: "kritika", index: 1, view:"hinkr" },
+        { name: "Live", view:"hinalive"},
+        { name: "Grammar", view:"hinagm"},
       ],
       B: [
         { name: "Sparsh", index: 100, view:"hinsp" },
         { name: "Sanchayan", index: 101, view:"hinsn" },
+        { name: "Live", view:"hinblive"},
+        { name: "Grammar", view:"hinbgm"},
       ]
     },
     Sanskrit: {
