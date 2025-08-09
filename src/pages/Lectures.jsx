@@ -89,7 +89,7 @@ const Lectures = () => {
         { name: "Grammar", index: 101, view:"enggm" },
         { name: "Writting Skill", index: 102, view:"engws" },
         { name: "Reading Comprehension", index: 103, view:"engrc" },
-        { name: "Live", view:"engalive"},
+        { name: "Live Class", view:"engalive"},
       ],
       B: [
         { name: "First Flight", index: 0, view: "engff" },
@@ -97,7 +97,7 @@ const Lectures = () => {
         { name: "Grammar", index: 101, view:"enggm" },
         { name: "Writting Skill", index: 102, view:"engws" },
         { name: "Reading Comprehension", index: 103, view:"engrc" },
-        { name: "Live", view:"engblive"},
+        { name: "Live Class", view:"engblive"},
         { name: "Extra content", view:"engextra"}
       ]
     },
@@ -105,19 +105,22 @@ const Lectures = () => {
       A: [
         { name: "Kshitij", index: 0, view:"hinks" },
         { name: "kritika", index: 1, view:"hinkr" },
-        { name: "Live", view:"hinalive"},
+        { name: "Live Class", view:"hinalive"},
         { name: "Grammar", view:"hinagm"},
       ],
       B: [
         { name: "Sparsh", index: 100, view:"hinsp" },
         { name: "Sanchayan", index: 101, view:"hinsn" },
-        { name: "Live", view:"hinblive"},
+        { name: "Live Class", view:"hinblive"},
         { name: "Grammar", view:"hinbgm"},
       ]
     },
     Sanskrit: {
       chapters: [
-        { name: "Sanskrit", index: 0, view: "sans" },
+        { name: "Grammar", index: 0, view: "sansgm" },
+        { name: "Manika", view:"sansman"},
+        { name: "Shemushi", view:"sansshe"},
+        { name: "Live Class", view:"sanslive"},
       ]
     }
   };
