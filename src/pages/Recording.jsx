@@ -83,10 +83,10 @@ const Recording = () => {
           }
 
           if (fromid) {
-            const fromIndex = list.findIndex(
-              (item) => item.id?.trim() === from.trim()
+            const fromidIndex = list.findIndex(
+              (item) => item.id?.trim() === fromid.trim()
             );
-            list = fromIndex !== -1 ? list.slice(fromIndex) : list;
+            list = fromidIndex !== -1 ? list.slice(fromidIndex) : list;
           }
 
           if (to) {
@@ -97,10 +97,10 @@ const Recording = () => {
           }
 
           if (toid) {
-            const toIndex = list.findIndex(
-              (item) => item.id?.trim() === to.trim()
+            const toidIndex = list.findIndex(
+              (item) => item.id?.trim() === toid.trim()
             );
-            list = toIndex !== -1 ? list.slice(0, toIndex + 1) : list;
+            list = toidIndex !== -1 ? list.slice(0, toidIndex + 1) : list;
           }
 
           setLectures(list);
