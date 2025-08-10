@@ -56,7 +56,8 @@ const Lectures = () => {
           to: "Quadratic Equations L8",
           fromNotes:"Quadratic Equations L1", toNotes:"Quadratic Equations L8"
         },
-         { name: "AP", index:6, from: "AP L1"},
+         { name: "AP", index:6, from: "AP L1", toid:"2216361"},
+        { name: "Coordinate Geometry", fromid: "2220582"},
       ]
     },
     SST: {
@@ -70,7 +71,9 @@ const Lectures = () => {
         { name: "Rise of Nationalism in Europe", index: 3, from:"The Rise of Nationalism L1",to:"The Rise of Nationalism in Europe L11" },
         { name: "Forest & Wildlife Resources", index: 4, from:"Forest And Wildlife Resources L1",to:"Forest And Wildlife Resources L3" },
         { name: "Sectors of Indian economy", index: 5,from:"Sectors of the Indian Economy - 1",to:"Doubt +Sectors of Indian Economy class L6" },
-        { name: "Federalism", index: 6, from:"FEDERALISM- L1" },
+        { name: "Federalism", index: 6, from:"FEDERALISM- L1", toid: "2159503" },
+        { name: "Nationalism in India", fromid: "2160763", toid: "2218592"},
+        { name: "Water Resources", fromid: "2239724"},
       ]
     },
     IT: {
