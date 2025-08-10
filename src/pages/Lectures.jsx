@@ -167,6 +167,8 @@ const Lectures = () => {
   state={{
   from: chapter.from || null,
   to: chapter.to || null,
+  fromid: chapter.fromid || null,
+  toid: chapter.toid || null,
   fromNotes: chapter.fromNotes || null,
   toNotes: chapter.toNotes || null,
   view: chapter.view || subject.toLowerCase(),
