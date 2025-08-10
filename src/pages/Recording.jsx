@@ -10,6 +10,8 @@ const Recording = () => {
   const {
     from = null,
     to = null,
+    fromid = null,
+    toid = null,
     fromNotes = null,
     toNotes = null,
     view = null,
@@ -80,9 +82,23 @@ const Recording = () => {
             list = fromIndex !== -1 ? list.slice(fromIndex) : list;
           }
 
+          if (fromid) {
+            const fromIndex = list.findIndex(
+              (item) => item.id?.trim() === from.trim()
+            );
+            list = fromIndex !== -1 ? list.slice(fromIndex) : list;
+          }
+
           if (to) {
             const toIndex = list.findIndex(
               (item) => item.title?.trim() === to.trim()
+            );
+            list = toIndex !== -1 ? list.slice(0, toIndex + 1) : list;
+          }
+
+          if (toid) {
+            const toIndex = list.findIndex(
+              (item) => item.id?.trim() === to.trim()
             );
             list = toIndex !== -1 ? list.slice(0, toIndex + 1) : list;
           }
