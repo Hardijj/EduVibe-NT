@@ -29,7 +29,7 @@ const Lectures = () => {
         { name: "Acid Base & Salt", index: 3,from:"Acid base and salts L1",to:"Doubt Solving Class" },
         { name: "Human eye & Colourful World", index: 4, from:"Human eye - L1",to:"Doubt Class" },
         { name: "Control & Coordination", index:5, from:"Control and Co-ordination L1", toid:"2204561"},
-        { name: "Metals & Non-Metals", fromid: "2205875", toid "2240797"},
+        { name: "Metals & Non-Metals", fromid: "2205875", toid:"2240797"},
         { name: "Electricity", fromid: "2241947"},
       ]
     },
