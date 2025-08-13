@@ -12,7 +12,7 @@ const subjectMap = {
 const GITHUB_API_BASE =
   "https://automation9thphp.vercel.app/api/api.php?token=my_secret_key_123&view=";
 
-const LiveClasses = () => {
+const LiveClasses9 = () => {
   const [data, setData] = useState({});
   const [activeTab, setActiveTab] = useState("live");
   const [loading, setLoading] = useState(true);
@@ -128,7 +128,7 @@ const LiveClasses = () => {
             try {
               const res = await fetch(fileUrlWithStart, { method: "HEAD" });
               if (res.ok) {
-                navigate(`/video/10/live/0`, {
+                navigate(`/video/9/live/`, {
                   state: { m3u8Url: fileUrlWithStart, chapterName: title },
                 });
               } else {
@@ -150,7 +150,7 @@ const LiveClasses = () => {
       return (
         <Link
           key={item.id}
-          to={`/video/10/${subject.toLowerCase()}/0`}
+          to={`/video/9/${subject.toLowerCase()}/0`}
           state={{ m3u8Url: fileUrlWithStart, chapterName: title }}
           className="card-link"
         >
@@ -197,4 +197,4 @@ const LiveClasses = () => {
   );
 };
 
-export default LiveClasses;
+export default LiveClasses9;
