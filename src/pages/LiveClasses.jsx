@@ -68,7 +68,7 @@ const LiveClasses = () => {
   const renderCard = (item, tab) => {
     const subject = subjectMap[item.payload.topic_id] || "Unknown";
     const fileUrl = item.file_url;
-    const time = timeMap[tab] || "";
+    const time = item.start_date;
     const fileUrlWithStart = fileUrl.includes("?")
       ? `${fileUrl}&start=${time}`
       : `${fileUrl}?start=${time}`;
