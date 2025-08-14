@@ -16,10 +16,16 @@ const Lectures9 = () => {
 
   const lectures9 = {
     Science: {
-      view: "science",
       chapters: [
         { name: "ACP", index: 19, onlyDpp: "sciencedpp" },
-        { name: "Science" },
+        { name: "Matter in our Surroundings", view: "mattersurrounding" },
+        { name: "Is matter around us pure ?", view: "matterpure" },
+        { name: "Atoms & Molecules", view: "atom" },
+        { name: "Motion", view: "motion" },
+        { name: "Force & law of motion", view: "force" },
+        { name: "Gravitation", view: "gravitation" },
+        { name: "The Fundamental Unit of Life", view: "fundamental" },
+        { name: "Tissue", view: "tissues" },
       ]
     },
     Maths: {
@@ -53,27 +59,34 @@ const Lectures9 = () => {
         { name: "LR", index: 100, view:"englr" },
         { name: "Grammer", index: 101, view:"enggm" },
         { name: "Reading Comprehension", index: 103, view:"engrc" },
+        { name: "Live", view: "engalive" },
       ],
       B: [
         { name: "BeeHive", index: 0, view: "engbee" },
         { name: "Moments", index: 1, view:"engmoments" },
         { name: "Grammer", index: 101, view:"enggm" },
         { name: "Reading Comprehension", index: 103, view:"engrc" },
+        { name: "Live", view: "engblive" },
       ]
     },
     Hindi: {
       A: [
         { name: "Kshitij", index: 0, view:"hinks" },
         { name: "kritika", index: 1, view:"hinkr" },
+        { name: "Live", view: "hinalive" },
       ],
       B: [
         { name: "Sparsh", index: 100, view:"hinsp" },
         { name: "Sanchayan", index: 101, view:"hinsn" },
+        { name: "Live", view: "hinblive" },
       ]
     },
     Sanskrit: {
       chapters: [
-        { name: "Sanskrit", index: 0, view: "sans" },
+        { name: "Shemushi", index: 0, view: "shemushi" },
+        { name: "Manshi", view: "manshi" },
+        { name: "Grammar", view: "sansgm" },
+        { name: "Live", view: "sanslive" },
       ]
     }
   };
