@@ -57,7 +57,8 @@ const Lectures = () => {
           fromNotes:"Quadratic Equations L1", toNotes:"Quadratic Equations L8"
         },
          { name: "AP", index:6, from: "AP L1", toid:"2216361"},
-        { name: "Coordinate Geometry", fromid: "2220582"},
+        { name: "Coordinate Geometry", fromid: "2220582", toid:"2255825"},
+        { name: "Triangle", fromid: "2257962", toid: ""},
       ]
     },
     SST: {
@@ -73,7 +74,8 @@ const Lectures = () => {
         { name: "Sectors of Indian economy", index: 5,from:"Sectors of the Indian Economy - 1",to:"Doubt +Sectors of Indian Economy class L6" },
         { name: "Federalism", index: 6, from:"FEDERALISM- L1", toid: "2159503" },
         { name: "Nationalism in India", fromid: "2160763", toid: "2218592"},
-        { name: "Water Resources", fromid: "2239724"},
+        { name: "Water Resources", fromid: "2239724", toid: "2249582", },
+        { name: "Gender Religion & Caste", fromid: "2251910", toid: ""},
       ]
     },
     IT: {
