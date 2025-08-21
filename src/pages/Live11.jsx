@@ -8,44 +8,49 @@ export default function LiveClassPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchSchedule() {
-      try {
-        const res = await fetch("https://automation9thphp.vercel.app/api/Live.php");
-        const data = await res.json();
+  async function fetchSchedule() {
+    if (!classId) {
+      console.warn("No classId found in URL.");
+      setLoading(false);
+      return;
+    }
 
-        console.log("Fetched data:", data);
-        console.log("Current classId:", classId);
+    try {
+      const res = await fetch("https://automation9thphp.vercel.app/api/Live.php");
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      const data = await res.json();
 
-        // Ensure we match string keys
-        const key = String(classId).trim();
-        if (data[key]) {
-          setClassData(data[key]);
-        } else {
-          console.warn(`No entry found for classId: ${key}`);
-          setClassData(null);
-        }
-      } catch (err) {
-        console.error("Error fetching schedule:", err);
+      console.log("API Raw Response:", data);
+
+      const key = String(classId).trim();
+      if (data[key]) {
+        setClassData(data[key]);
+      } else {
+        console.warn(`No entry found for classId: ${key}`);
         setClassData(null);
-      } finally {
-        setLoading(false);
       }
+    } catch (err) {
+      console.error("Error fetching schedule:", err);
+      setClassData(null);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    fetchSchedule();
-  }, [classId]);
+  fetchSchedule();
+}, [classId]);
 
-  const handleLectureClick = (startTime, url) => {
-    const now = new Date();
-    const start = new Date(startTime);
-    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+const handleLectureClick = (startTime, endTime, url) => {
+  const now = new Date();
+  const start = new Date(startTime);
+  const end = new Date(endTime);
 
-    if (now >= start && now <= end) {
-      navigate(`/video/${classId}/live`, { state: { streamUrl: url } });
-    } else {
-      alert("This lecture is not currently available.");
-    }
-  };
+  if (now >= start && now <= end) {
+    navigate(`/video/${classId}/live`, { state: { streamUrl: url } });
+  } else {
+    alert("This lecture is not currently available.");
+  }
+};
 
   if (loading) return <p className="p-4">Loading...</p>;
   if (!classData) return <p className="p-4 text-red-500">No data found for this class.</p>;
