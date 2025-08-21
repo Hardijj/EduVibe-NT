@@ -8,27 +8,39 @@ export default function LiveClassPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  async function fetchSchedule() {
-    try {
-      const res = await fetch("https://automation9thphp.vercel.app/api/Live.php");
-      const data = await res.json();// Debugging
-      setClassData(data[String(classId)]);
-    } catch (err) {
-      console.error("Error fetching schedule:", err);
-    } finally {
-      setLoading(false);
+    async function fetchSchedule() {
+      try {
+        const res = await fetch("https://automation9thphp.vercel.app/api/Live.php");
+        const data = await res.json();
+
+        console.log("Fetched data:", data);
+        console.log("Current classId:", classId);
+
+        // Ensure we match string keys
+        const key = String(classId).trim();
+        if (data[key]) {
+          setClassData(data[key]);
+        } else {
+          console.warn(`No entry found for classId: ${key}`);
+          setClassData(null);
+        }
+      } catch (err) {
+        console.error("Error fetching schedule:", err);
+        setClassData(null);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
-  fetchSchedule();
-}, [classId]);
+
+    fetchSchedule();
+  }, [classId]);
 
   const handleLectureClick = (startTime, url) => {
     const now = new Date();
     const start = new Date(startTime);
-    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000); // start + 2 hours
+    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
     if (now >= start && now <= end) {
-      // within live + 2 hours window
       navigate(`/video/${classId}/live`, { state: { streamUrl: url } });
     } else {
       alert("This lecture is not currently available.");
@@ -63,4 +75,4 @@ export default function LiveClassPage() {
       )}
     </div>
   );
-                         }
+               }
