@@ -21,6 +21,7 @@ import TestPlatform from './pages/TestPlatform';
 import Class9 from './pages/Class9';
 import Recorded from './pages/Recorded';
 import Rc11 from './pages/Rc11';
+import ClassPage from './pages/Live11';
 import Artsub11 from './pages/Artsub11';
 import LiveClasses from './pages/LiveClasses';
 import LiveClasses9 from './pages/LiveClasses9';
@@ -59,6 +60,7 @@ function App() {
         <Route path="/11/rc" element={<Rc11 />} />
         <Route path="/10/live" element={<LiveClasses />} />
         <Route path="/9/live" element={<LiveClasses9 />} />
+        <Route path="/:classid/live" element={<ClassPage />} />
      
         {/* Chapter Lectures */}
         <Route path="/chapter-lectures/9/:subject/:chapterIndex" element={<ProtectedRoute><ChapterLectures9 /></ProtectedRoute>} />
