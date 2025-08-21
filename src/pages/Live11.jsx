@@ -8,19 +8,19 @@ export default function LiveClassPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchSchedule() {
-      try {
-        const res = await fetch("https://automation9thphp.vercel.app/api/Live.php");
-        const data = await res.json();
-        setClassData(data[classId]);
-      } catch (err) {
-        console.error("Error fetching schedule:", err);
-      } finally {
-        setLoading(false);
-      }
+  async function fetchSchedule() {
+    try {
+      const res = await fetch("https://automation9thphp.vercel.app/api/Live.php");
+      const data = await res.json();// Debugging
+      setClassData(data[String(classId)]);
+    } catch (err) {
+      console.error("Error fetching schedule:", err);
+    } finally {
+      setLoading(false);
     }
-    fetchSchedule();
-  }, [classId]);
+  }
+  fetchSchedule();
+}, [classId]);
 
   const handleLectureClick = (startTime, url) => {
     const now = new Date();
