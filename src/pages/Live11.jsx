@@ -9,6 +9,9 @@ export default function LiveClassPage() {
 
   useEffect(() => {
   async function fetchSchedule() {
+    console.log("=== DEBUG START ===");
+    console.log("Raw classId from URL:", classId);
+
     if (!classId) {
       console.warn("No classId found in URL.");
       setLoading(false);
@@ -20,10 +23,13 @@ export default function LiveClassPage() {
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const data = await res.json();
 
-      console.log("API Raw Response:", data);
+      console.log("API Raw Response Keys:", Object.keys(data));
 
       const key = String(classId).trim();
+      console.log("Looking for key:", key);
+
       if (data[key]) {
+        console.log("Found data for this classId");
         setClassData(data[key]);
       } else {
         console.warn(`No entry found for classId: ${key}`);
@@ -34,6 +40,7 @@ export default function LiveClassPage() {
       setClassData(null);
     } finally {
       setLoading(false);
+      console.log("=== DEBUG END ===");
     }
   }
 
