@@ -10,7 +10,7 @@ export default function LiveClassPage() {
   useEffect(() => {
     async function fetchSchedule() {
       try {
-        const res = await fetch("https://studyverse-nxt-live.vercel.app/api/schedule");
+        const res = await fetch("https://automation9thphp.vercel.app/api/Live.php");
         const data = await res.json();
         setClassData(data[classId]);
       } catch (err) {
