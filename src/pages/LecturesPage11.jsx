@@ -10,10 +10,10 @@ const subjects = [
 
 // Define where to start for each subject
 const subjectFilters = {
-  Physics: 'Motion in a Straight Line L4',
-  Chemistry: 'Classification of Elements 01',
-  Maths: 'Relations And Functions L4',
-  Biology: 'Plant Kingdom L5'
+  Physics: '',
+  Chemistry: '',
+  Maths: '',
+  Biology: ''
 };
 
 const LecturesPage11 = () => {
