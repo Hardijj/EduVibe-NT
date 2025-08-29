@@ -10,7 +10,7 @@ const subjectMap = {
 };
 
 const GITHUB_API_BASE =
-  "https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=";
+  "https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123view=";
 
 const LiveClasses = () => {
   const [data, setData] = useState({});
