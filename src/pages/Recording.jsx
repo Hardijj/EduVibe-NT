@@ -35,7 +35,7 @@ const Recording = () => {
         // ✅ DPP Mode Only
         if (onlyDpp) {
           const res = await fetch(
-            `https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${onlyDpp}`
+            `https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=${onlyDpp}`
           );
           const json = await res.json();
 
@@ -62,8 +62,8 @@ const Recording = () => {
         // ✅ Normal Lecture + Notes Mode
         const actualView = view || subject.toLowerCase();
         const [lectureRes, notesRes] = await Promise.all([
-          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}`),
-          fetch(`https://php-pearl.vercel.app/api/api.php?token=my_secret_key_123&view=${actualView}notes`)
+          fetch(`https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=${actualView}`),
+          fetch(`https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=${actualView}notes`)
         ]);
 
         const lectureJson = await lectureRes.json();
