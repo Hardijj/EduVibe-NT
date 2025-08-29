@@ -24,6 +24,7 @@ import Rc11 from './pages/Rc11';
 import LiveClassPage from './pages/Live11';
 import Artsub11 from './pages/Artsub11';
 import LiveClasses from './pages/LiveClasses';
+import LiveClasses11s from './pages/Leve11';
 import LiveClasses9 from './pages/LiveClasses9';
 import Recordings from './pages/Recording';
 import Recordings9 from './pages/Recording9';
@@ -60,6 +61,7 @@ function App() {
         <Route path="/11/rc" element={<Rc11 />} />
         <Route path="/10/live" element={<LiveClasses />} />
         <Route path="/9/live" element={<LiveClasses9 />} />
+        <Route path="/11/live" element={<LiveClasses11s />} />
         <Route path="/class/:classId" element={<LiveClassPage />} />
           
         {/* Chapter Lectures */}
