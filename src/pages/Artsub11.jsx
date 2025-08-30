@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/global.css";
-import tt from "../assets/tt.png";
+// import tt from "../assets/tt.png";
 
 const Artsub11 = () => {
   const navigate = useNavigate();
