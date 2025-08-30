@@ -4,7 +4,7 @@ import "../styles/ChapterLectures.css";
 import mlogo from "../assets/ntmlogo.jpg";
 
 const ChapterLectures9 = () => {
-  const { classId, subject, chapterIndex } = useParams();
+  const { subject, chapterIndex } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
