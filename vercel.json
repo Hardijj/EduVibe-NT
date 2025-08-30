@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build"
+    },
+    {
+      "src": "api/**/*.php",
+      "use": "vercel-php@0.7.3"
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1.php" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
