@@ -15,12 +15,22 @@ const Homepage = () => {
   }, []);
 
   const handleClick = (classNumber) => {
-    if (!isLoggedIn) {
-      navigate(`/subjects/${classNumber}`);
-      return;
-    }
+  // Example: redirect Class 11 Science batch to another site
+  if (classNumber === 11) {
+    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11s.php";
+    return;
+  }
+
+  // Example: redirect Class 9 batch somewhere else
+
+  // Default navigation for others
+  if (!isLoggedIn) {
     navigate(`/subjects/${classNumber}`);
-  };
+    return;
+  }
+
+  navigate(`/subjects/${classNumber}`);
+};
 
   const handleClosePopup = () => {
     setShowPopup(false);
