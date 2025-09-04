@@ -20,6 +20,10 @@ const Homepage = () => {
     window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11s.php";
     return;
   }
+    if (classNumber === 12) {
+    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/12s.php";
+    return;
+    }
 
   // Example: redirect Class 9 batch somewhere else
 
@@ -147,7 +151,10 @@ const Homepage = () => {
             <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/183130728609_Prarambh%20BATCh%20Science%20Class%2011.png" alt="Class 11 Batch" className="homepage-image" />
             <h1 style={{ color: "#fff" }}>Prarambh 2.0 Science Class 11</h1>
           </div>
-
+          <div className="click-box" onClick={() => handleClick(12)}>
+            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/337551428612_Prarambh%20BATCh%20Science%2012.jpg" alt="Class 11 Batch" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Science Class 12</h1>
+          </div>
           <div className="click-box" onClick={() => handleClick(113)}>
             <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png" alt="Class 11 Commerce" className="homepage-image" />
             <h1 style={{ color: "#fff" }}>Prarambh 2.0 Commerce Class 11</h1>
