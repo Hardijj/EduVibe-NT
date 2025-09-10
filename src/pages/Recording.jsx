@@ -259,6 +259,12 @@ const Recording = () => {
                     }}
                     className="card-content flex justify-between items-center"
                   >
+                    <div className="live-card">
+                  <img
+                    src={item.thumbnail_url}
+                    alt={title}
+                    className="card-image"
+                  />
                     <div className="card-content">
   <h4 className="card-title">{title}</h4>
   <p className="card-subject">📚 {subject}</p>
@@ -277,7 +283,7 @@ const Recording = () => {
     }}
     className={`done-btn ${progress[item.id] ? "checked" : ""}`}
   >
-    {progress[item.id] ? "✔" : ""}
+    {progress[item.id] ? "✔" : "✔"}
   </span>
 </div>
                   </Link>
