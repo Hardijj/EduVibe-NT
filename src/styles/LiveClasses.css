@@ -155,3 +155,26 @@
     transform: translateY(0);
   }
 }
+/* ✅ Checklist Checkbox */
+.checkbox-done {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.checkbox-done:hover {
+  border-color: #4caf50;
+}
+
+.checkbox-done.checked {
+  background-color: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
