@@ -22,6 +22,32 @@ const Recording = () => {
   const [lectures, setLectures] = useState([]);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState({}); // ✅ Progress state
+
+  // Load saved progress
+  useEffect(() => {
+    const saved = localStorage.getItem("lectureProgress");
+    if (saved) {
+      setProgress(JSON.parse(saved));
+    }
+  }, []);
+
+  // Save progress when updated
+  useEffect(() => {
+    localStorage.setItem("lectureProgress", JSON.stringify(progress));
+  }, [progress]);
+
+  const toggleLecture = (id) => {
+    setProgress((prev) => {
+      const updated = { ...prev };
+      if (updated[id]) {
+        delete updated[id]; // ❌ remove if done
+      } else {
+        updated[id] = true; // ✅ mark as done
+      }
+      return updated;
+    });
+  };
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -32,7 +58,6 @@ const Recording = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // ✅ DPP Mode Only
         if (onlyDpp) {
           const res = await fetch(
             `https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=${onlyDpp}`
@@ -224,33 +249,39 @@ const Recording = () => {
             const toUrl = isLive ? `/video/10/live` : `/video/10/${subject}/0`;
 
             return (
-              <Link
-                to={toUrl}
-                state={{
-                  m3u8Url: fileUrl,
-                  chapterName: title,
-                }}
-                key={idx}
-                className="card-link"
-              >
+              <div key={idx} className="card-link">
                 <div className="live-card">
-                  <img
-                    src={item.thumbnail_url}
-                    alt={title}
-                    className="card-image"
-                  />
-                  <div className="card-content">
-                    <h4 className="card-title">{title}</h4>
-                    <p className="card-subject">📚 {subject}</p>
-                    <p className="card-status">
-                      {isRecorded && "📽️ Recorded"}
-                      {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
-                    </p>
-                    <p className="card-countdown">🗓️ {time}</p>
-                    <p className="card-countdown">⏱️ Duration: {duration}</p>
-                  </div>
+                  <Link
+                    to={toUrl}
+                    state={{
+                      m3u8Url: fileUrl,
+                      chapterName: title,
+                    }}
+                    className="card-content flex justify-between items-center"
+                  >
+                    <div>
+                      <h4 className="card-title">{title}</h4>
+                      <p className="card-subject">📚 {subject}</p>
+                      <p className="card-status">
+                        {isRecorded && "📽️ Recorded"}
+                        {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
+                      </p>
+                      <p className="card-countdown">🗓️ {time}</p>
+                      <p className="card-countdown">⏱️ Duration: {duration}</p>
+                    </div>
+                    {/* ✅ Checkbox at right side */}
+                    <span
+  onClick={(e) => {
+    e.preventDefault();
+    toggleLecture(item.id);
+  }}
+  className={`checkbox-done ${progress[item.id] ? "checked" : ""}`}
+>
+  {progress[item.id] ? "✔" : ""}
+</span>
+                  </Link>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>
