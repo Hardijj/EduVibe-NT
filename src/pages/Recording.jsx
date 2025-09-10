@@ -259,36 +259,42 @@ const Recording = () => {
                     }}
                     className="card-content flex justify-between items-center"
                   >
-                    <div className="live-card">
-                  <img
-                    src={item.thumbnail_url}
-                    alt={title}
-                    className="card-image"
-                  />
-                    <div className="card-content">
-  <h4 className="card-title">{title}</h4>
-  <p className="card-subject">📚 {subject}</p>
-  <p className="card-status">
-    {isRecorded && "📽️ Recorded"}
-    {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
-  </p>
-  <p className="card-countdown">🗓️ {time}</p>
-  <p className="card-countdown">⏱️ Duration: {duration}</p>
+                    <div key={idx} className="card-link">
+  <div className="live-card">
+    {/* ✅ Thumbnail */}
+    <img
+      src={item.thumbnail_url}
+      alt={title}
+      className="card-image"
+    />
 
-  {/* ✅ Done Button at Top-Right */}
-  <span
-    onClick={(e) => {
-      e.preventDefault(); // prevent link navigation
-      toggleLecture(item.id);
-    }}
-    className={`done-btn ${progress[item.id] ? "checked" : ""}`}
-  >
-    {progress[item.id] ? "✔" : "✔"}
-  </span>
+    {/* ✅ Text Content */}
+    <div className="card-content">
+      <Link
+        to={toUrl}
+        state={{ m3u8Url: fileUrl, chapterName: title }}
+        className="card-inner"
+      >
+        <h4 className="card-title">{title}</h4>
+        <p className="card-subject">📚 {subject}</p>
+        <p className="card-status">
+          {isRecorded && "📽️ Recorded"}
+          {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
+        </p>
+        <p className="card-countdown">🗓️ {time}</p>
+        <p className="card-countdown">⏱️ Duration: {duration}</p>
+      </Link>
+
+      {/* ✅ Done Button absolutely positioned */}
+      <span
+        onClick={() => toggleLecture(item.id)}
+        className={`done-btn ${progress[item.id] ? "checked" : ""}`}
+      >
+        ✔
+      </span>
+    </div>
+  </div>
 </div>
-                  </Link>
-                </div>
-              </div>
             );
           })}
         </div>
