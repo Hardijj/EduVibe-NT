@@ -259,26 +259,27 @@ const Recording = () => {
                     }}
                     className="card-content flex justify-between items-center"
                   >
-                    <div>
-                      <h4 className="card-title">{title}</h4>
-                      <p className="card-subject">📚 {subject}</p>
-                      <p className="card-status">
-                        {isRecorded && "📽️ Recorded"}
-                        {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
-                      </p>
-                      <p className="card-countdown">🗓️ {time}</p>
-                      <p className="card-countdown">⏱️ Duration: {duration}</p>
-                    </div>
-                    {/* ✅ Checkbox at right side */}
-                    <span
-  onClick={(e) => {
-    e.preventDefault();
-    toggleLecture(item.id);
-  }}
-  className={`checkbox-done ${progress[item.id] ? "checked" : ""}`}
->
-  {progress[item.id] ? "✔" : ""}
-</span>
+                    <div className="card-content">
+  <h4 className="card-title">{title}</h4>
+  <p className="card-subject">📚 {subject}</p>
+  <p className="card-status">
+    {isRecorded && "📽️ Recorded"}
+    {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
+  </p>
+  <p className="card-countdown">🗓️ {time}</p>
+  <p className="card-countdown">⏱️ Duration: {duration}</p>
+
+  {/* ✅ Done Button at Top-Right */}
+  <span
+    onClick={(e) => {
+      e.preventDefault(); // prevent link navigation
+      toggleLecture(item.id);
+    }}
+    className={`done-btn ${progress[item.id] ? "checked" : ""}`}
+  >
+    {progress[item.id] ? "✔" : ""}
+  </span>
+</div>
                   </Link>
                 </div>
               </div>
