@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/global.css";
 import imageUrl10 from "../assets/10img.jpg";
+import image10old from "../assets/10imgold.jpg";
 import mlogo from "../assets/ntmlogo.jpg";
 
 const Homepage = () => {
@@ -24,6 +25,11 @@ const Homepage = () => {
     window.location.href = "https://edu-vibe-nt-live.vercel.app/api/12s.php";
     return;
     }
+    if (classNumber === 100 || classNumber === 101) {
+    window.location.href = "https://batch-web.vercel.app";
+    return;
+    }
+    
 
   // Example: redirect Class 9 batch somewhere else
 
@@ -166,6 +172,14 @@ const Homepage = () => {
           <div className="click-box" onClick={() => handleClick(9)}>
             <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/152792333113_9th%20aarambh%202.0%20banner%20app.jpg" alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
             <h1 style={{ color: "#fff" }}>Aarambh batch 2.0 Class 9 </h1>
+          </div>
+          <div className="click-box" onClick={() => handleClick(100)}>
+            <img src={image10old} alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Aarambh batch Class 10 2024-25 </h1>
+          </div>
+          <div className="click-box" onClick={() => handleClick(101)}>
+            <img src="https://i.postimg.cc/pVKv3cLR/667423824369-IMG-9619.png" alt="Class 10 Abhay Batch" className="homepage-image" />
+            <h1 style={{ color: "#fff" }}>Abhay batch Class 10 2024-25 </h1>
           </div>
         </div>
       </div>
