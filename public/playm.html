@@ -192,20 +192,7 @@ if (Hls.isSupported()) {
         };
         player.updateSettings();
     });
-} else {
-    // Fallback
-    player = new Plyr(videoEl, {
-        controls: [
-            'play-large','rewind','play','fast-forward',
-            'progress','current-time','duration','mute','volume',
-            'settings','fullscreen'
-        ],
-        autoplay: true,
-        speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2] },
-        settings: ['speed']
-    });
 }
-
 // --- Show live badge ---
 if(isLive){ document.getElementById("live-badge").style.display="block"; }
 
