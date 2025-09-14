@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture Player</title>
+<link rel="stylesheet" href="https://edu-vibe-nt.vercel.app/ogx.css" />
+<link rel="stylesheet" href="https://edu-vibe-nt.vercel.app/plyrx55.css" />
+<style>
+body { margin:0; background:#000; }
+.video-container { width:100%; height:auto; position:relative; }
+.plyr { width:100%; height:auto; }
+.skip-overlay {
+    position:absolute;
+    color:#fff;
+    font-size:36px;
+    font-weight:bold;
+    text-shadow: 0 0 8px #000;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    opacity:0;
+    transition: opacity 0.3s;
+    pointer-events:none;
+    z-index:9999;
+}
+.download-btn {
+    background:#28a745;
+    color:#fff;
+    padding:10px 20px;
+    border:none;
+    border-radius:5px;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+.download-container {
+    text-align:center;
+    margin-top:15px;
+}
+#live-badge {
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:rgba(0,0,0,0.35);
+    color:#fff;
+    padding:4px 8px;
+    border-radius:4px;
+    font-size:12px;
+    z-index:9999;
+    display:none;
+}
+</style>
+</head>
+<body>
+
+<div class="video-container">
+  <video id="lecture-player" playsinline controls autoplay></video>
+  <div id="skip-overlay" class="skip-overlay"></div>
+  <div id="live-badge">LIVE</div>
+</div>
+
+<div class="download-container">
+  <button class="download-btn" onclick="handleDownloadClick()">Download Lecture</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
+<script>
+// --- Base32 decode ---
+function base32Decode(input) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    let bits = '';
+    for (let char of input.toUpperCase()) {
+        let val = alphabet.indexOf(char);
+        if (val === -1) continue;
+        bits += val.toString(2).padStart(5,'0');
+    }
+    let output = '';
+    for (let i = 0; i + 8 <= bits.length; i+=8) {
+        output += String.fromCharCode(parseInt(bits.substr(i,8),2));
+    }
+    return output;
+}
+
+// --- Parse URL params ---
+const urlParams = new URL(window.location.href).searchParams;
+const encodedUrl = urlParams.get("url");
+const isLive = urlParams.get("isLive") === "1";
+const videoId = urlParams.get("videoId") || null;
+
+if(!encodedUrl){ alert("❌ No URL provided!"); throw new Error("No URL"); }
+const m3u8Url = base32Decode(encodedUrl);
+
+// --- Initialize Plyr ---
+const videoEl = document.getElementById("lecture-player");
+const videoContainer = videoEl.parentElement;
+
+let player;
+if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(m3u8Url);
+    hls.attachMedia(videoEl);
+
+    // Initialize Plyr
+    player = new Plyr(videoEl, {
+        controls: [
+            'play-large',
+            'rewind',
+            'play',
+            'fast-forward',
+            'progress',
+            'current-time',
+            'duration',
+            'mute',
+            'volume',
+            'settings',
+            'fullscreen'
+        ],
+        autoplay: true,
+        speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2] },
+        settings: ['quality', 'speed']
+    });
+
+    // When HLS manifest is parsed, add quality options
+    hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        const availableQualities = hls.levels.map(l => l.height).sort((a, b) => b - a);
+
+        player.options.quality = {
+            default: availableQualities[0],
+            options: availableQualities,
+            forced: true,
+            onChange: (newQuality) => {
+                hls.levels.forEach((level, levelIndex) => {
+                    if (level.height === newQuality) {
+                        hls.currentLevel = levelIndex;
+                    }
+                });
+            }
+        };
+
+        // Add an "Auto" option
+        player.options.quality.options = ['Auto', ...availableQualities];
+        player.options.quality.default = 'Auto';
+
+        player.on('qualitychange', event => {
+            if (event.detail.plyr === 'Auto') {
+                hls.currentLevel = -1; // Auto quality
+            }
+        });
+
+        // Refresh Plyr menu
+        player.updateSettings();
+    });
+} else {
+    // Fallback if browser supports HLS natively
+    player = new Plyr(videoEl, {
+        controls: [
+            'play-large',
+            'rewind',
+            'play',
+            'fast-forward',
+            'progress',
+            'current-time',
+            'duration',
+            'mute',
+            'volume',
+            'settings',
+            'fullscreen'
+        ],
+        autoplay: true,
+        speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2] },
+        settings: ['quality','speed']
+    });
+}
+
+// --- Show live badge ---
+if(isLive){
+    document.getElementById("live-badge").style.display="block";
+}
+
+// --- Orientation Lock ---
+const lockLandscape = async()=>{const o=screen.orientation;if(o?.lock){try{o.lock("landscape")}catch(_){}}};
+const unlockOrientation = async()=>{const o=screen.orientation;if(o?.unlock)o.unlock();};
+player.on("enterfullscreen",()=>lockLandscape());
+player.on("exitfullscreen",()=>unlockOrientation());
+
+// Prevent Plyr's built-in double-tap fullscreen
+videoContainer.addEventListener("dblclick", (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+}, true); // capture phase
+
+// --- Gesture Layer ---
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+let holdTimeout=null, speedHeld=false, lastTap=0;
+const skipOverlay = document.getElementById("skip-overlay");
+
+const showSkipOverlay = (text)=>{
+    skipOverlay.textContent=text;
+    skipOverlay.style.opacity="1";
+    setTimeout(()=>{ skipOverlay.style.opacity="0"; }, 600);
+};
+
+// Hold-to-speed-up
+const handleTouchStart = () => {
+    if(!isMobile) return;
+    holdTimeout = setTimeout(()=>{ 
+        if(player && !speedHeld){
+            speedHeld=true; 
+            player.speed = 2;
+            showSkipOverlay("2x ▶");
+        } 
+    }, 1000);
+};
+const handleTouchEnd = () => {
+    if(!isMobile) return;
+    clearTimeout(holdTimeout);
+    if(player && speedHeld){
+        player.speed = 1;
+        speedHeld=false;
+        showSkipOverlay("1x ▶");
+    }
+};
+// Double-tap skip / play-pause
+const handleDoubleTap = (e) => {
+    if(!isMobile) return;
+    const now = Date.now();
+    const tapGap = now - lastTap;
+    lastTap = now;
+    const {clientX} = e.changedTouches[0];
+    const {left,width} = videoContainer.getBoundingClientRect();
+    const tapX = clientX-left;
+    if(tapGap < 300){ // double-tap
+        if(tapX < width/3){
+            player.currentTime -= 10;
+        } else if(tapX > (2*width)/3){
+            player.currentTime += 10;
+        } else {
+            player.togglePlay();
+        }
+    }
+};
+videoEl.addEventListener("touchstart", handleTouchStart);
+videoEl.addEventListener("touchend", handleTouchEnd);
+videoContainer.addEventListener("touchend", handleDoubleTap);
+
+// --- Dummy download handler ---
+function handleDownloadClick(){
+    alert("📥 Download clicked for videoId: "+videoId);
+}
+</script>
+</body>
+  </html>
