@@ -17,10 +17,6 @@ const Homepage = () => {
 
   const handleClick = (classNumber) => {
   // Example: redirect Class 11 Science batch to another site
-  if (classNumber === 11) {
-    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11s.php";
-    return;
-  }
     if (classNumber === 12) {
     window.location.href = "https://edu-vibe-nt-live.vercel.app/api/12s.php";
     return;
