@@ -11,7 +11,8 @@ const subjectMap = {
 };
 
 const API_BASE = "https://viewer-ten-psi.vercel.app/view.php";
-const SECRET = "my_secret_key_123"; // ⚠️ this must match PHP secret
+const SECRET = "my32bitkeyforhardxsignaturefuckh"; // ⚠️ this must match PHP secret
+const Token = "my_secret_key_123";
 
 const LiveClasses = () => {
   const [data, setData] = useState({});
@@ -25,7 +26,7 @@ const LiveClasses = () => {
     const timestamp = Math.floor(Date.now() / 1000);
     const signature = CryptoJS.SHA256(timestamp + view + SECRET).toString();
 
-    const res = await fetch(`${API_BASE}?view=${view}`, {
+    const res = await fetch(`${API_BASE}?view=${view}&token=${Token}`, {
       headers: {
         "HardX-Signature": signature,
       },
