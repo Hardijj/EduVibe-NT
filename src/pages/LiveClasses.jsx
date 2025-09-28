@@ -27,8 +27,7 @@ const LiveClasses = () => {
 
     const res = await fetch(`${API_BASE}?view=${view}`, {
       headers: {
-        "X-Timestamp": timestamp,
-        "X-Signature": signature,
+        "HardX-Signature": signature,
       },
     });
 
