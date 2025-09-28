@@ -26,9 +26,9 @@ const LiveClasses = () => {
     const timestamp = Math.floor(Date.now() / 1000);
     const signature = CryptoJS.SHA256(timestamp + view + SECRET).toString();
 
-    const res = await fetch(`${API_BASE}?view=${view}&token=${Token}`, {
+    const res = await fetch(`${API_BASE}?view=${view}`, {
       headers: {
-        "HardX-Signature": signature,
+        "X-Signature": signature,
       },
     });
 
