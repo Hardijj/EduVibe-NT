@@ -23,19 +23,26 @@ const LiveClasses = () => {
   const navigate = useNavigate();
 
   const secureFetch = async (view) => {
-    const timestamp = Math.floor(Date.now() / 1000);
-    const signature = CryptoJS.SHA256(view + SECRET).toString(CryptoJS.enc.Base64);
-    const res = await fetch(`${API_BASE}?view=${view}`, {
-      headers: {
-        "X-Signature": signature,
-      },
-    });
+  const timestamp = Math.floor(Date.now() / 1000).toString();
 
-    if (!res.ok) {
-      throw new Error("Invalid response");
-    }
-    return res.json();
-  };
+  // Create HMAC SHA256 of timestamp using SECRET
+  const hash = CryptoJS.HmacSHA256(timestamp, SECRET);
+  const hashBase64 = CryptoJS.enc.Base64.stringify(hash);
+
+  // Signature = base64(timestamp + hash)
+  const signature = btoa(timestamp + hashBase64);
+
+  const res = await fetch(`${API_BASE}?view=${view}`, {
+    headers: {
+      "X-Signature": signature,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Invalid response");
+  }
+  return res.json();
+};
 
   useEffect(() => {
     const fetchAll = async () => {
