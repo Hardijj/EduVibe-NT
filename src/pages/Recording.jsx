@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
+import CryptoJS from "crypto-js";
 import "../styles/LiveClasses.css";
+
+const SECRET = "my32bitkeyforhardxsignaturefuckh"; // Must match PHP secret
+const API_BASE = "https://viewer-ten-psi.vercel.app/view.php";
 
 const Recording = () => {
   const { subject, chapter } = useParams();
@@ -27,9 +31,7 @@ const Recording = () => {
   // Load saved progress
   useEffect(() => {
     const saved = localStorage.getItem("lectureProgress");
-    if (saved) {
-      setProgress(JSON.parse(saved));
-    }
+    if (saved) setProgress(JSON.parse(saved));
   }, []);
 
   // Save progress when updated
@@ -40,11 +42,8 @@ const Recording = () => {
   const toggleLecture = (id) => {
     setProgress((prev) => {
       const updated = { ...prev };
-      if (updated[id]) {
-        delete updated[id];
-      } else {
-        updated[id] = true;
-      }
+      if (updated[id]) delete updated[id];
+      else updated[id] = true;
       return updated;
     });
   };
@@ -54,15 +53,29 @@ const Recording = () => {
     if (!isLoggedIn) navigate("/login");
   }, [navigate]);
 
+  // Secure fetch with signature + timestamp
+  const secureFetch = async (viewName) => {
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const hash = CryptoJS.HmacSHA256(timestamp, SECRET);
+    const hashBase64 = CryptoJS.enc.Base64.stringify(hash);
+    const signature = btoa(timestamp + hashBase64);
+
+    const res = await fetch(`${API_BASE}?view=${viewName}`, {
+      headers: {
+        "X-Signature": signature,
+      },
+    });
+
+    if (!res.ok) throw new Error("Invalid response");
+    return res.json();
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         if (onlyDpp) {
-          const res = await fetch(
-            `https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=${onlyDpp}`
-          );
-          const json = await res.json();
+          const json = await secureFetch(onlyDpp);
 
           if (json.status && json.data?.list) {
             let pdfs = json.data.list.filter(
@@ -84,19 +97,11 @@ const Recording = () => {
           return;
         }
 
-        // ✅ Normal Lecture + Notes Mode
         const actualView = view || subject.toLowerCase();
-        const [lectureRes, notesRes] = await Promise.all([
-          fetch(
-            `https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=${actualView}`
-          ),
-          fetch(
-            `https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=${actualView}notes`
-          ),
+        const [lectureJson, notesJson] = await Promise.all([
+          secureFetch(actualView),
+          secureFetch(actualView + "notes"),
         ]);
-
-        const lectureJson = await lectureRes.json();
-        const notesJson = await notesRes.json();
 
         if (lectureJson.status && lectureJson.data?.list) {
           let list = lectureJson.data.list.filter(
@@ -195,7 +200,6 @@ const Recording = () => {
         {subject} / {chapter}
       </h2>
 
-      {/* ✅ Tabs */}
       {!onlyDpp && (
         <div className="tabs-wrapper">
           <button
@@ -263,14 +267,11 @@ const Recording = () => {
             return (
               <div key={idx} className="card-link">
                 <div className="live-card">
-                  {/* ✅ Thumbnail */}
                   <img
                     src={item.thumbnail_url}
                     alt={title}
                     className="card-image"
                   />
-
-                  {/* ✅ Text Content */}
                   <div className="card-content">
                     <Link
                       to={toUrl}
@@ -289,7 +290,6 @@ const Recording = () => {
                       </p>
                     </Link>
 
-                    {/* ✅ Done Button */}
                     <span
                       onClick={() => toggleLecture(item.id)}
                       className={`done-btn ${
