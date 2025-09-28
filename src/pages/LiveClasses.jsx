@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js"; // ⚡ Add this
 import "../styles/LiveClasses.css";
 
 const tabs = ["live", "upcoming", "completed"];
@@ -9,8 +10,8 @@ const subjectMap = {
   "35849": "SST"
 };
 
-const GITHUB_API_BASE =
-  "https://viewer-ten-psi.vercel.app/view.php?token=my_secret_key_123&view=";
+const API_BASE = "https://viewer-ten-psi.vercel.app/view.php";
+const SECRET = "my_secret_key_123"; // ⚠️ this must match PHP secret
 
 const LiveClasses = () => {
   const [data, setData] = useState({});
@@ -20,14 +21,30 @@ const LiveClasses = () => {
   const [liveError, setLiveError] = useState("");
   const navigate = useNavigate();
 
+  const secureFetch = async (view) => {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const signature = CryptoJS.SHA256(timestamp + view + SECRET).toString();
+
+    const res = await fetch(`${API_BASE}?view=${view}`, {
+      headers: {
+        "X-Timestamp": timestamp,
+        "X-Signature": signature,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Invalid response");
+    }
+    return res.json();
+  };
+
   useEffect(() => {
     const fetchAll = async () => {
       const result = {};
       const times = {};
       for (const tab of tabs) {
         try {
-          const res = await fetch(`${GITHUB_API_BASE}${tab}`);
-          const json = await res.json();
+          const json = await secureFetch(tab);
           result[tab] = json?.data || [];
           times[tab] = json?.time || "";
         } catch {
