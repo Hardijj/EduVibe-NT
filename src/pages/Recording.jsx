@@ -73,16 +73,18 @@ const secureFetch = async (viewName) => {
 
   if (!res.ok) throw new Error("Invalid response");
 
-  // --- Step 3: Decrypt AES response ---
   const encryptedBase64 = await res.text();
 
+  // --- Step 3: Properly parse and decrypt ---
   const decrypted = CryptoJS.AES.decrypt(
-    encryptedBase64, // directly pass Base64 string
+    encryptedBase64, // Keep this as Base64 string
     AES_KEY,
     { iv: AES_IV, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
   );
 
   const plaintext = decrypted.toString(CryptoJS.enc.Utf8);
+  if (!plaintext) throw new Error("Decryption failed");
+
   return JSON.parse(plaintext);
 };
 
