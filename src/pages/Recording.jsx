@@ -74,15 +74,15 @@ const secureFetch = async (viewName) => {
 
   // --- Step 3: Decrypt AES response ---
   const encryptedBase64 = await res.text();
-  const encryptedData = CryptoJS.enc.Base64.parse(encryptedBase64);
+
 const decrypted = CryptoJS.AES.decrypt(
-  { ciphertext: encryptedData },
+  encryptedBase64, // directly pass Base64 string
   AES_KEY,
   { iv: AES_IV, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
 );
+
 const plaintext = decrypted.toString(CryptoJS.enc.Utf8);
-  return JSON.parse(plaintext);
-};
+return JSON.parse(plaintext);
 
   useEffect(() => {
     const fetchData = async () => {
