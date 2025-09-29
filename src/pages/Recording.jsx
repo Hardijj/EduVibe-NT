@@ -53,39 +53,22 @@ const Recording = () => {
     if (!isLoggedIn) navigate("/login");
   }, [navigate]);
 
-  // Secure fetch with X-Signature + AES decryption
-const AES_KEY = CryptoJS.enc.Utf8.parse("FphackyouHaterMFandextraa16chars");  // same as PHP $customKey
-const AES_IV  = CryptoJS.enc.Utf8.parse("phuckyounoobBtch");   // same as PHP $customIV
+  // Secure fetch with signature + timestamp
+  const secureFetch = async (viewName) => {
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const hash = CryptoJS.HmacSHA256(timestamp, SECRET);
+    const hashBase64 = CryptoJS.enc.Base64.stringify(hash);
+    const signature = btoa(timestamp + hashBase64);
 
-const secureFetch = async (viewName) => {
-  // --- Step 1: Make HMAC X-Signature ---
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const hash = CryptoJS.HmacSHA256(timestamp, SECRET);
-  const hashBase64 = CryptoJS.enc.Base64.stringify(hash);
-  const signature = btoa(timestamp + hashBase64);
+    const res = await fetch(`${API_BASE}?view=${viewName}`, {
+      headers: {
+        "X-Signature": signature,
+      },
+    });
 
-  // --- Step 2: Fetch encrypted data ---
-  const res = await fetch(`${API_BASE}?view=${viewName}`, {
-    headers: {
-      "X-Signature": signature,
-    },
-  });
-
-  if (!res.ok) throw new Error("Invalid response");
-
-  const encryptedBase64 = await res.text();
-
-  // --- Step 3: Properly parse and decrypt ---
-  const decrypted = CryptoJS.AES.decrypt(
-    { ciphertext: CryptoJS.enc.Base64.parse(encryptedBase64) },
-    AES_KEY,
-    { iv: AES_IV, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
-);
-  const plaintext = decrypted.toString(CryptoJS.enc.Utf8);
-  if (!plaintext) throw new Error("Decryption failed");
-
-  return JSON.parse(plaintext);
-};
+    if (!res.ok) throw new Error("Invalid response");
+    return res.json();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
