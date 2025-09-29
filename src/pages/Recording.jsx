@@ -54,7 +54,7 @@ const Recording = () => {
   }, [navigate]);
 
   // Secure fetch with X-Signature + AES decryption
-const AES_KEY = CryptoJS.enc.Utf8.parse("FphackyouHaterMFandextra16chars");  // same as PHP $customKey
+const AES_KEY = CryptoJS.enc.Utf8.parse("FphackyouHaterMFandextraa16chars");  // same as PHP $customKey
 const AES_IV  = CryptoJS.enc.Utf8.parse("phuckyounoobBtch");   // same as PHP $customIV
 
 const secureFetch = async (viewName) => {
