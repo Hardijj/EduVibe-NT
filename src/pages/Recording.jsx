@@ -77,11 +77,10 @@ const secureFetch = async (viewName) => {
 
   // --- Step 3: Properly parse and decrypt ---
   const decrypted = CryptoJS.AES.decrypt(
-    encryptedBase64, // Keep this as Base64 string
+    { ciphertext: CryptoJS.enc.Base64.parse(encryptedBase64) },
     AES_KEY,
     { iv: AES_IV, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
-  );
-
+);
   const plaintext = decrypted.toString(CryptoJS.enc.Utf8);
   if (!plaintext) throw new Error("Decryption failed");
 
