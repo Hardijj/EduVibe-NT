@@ -70,19 +70,21 @@ const secureFetch = async (viewName) => {
       "X-Signature": signature,
     },
   });
+
   if (!res.ok) throw new Error("Invalid response");
 
   // --- Step 3: Decrypt AES response ---
   const encryptedBase64 = await res.text();
 
-const decrypted = CryptoJS.AES.decrypt(
-  encryptedBase64, // directly pass Base64 string
-  AES_KEY,
-  { iv: AES_IV, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
-);
+  const decrypted = CryptoJS.AES.decrypt(
+    encryptedBase64, // directly pass Base64 string
+    AES_KEY,
+    { iv: AES_IV, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
+  );
 
-const plaintext = decrypted.toString(CryptoJS.enc.Utf8);
-return JSON.parse(plaintext);
+  const plaintext = decrypted.toString(CryptoJS.enc.Utf8);
+  return JSON.parse(plaintext);
+};
 
   useEffect(() => {
     const fetchData = async () => {
