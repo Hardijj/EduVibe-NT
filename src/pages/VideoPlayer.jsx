@@ -188,7 +188,7 @@ useEffect(() => {
 
   return (
   <div style={{ position: "relative", width: "100%", maxWidth: "100%", overflow: "hidden", color: "#fff" }}>
-    <h2 style={{ ...yourHeaderStyle }}>
+    <h2>
       {isLive
         ? "🔴 Live Class"
         : `Now Playing: ${chapterName || "Unknown Lecture"}`}
