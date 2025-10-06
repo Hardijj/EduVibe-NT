@@ -194,6 +194,28 @@ useEffect(() => {
         : `Now Playing: ${chapterName || "Unknown Lecture"}`}
     </h2>
   <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
+    <div data-vjs-player style={{ position: "relative" }}>
+  <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
+
+  {isLive && (
+    <div
+      style={{
+        position: "absolute",
+        top: 15,
+        right: 15,
+        background: "rgba(0,0,0,0.35)",
+        color: "#fff",
+        padding: "4px 8px",
+        borderRadius: "4px",
+        fontSize: "12px",
+        zIndex: 9999,
+        pointerEvents: "none",
+      }}
+    >
+      🔴 {viewerCount} watching
+    </div>
+  )}
+</div>
 
       {/* Popup */}
       {showPopup && (
