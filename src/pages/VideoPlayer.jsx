@@ -10,6 +10,7 @@ import io from "socket.io-client";
 const VideoPlayer = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(true);
 
   /* ───────────────────────────────
      Route / URL helpers
@@ -250,7 +251,79 @@ const VideoPlayer = () => {
   /* ───────────────────────────────
      Render
   ─────────────────────────────── */
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
   return (
+    {showPopup && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.85)",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#1e1e1e",
+              padding: "24px",
+              borderRadius: "10px",
+              width: "90%",
+              maxWidth: "400px",
+              textAlign: "center",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1001,
+              color: "#fff",
+              boxShadow: "0 0 20px rgba(255,255,255,0.1)",
+            }}
+          >
+            <h2 style={{ fontWeight: "bold", marginBottom: "12px" }}>
+              Welcome to EduVibe!
+            </h2>
+            <p style={{ marginBottom: "16px", color: "#ccc" }}>
+              Explore batches and start learning with ease. This website is aboslutely free of cost, it doesnt contain any ads. If you don't have joined the telegram channel, join it because I will give there updates 👇👇
+            </p>
+            <a
+              href="https://t.me/eduvibe_all_classes"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                backgroundColor: "#229ED9",
+                color: "#fff",
+                padding: "10px 20px",
+                borderRadius: "6px",
+                textDecoration: "none",
+                marginBottom: "10px",
+              }}
+            >
+              Join Telegram
+            </a>
+            <br />
+            <button
+              onClick={handleClosePopup}
+              style={{
+                backgroundColor: "#333",
+                color: "#fff",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                border: "none",
+                cursor: "pointer",
+                marginTop: "10px",
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     <div>
       <h2>
         {isLive
