@@ -288,6 +288,7 @@ const Recording = () => {
                       <p className="card-countdown">
                         ⏱️ Duration: {duration}
                       </p>
+                      <p className="card-countdown">👉 -by EduVibe-NT</p>
                     </Link>
 
                     <span
