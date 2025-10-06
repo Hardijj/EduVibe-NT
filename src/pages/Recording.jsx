@@ -288,22 +288,10 @@ const Recording = () => {
       </div>
     </Link>
 
-    {/* ✅ Checkbox inside card */}
+    {/* ✅ Checkbox stays here */}
     <span
       onClick={() => toggleLecture(item.id)}
       className={`done-btn ${progress[item.id] ? "checked" : ""}`}
-      style={{
-        position: "absolute",
-        top: "8px",
-        right: "8px",
-        background: "#fff",
-        color: "#000",
-        borderRadius: "50%",
-        padding: "4px",
-        cursor: "pointer",
-        zIndex: 10,
-        boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
-      }}
     >
       ✔
     </span>
