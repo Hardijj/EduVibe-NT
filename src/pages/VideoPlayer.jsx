@@ -10,7 +10,7 @@ import io from "socket.io-client";
 const VideoPlayer = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopupp, setShowPopupp] = useState(true);
 
   /* ───────────────────────────────
      Route / URL helpers
@@ -252,10 +252,10 @@ const VideoPlayer = () => {
      Render
   ─────────────────────────────── */
   const handleClosePopup = () => {
-    setShowPopup(false);
+    setShowPopupp(false);
   };
   return (
-    {showPopup && (
+    {showPopupp && (
         <div
           style={{
             position: "fixed",
