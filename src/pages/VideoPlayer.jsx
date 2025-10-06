@@ -242,17 +242,19 @@ useEffect(() => {
 
       <style>{`
         .popup-overlay {
-          position: absolute;
-          top: 0; left: 0;
-          width: 100%; height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          backdrop-filter: blur(8px);
-          background: rgba(0, 0, 0, 0.4);
-          z-index: 999;
-          animation: fadeIn 0.4s ease;
-        }
+  position: fixed; /* Changed from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  animation: fadeIn 0.4s ease;
+                   }
         .popup-card {
           background: rgba(255, 255, 255, 0.15);
           border-radius: 16px;
