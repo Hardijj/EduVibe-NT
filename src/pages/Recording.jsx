@@ -265,50 +265,41 @@ const Recording = () => {
               : `/video/10/${subject}/0`;
 
             return (
-  <Link
-    key={idx}
-    to={toUrl}
-    state={{ m3u8Url: fileUrl, chapterName: title }}
-    className="card-link-wrapper"
-    style={{ display: "block", textDecoration: "none", color: "inherit" }}
-  >
-    <div className="live-card">
-      <img
-        src={item.thumbnail_url}
-        alt={title}
-        className="card-image"
-      />
-      <div className="card-content">
-        <h4 className="card-title">{title}</h4>
-        <p className="card-subject">📚 {subject}</p>
-        <p className="card-status">
-          {isRecorded && "📽️ Recorded"}
-          {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
-        </p>
-        <p className="card-countdown">🗓️ {time}</p>
-        <p className="card-countdown">⏱️ Duration: {duration}</p>
-        <p className="card-countdown">👉 -by EduVibe-NT</p>
-      </div>
-    </div>
-  </Link>
-
-                    <span
-                      onClick={() => toggleLecture(item.id)}
-                      className={`done-btn ${
-                        progress[item.id] ? "checked" : ""
-                      }`}
-                    >
-                      ✔
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+  <div key={idx} className="card-link">
+    <Link
+      to={toUrl}
+      state={{ m3u8Url: fileUrl, chapterName: title }}
+      className="card-link-wrapper"
+      style={{ display: "block", textDecoration: "none", color: "inherit" }}
+    >
+      <div className="live-card">
+        <img
+          src={item.thumbnail_url}
+          alt={title}
+          className="card-image"
+        />
+        <div className="card-content">
+          <h4 className="card-title">{title}</h4>
+          <p className="card-subject">📚 {subject}</p>
+          <p className="card-status">
+            {isRecorded && "📽️ Recorded"}
+            {isLive && (liveNow ? "🔴 Live Now" : "🕒 Scheduled")}
+          </p>
+          <p className="card-countdown">🗓️ {time}</p>
+          <p className="card-countdown">⏱️ Duration: {duration}</p>
+          <p className="card-countdown">👉 -by EduVibe-NT</p>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    </Link>
+
+    <span
+      onClick={() => toggleLecture(item.id)}
+      className={`done-btn ${progress[item.id] ? "checked" : ""}`}
+    >
+      ✔
+    </span>
+  </div>
+);
 };
 
 export default Recording;
