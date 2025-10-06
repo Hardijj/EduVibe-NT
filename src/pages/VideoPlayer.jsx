@@ -119,13 +119,73 @@ const VideoPlayer = () => {
       player.on("ended", updateStudyTime);
     });
 
+    /* ─── Orientation lock/unlock ─── */
+    const lockLandscape = async () => {
+      const o = window.screen?.orientation || window.screen?.mozOrientation || window.screen?.msOrientation;
+      if (o?.lock) try { await o.lock("landscape"); } catch (_) {}
+    };
+    const unlockOrientation = async () => {
+      const o = window.screen?.orientation || window.screen?.mozOrientation || window.screen?.msOrientation;
+      if (o?.unlock) o.unlock();
+      else if (o?.lock) o.lock("portrait").catch(() => {});
+    };
+    const fsHandler = () => (player.isFullscreen() ? lockLandscape() : unlockOrientation());
+    player.on("fullscreenchange", fsHandler);
+
+    /* ─── Gestures ─── */
+    const videoEl = videoRef.current;
+    const container = videoRef.current.parentElement;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    let holdTimeout = null;
+    let speedHeld = false;
+
+    const handleTouchStart = () => {
+      if (!isMobile) return;
+      holdTimeout = setTimeout(() => {
+        if (player && !speedHeld) {
+          speedHeld = true;
+          player.playbackRate(2);
+        }
+      }, 1000);
+    };
+    const handleTouchEnd = () => {
+      if (!isMobile) return;
+      clearTimeout(holdTimeout);
+      if (player && speedHeld) {
+        player.playbackRate(1);
+        speedHeld = false;
+      }
+    };
+    const handleDoubleTap = (e) => {
+      const now = Date.now();
+      const tapGap = now - lastTap.current;
+      lastTap.current = now;
+      const { clientX } = e.changedTouches[0];
+      const { left, width } = container.getBoundingClientRect();
+      const tapX = clientX - left;
+
+      if (tapGap < 300) {
+        if (tapX < width / 3) player.currentTime(player.currentTime() - 10);
+        else if (tapX > (2 * width) / 3) player.currentTime(player.currentTime() + 10);
+        else player.paused() ? player.play() : player.pause();
+      }
+    };
+
+    videoEl.addEventListener("touchstart", handleTouchStart);
+    videoEl.addEventListener("touchend", handleTouchEnd);
+    container.addEventListener("touchend", handleDoubleTap);
+
     return () => {
       clearInterval(studyTimer);
+      player.off("fullscreenchange", fsHandler);
+      videoEl.removeEventListener("touchstart", handleTouchStart);
+      videoEl.removeEventListener("touchend", handleTouchEnd);
+      container.removeEventListener("touchend", handleDoubleTap);
       player.dispose();
     };
   }, [m3u8Url]);
 
-  /* ─────────── DOWNLOAD CLICK ─────────── */
   const handleDownloadClick = () => {
     const fileName = `${chapterName}`;
     const intentUrl =
@@ -141,92 +201,112 @@ const VideoPlayer = () => {
     setShowPopupp(false);
   };
 
-  /* ─────────── RETURN UI ─────────── */
+  /* Auto-close popup after 5s */
+  useEffect(() => {
+    const timer = setTimeout(() => setShowPopupp(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
+      {/* Welcome Popup */}
       {showPopupp && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(0,0,0,0.85)",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#1e1e1e",
-              padding: "24px",
-              borderRadius: "10px",
-              width: "90%",
-              maxWidth: "400px",
-              textAlign: "center",
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              color: "#fff",
-              boxShadow: "0 0 20px rgba(255,255,255,0.1)",
-            }}
-          >
-            <h2 style={{ fontWeight: "bold", marginBottom: "12px" }}>
-              Welcome to EduVibe!
-            </h2>
-            <p style={{ marginBottom: "16px", color: "#ccc" }}>
-              Explore batches and start learning with ease. This website is absolutely free and ad-free.  
-              Join our Telegram channel for updates 👇👇
-            </p>
-            <a
-              href="https://t.me/eduvibe_all_classes"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                backgroundColor: "#229ED9",
-                color: "#fff",
-                padding: "10px 20px",
-                borderRadius: "6px",
-                textDecoration: "none",
-                marginBottom: "10px",
-              }}
-            >
-              Join Telegram
-            </a>
-            <br />
-            <button
-              onClick={handleClosePopup}
-              style={{
-                backgroundColor: "#333",
-                color: "#fff",
-                padding: "8px 16px",
-                borderRadius: "6px",
-                border: "none",
-                cursor: "pointer",
-                marginTop: "10px",
-              }}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      backgroundColor: "rgba(0,0,0,0.9)",
+      zIndex: 1000,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "20px",
+    }}
+  >
+    <div
+      style={{
+        background: "linear-gradient(135deg, #1c1c1c, #2a2a2a)",
+        padding: "25px",
+        borderRadius: "12px",
+        width: "90%",
+        maxWidth: "420px",
+        textAlign: "center",
+        color: "#fff",
+        boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+        animation: "fadeIn 0.3s ease-in-out",
+      }}
+    >
+      <h2 style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.6em" }}>
+        Welcome to EduVibe!
+      </h2>
 
+      <p style={{ marginBottom: "16px", color: "#ddd", lineHeight: 1.5 }}>
+        Explore batches and start learning with ease. This website is absolutely free and ad-free.  
+        Join our Telegram channel for updates 👇👇
+      </p>
+
+      <a
+        href="https://t.me/eduvibe_all_classes"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: "inline-block",
+          backgroundColor: "#229ED9",
+          color: "#fff",
+          padding: "12px 22px",
+          borderRadius: "8px",
+          textDecoration: "none",
+          marginBottom: "15px",
+          fontWeight: "bold",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+          transition: "all 0.2s ease-in-out",
+        }}
+        onMouseEnter={(e) => (e.target.style.backgroundColor = "#1a7bbd")}
+        onMouseLeave={(e) => (e.target.style.backgroundColor = "#229ED9")}
+      >
+        Join Telegram
+      </a>
+
+      <p style={{ marginBottom: "20px", color: "#aaa", fontSize: "0.9em" }}>
+        <strong>Features of this Video Player:</strong><br />
+        • Hold on screen to speed up playback<br />
+        • Double tap left/right to skip<br />
+        • Center tap to play/pause<br />
+        • Fullscreen with auto landscape lock
+      </p>
+
+      <button
+        onClick={handleClosePopup}
+        style={{
+          backgroundColor: "#333",
+          color: "#fff",
+          padding: "10px 20px",
+          borderRadius: "8px",
+          border: "none",
+          cursor: "pointer",
+          fontWeight: "bold",
+          transition: "all 0.2s ease-in-out",
+        }}
+        onMouseEnter={(e) => (e.target.style.backgroundColor = "#444")}
+        onMouseLeave={(e) => (e.target.style.backgroundColor = "#333")}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
+      {/* Video Player */}
       <div>
         <h2>
-          {isLive
-            ? "🔴 Live Class"
-            : `Now Playing: ${chapterName || "Unknown Lecture"}`}
+          {isLive ? "🔴 Live Class" : `Now Playing: ${chapterName || "Unknown Lecture"}`}
         </h2>
 
         <div data-vjs-player style={{ position: "relative" }}>
-          <video
-            ref={videoRef}
-            className="video-js vjs-default-skin"
-            tabIndex={0}
-          />
+          <video ref={videoRef} className="video-js vjs-default-skin" tabIndex={0} />
           {isLive && (
             <div
               style={{
@@ -267,7 +347,7 @@ const VideoPlayer = () => {
           </div>
         )}
 
-        {/* Telegram-downloader popup */}
+        {/* Telegram downloader popup */}
         {showPopup && (
           <div
             style={{
