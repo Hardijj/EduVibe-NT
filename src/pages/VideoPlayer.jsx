@@ -187,8 +187,26 @@ useEffect(() => {
   };
 
   return (
-    <div style={{ position: "relative", width: "100%", maxWidth: "100%", overflow: "hidden" }}>
-      <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
+  <div style={{ position: "relative", width: "100%", maxWidth: "100%", overflow: "hidden", color: "#fff" }}>
+    <h2 style={{
+      textAlign: "center",
+      margin: "10px 0",
+      fontSize: "18px",
+      fontWeight: "600",
+      letterSpacing: "0.5px",
+      color: "#fff",
+      background: "rgba(0,0,0,0.4)",
+      padding: "8px 12px",
+      borderRadius: "8px",
+      width: "fit-content",
+      marginInline: "auto",
+      backdropFilter: "blur(6px)"
+    }}>
+      {isLive
+        ? "🔴 Live Class"
+        : `Now Playing: ${chapterName || "Unknown Lecture"}`}
+    </h2>
+  <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
 
       {/* Popup */}
       {showPopup && (
