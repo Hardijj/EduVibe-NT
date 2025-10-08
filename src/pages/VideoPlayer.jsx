@@ -108,6 +108,34 @@ useEffect(() => {
     player.ready(() => {
       player.qualityLevels();
       player.hlsQualitySelector({ displayCurrentQuality: true });
+      /* mini time display inside play-toggle */
+      const playToggleEl = player.controlBar.getChild("playToggle")?.el();
+      if (playToggleEl) {
+        const td = document.createElement("div");
+        Object.assign(td.style, {
+          position: "absolute",
+          bottom: "50px",
+          left:   "0",
+          background: "rgba(0,0,0,0.7)",
+          color: "#fff",
+          fontSize: "13px",
+          padding: "4px 8px",
+          borderRadius: "4px",
+          whiteSpace: "nowrap",
+          pointerEvents: "none",
+          zIndex: 999,
+        });
+        const fmt = (s) => {
+          if (isNaN(s) || s < 0) return "00:00";
+          return `${Math.floor(s / 60).toString().padStart(2,"0")}:${Math.floor(s % 60).toString().padStart(2,"0")}`;
+        };
+        td.textContent = "00:00 / 00:00";
+        playToggleEl.style.position = "relative";
+        playToggleEl.appendChild(td);
+
+        player.on("loadedmetadata", () => { td.textContent = `00:00 / ${fmt(player.duration())}`; });
+        player.on("timeupdate",    () => { td.textContent = `${fmt(player.currentTime())} / ${fmt(player.duration())}`; });
+      }
       player.on("play", () => {
         sessionStart = Date.now();
         clearInterval(studyTimer);
