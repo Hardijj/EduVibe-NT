@@ -70,7 +70,7 @@ useEffect(() => {
       autoplay: true,
       fluid: true,
       liveui: true,
-      playbackRates: [0.5, 1, 1.25, 1.5, 2],
+      playbackRates: [0.5, 1, 1.25, 1.5, 1.75, 2],
       html5: { vhs: { overrideNative: true, enableLowInitialPlaylist: true } },
       plugins: {
         hotkeys: { volumeStep: 0.1, seekStep: 10, enableModifiersForNumbers: false },
