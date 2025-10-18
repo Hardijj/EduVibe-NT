@@ -60,11 +60,7 @@ const Recording = () => {
     const hashBase64 = CryptoJS.enc.Base64.stringify(hash);
     const signature = btoa(timestamp + hashBase64);
 
-    const res = await fetch(`${API_BASE}?view=${viewName}`, {
-      headers: {
-        "X-Signature": signature,
-      },
-    });
+    const res = await fetch(`${API_BASE}?byobs=1&view=${viewName}`);
 
     if (!res.ok) throw new Error("Invalid response");
     return res.json();
