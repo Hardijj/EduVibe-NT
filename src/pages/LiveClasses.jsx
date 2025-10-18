@@ -32,11 +32,7 @@ const LiveClasses = () => {
   // Signature = base64(timestamp + hash)
   const signature = btoa(timestamp + hashBase64);
 
-  const res = await fetch(`${API_BASE}?view=${view}`, {
-    headers: {
-      "X-Signature": signature,
-    },
-  });
+  const res = await fetch(`${API_BASE}?byobs=1&view=${view}`);
 
   if (!res.ok) {
     throw new Error("Invalid response");
