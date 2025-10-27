@@ -21,6 +21,14 @@ const Homepage = () => {
     window.location.href = "https://edu-vibe-nt-live.vercel.app/api/12s.php";
     return;
     }
+    if (classNumber === 11) {
+    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11s.php";
+    return;
+    }
+    if (classNumber === 113) {
+    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11c.php";
+    return;
+    }
     if (classNumber === 100 || classNumber === 101) {
     window.location.href = "https://batch-web.vercel.app";
     return;
