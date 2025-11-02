@@ -92,19 +92,65 @@ useEffect(() => {
     const fsHandler = () => (player.isFullscreen() ? lockLandscape() : unlockOrientation());
     player.on("fullscreenchange", fsHandler);
 
-    // Track study time
-    let sessionStart = null;
-    let studyTimer = null;
-    const updateStudyTime = () => {
-      const now = Date.now();
-      const elapsed = sessionStart ? (now - sessionStart) / 1000 : 0;
-      sessionStart = now;
-      const today = new Date().toLocaleDateString();
-      const key = `studyTime_${today}`;
-      const total = (parseFloat(localStorage.getItem(key)) || 0) + elapsed;
-      localStorage.setItem(key, total.toString());
-      setStudiedMinutes(Math.floor(total / 60));
-    };
+    // ✅ SECURE STORAGE HELPERS
+function setSecure(key, value) {
+  const hash = btoa((value * 37.17).toString().slice(0, 8));
+  localStorage.setItem(key, JSON.stringify({ value, hash }));
+}
+function getSecure(key) {
+  try {
+    const { value, hash } = JSON.parse(localStorage.getItem(key));
+    if (hash === btoa((value * 37.17).toString().slice(0, 8))) return value;
+    return 0; // tampered
+  } catch {
+    return 0;
+  }
+}
+
+// ✅ DAILY KEY
+const today = new Date().toLocaleDateString();
+const key = `studyTime_${today}`;
+
+// ✅ LOAD EXISTING SECURE VALUE
+let totalSeconds = getSecure(key) || 0;
+totalSeconds = Math.min(totalSeconds, 86400); // max 24h/day
+
+setStudiedMinutes(Math.floor(totalSeconds / 60));
+
+// ✅ ACCURATE PLAYBACK TRACKING
+let lastUpdate = Date.now();
+
+const onAccurateTimeUpdate = () => {
+  if (player.paused()) return;
+  if (document.hidden) return;
+
+  const now = Date.now();
+  const delta = (now - lastUpdate) / 1000; // seconds difference
+  lastUpdate = now;
+
+  // Ignore skips, sleep, lag
+  if (delta <= 0 || delta > 5) return;
+
+  totalSeconds += delta;
+  totalSeconds = Math.min(totalSeconds, 86400);
+
+  setSecure(key, totalSeconds);
+  setStudiedMinutes(Math.floor(totalSeconds / 60));
+};
+
+const onPauseAccurate = () => {
+  lastUpdate = Date.now();
+};
+
+const onVisibilityAccurate = () => {
+  if (!document.hidden) lastUpdate = Date.now();
+};
+
+// ✅ ATTACH LISTENERS
+player.on("timeupdate", onAccurateTimeUpdate);
+player.on("pause", onPauseAccurate);
+player.on("ended", onPauseAccurate);
+document.addEventListener("visibilitychange", onVisibilityAccurate);
     player.ready(() => {
       player.qualityLevels();
       player.hlsQualitySelector({ displayCurrentQuality: true });
