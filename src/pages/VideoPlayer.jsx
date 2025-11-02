@@ -33,7 +33,7 @@ const VideoPlayer = () => {
     if (localStorage.getItem("isLoggedIn") !== "true") navigate("/login");
   }, [navigate]);
 
-  // RESET DAILY STUDY TIME
+  // RESET DAILY STUDY TIME (keeps the lastStudyDate logic)
   useEffect(() => {
     const today = new Date().toLocaleDateString();
     const lastDate = localStorage.getItem("lastStudyDate");
@@ -49,16 +49,16 @@ const VideoPlayer = () => {
   }, []);
 
   // SOCKET.IO VIEWERS — only for live mode
-useEffect(() => {
-  if (!videoId || !isLive) return; // only run for live videos
+  useEffect(() => {
+    if (!videoId || !isLive) return; // only run for live videos
 
-  const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app");
-  socket.on("connect", () => socket.emit("joinVideo", videoId));
-  socket.on(`viewerCount-${videoId}`, setViewerCount);
-  socket.on("connect_error", console.error);
+    const socket = io("https://absolute-lynelle-bots-tg12345-47d47cb0.koyeb.app");
+    socket.on("connect", () => socket.emit("joinVideo", videoId));
+    socket.on(`viewerCount-${videoId}`, setViewerCount);
+    socket.on("connect_error", console.error);
 
-  return () => socket.disconnect();
-}, [videoId, isLive]);
+    return () => socket.disconnect();
+  }, [videoId, isLive]);
 
   // VIDEO.JS SETUP + GESTURES + AUTO CLOSE POPUP
   useEffect(() => {
@@ -92,76 +92,95 @@ useEffect(() => {
     const fsHandler = () => (player.isFullscreen() ? lockLandscape() : unlockOrientation());
     player.on("fullscreenchange", fsHandler);
 
-    // ✅ SECURE STORAGE HELPERS
-function setSecure(key, value) {
-  const hash = btoa((value * 37.17).toString().slice(0, 8));
-  localStorage.setItem(key, JSON.stringify({ value, hash }));
-}
-function getSecure(key) {
-  try {
-    const { value, hash } = JSON.parse(localStorage.getItem(key));
-    if (hash === btoa((value * 37.17).toString().slice(0, 8))) return value;
-    return 0; // tampered
-  } catch {
-    return 0;
-  }
-}
-
-// ✅ DAILY KEY
-const today = new Date().toLocaleDateString();
-const key = `studyTime_${today}`;
-
-// ✅ LOAD EXISTING SECURE VALUE
-let totalSeconds = getSecure(key) || 0;
-totalSeconds = Math.min(totalSeconds, 86400); // max 24h/day
-
-setStudiedMinutes(Math.floor(totalSeconds / 60));
-
-// ✅ ACCURATE PLAYBACK TRACKING
-let lastUpdate = Date.now();
-
-const onAccurateTimeUpdate = () => {
-  if (player.paused()) return;
-  if (document.hidden) return;
-
-  const now = Date.now();
-  const delta = (now - lastUpdate) / 1000; // seconds difference
-  lastUpdate = now;
-
-  // Ignore skips, sleep, lag
-  if (delta <= 0 || delta > 5) return;
-
-  totalSeconds += delta;
-  totalSeconds = Math.min(totalSeconds, 86400);
-
-  setSecure(key, totalSeconds);
-  setStudiedMinutes(Math.floor(totalSeconds / 60));
-};
-
-const onPauseAccurate = () => {
-  lastUpdate = Date.now();
-};
-
-const onVisibilityAccurate = () => {
-  if (!document.hidden) lastUpdate = Date.now();
-};
-
-// ✅ ATTACH LISTENERS
-player.on("timeupdate", onAccurateTimeUpdate);
-player.on("pause", onPauseAccurate);
-player.on("ended", onPauseAccurate);
-document.addEventListener("visibilitychange", onVisibilityAccurate);
+    /***********************
+     * PERFECT STUDY TRACKER
+     *
+     * - Secure small local storage
+     * - Counts only real playback seconds (timeupdate)
+     * - Ignores pauses, hidden tab, big jumps, seeking
+     ***********************/
     player.ready(() => {
       player.qualityLevels();
       player.hlsQualitySelector({ displayCurrentQuality: true });
-      /* mini time display inside play-toggle */
+
+      // ========= SECURE STORAGE HELPERS =========
+      function setSecure(key, value) {
+        const hash = btoa((value * 37.17).toString().slice(0, 8));
+        localStorage.setItem(key, JSON.stringify({ value, hash }));
+      }
+      function getSecure(key) {
+        try {
+          const { value, hash } = JSON.parse(localStorage.getItem(key));
+          if (hash === btoa((value * 37.17).toString().slice(0, 8))) return value;
+          return 0; // tampered
+        } catch {
+          return 0;
+        }
+      }
+
+      // ========== DAILY KEY & INIT ==========
+      const today = new Date().toLocaleDateString();
+      const key = `studyTime_${today}`;
+
+      let totalSeconds = getSecure(key) || 0;
+      totalSeconds = Math.min(totalSeconds, 86400); // max 24h/day
+      setStudiedMinutes(Math.floor(totalSeconds / 60));
+
+      // ========== ACCURATE PLAYBACK TRACKING ==========
+      let lastUpdate = Date.now();
+
+      const onAccurateTimeUpdate = () => {
+        // If paused or tab hidden -> don't count
+        if (player.paused()) return;
+        if (document.hidden) return;
+
+        const now = Date.now();
+        const delta = (now - lastUpdate) / 1000; // seconds
+        lastUpdate = now;
+
+        // Ignore abnormal jumps (seek, sleep, lag)
+        if (delta <= 0 || delta > 5) return;
+
+        totalSeconds += delta;
+        totalSeconds = Math.min(totalSeconds, 86400);
+
+        setSecure(key, totalSeconds);
+        setStudiedMinutes(Math.floor(totalSeconds / 60));
+      };
+
+      const onPauseAccurate = () => {
+        // reset lastUpdate so when resumed we start fresh
+        lastUpdate = Date.now();
+      };
+
+      const onPlayAccurate = () => {
+        lastUpdate = Date.now();
+      };
+
+      const onVisibilityAccurate = () => {
+        if (!document.hidden && !player.paused()) {
+          lastUpdate = Date.now();
+        }
+      };
+
+      // Attach listeners
+      player.on("timeupdate", onAccurateTimeUpdate);
+      player.on("pause", onPauseAccurate);
+      player.on("ended", onPauseAccurate);
+      player.on("play", onPlayAccurate);
+      document.addEventListener("visibilitychange", onVisibilityAccurate);
+
+      /***************
+       * MINI TIME DISPLAY (inside play toggle)
+       * (kept from original)
+       ***************/
       const playToggleEl = player.controlBar.getChild("playToggle")?.el();
       if (playToggleEl) {
         const td = document.createElement("div");
         Object.assign(td.style, {
           position: "absolute",
           bottom: "50px",
-          left:   "0",
+          left: "0",
           background: "rgba(0,0,0,0.7)",
           color: "#fff",
           fontSize: "13px",
@@ -182,13 +201,8 @@ document.addEventListener("visibilitychange", onVisibilityAccurate);
         player.on("loadedmetadata", () => { td.textContent = `00:00 / ${fmt(player.duration())}`; });
         player.on("timeupdate",    () => { td.textContent = `${fmt(player.currentTime())} / ${fmt(player.duration())}`; });
       }
-      player.on("play", () => {
-        sessionStart = Date.now();
-        clearInterval(studyTimer);
-        studyTimer = setInterval(updateStudyTime, 10_000);
-      });
-      player.on("pause", updateStudyTime);
-      player.on("ended", updateStudyTime);
+
+      // end player.ready
     });
 
     // Gestures
@@ -237,13 +251,28 @@ document.addEventListener("visibilitychange", onVisibilityAccurate);
     // Auto close popup after 5 sec
     const popupTimer = setTimeout(() => setShowPopup(false), 5000);
 
+    // CLEANUP
     return () => {
-      clearInterval(studyTimer);
+      // remove gesture listeners
       clearTimeout(popupTimer);
       videoEl.removeEventListener("touchstart", handleTouchStart);
       videoEl.removeEventListener("touchend", handleTouchEnd);
       container.removeEventListener("touchend", handleDoubleTap);
-      player.off("fullscreenchange", fsHandler);
+
+      // remove player event listeners we added
+      try {
+        player.off("fullscreenchange", fsHandler);
+      } catch (e) {}
+
+      // remove the accurate-tracking listeners (if player exists)
+      try {
+        player.off("timeupdate");
+        player.off("pause");
+        player.off("ended");
+        player.off("play");
+      } catch (e) {}
+
+      document.removeEventListener("visibilitychange", () => {});
       player.dispose();
     };
   }, [m3u8Url, isLive]);
@@ -261,33 +290,33 @@ document.addEventListener("visibilitychange", onVisibilityAccurate);
   };
 
   return (
-  <div style={{ position: "relative", width: "100%", maxWidth: "100%", overflow: "hidden", color: "#fff" }}>
-    <h2>
-      {isLive
-        ? "🔴 Live Class"
-        : `Now Playing: ${chapterName || "Unknown Lecture"}`}
-    </h2>
+    <div style={{ position: "relative", width: "100%", maxWidth: "100%", overflow: "hidden", color: "#fff" }}>
+      <h2>
+        {isLive
+          ? "🔴 Live Class"
+          : `Now Playing: ${chapterName || "Unknown Lecture"}`}
+      </h2>
 
-    <div data-vjs-player style={{ position: "relative" }}>
-      <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
+      <div data-vjs-player style={{ position: "relative" }}>
+        <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
 
-      {isLive && (
-        <div style={{
-          position: "absolute",
-          top: 15,
-          right: 15,
-          background: "rgba(0,0,0,0.35)",
-          color: "#fff",
-          padding: "4px 8px",
-          borderRadius: "4px",
-          fontSize: "12px",
-          zIndex: 9999,
-          pointerEvents: "none",
-        }}>
-          🔴 {viewerCount} watching
-        </div>
-      )}
-    </div>
+        {isLive && (
+          <div style={{
+            position: "absolute",
+            top: 15,
+            right: 15,
+            background: "rgba(0,0,0,0.35)",
+            color: "#fff",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontSize: "12px",
+            zIndex: 9999,
+            pointerEvents: "none",
+          }}>
+            🔴 {viewerCount} watching
+          </div>
+        )}
+      </div>
       {/* Popup */}
       {showPopup && (
         <div className="popup-overlay">
@@ -340,19 +369,19 @@ document.addEventListener("visibilitychange", onVisibilityAccurate);
 
       <style>{`
         .popup-overlay {
-  position: fixed; /* Changed from absolute to fixed */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(8px);
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 999;
-  animation: fadeIn 0.4s ease;
-                   }
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          backdrop-filter: blur(8px);
+          background: rgba(0, 0, 0, 0.4);
+          z-index: 999;
+          animation: fadeIn 0.4s ease;
+        }
         .popup-card {
           background: rgba(255, 255, 255, 0.15);
           border-radius: 16px;
