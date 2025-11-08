@@ -282,7 +282,7 @@ const Recording = () => {
                 >
                   <div className="live-card">
                     <img
-                      src={item.thumbnail_url}
+                      src={item.thumbnail_url || "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"}
                       alt={title}
                       className="card-image"
                     />
