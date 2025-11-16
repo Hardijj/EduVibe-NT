@@ -164,67 +164,65 @@ const Homepage = () => {
 
         {/* Batch List */}
         <div className="batch-container">
-          {getBatchesForTab().map((batch) => (
-            <div
-              className="click-box"
-              key={batch.id}
-              onClick={() => {
-                if (!batch.upcoming) batch.redirect(navigate);
-              }}
-              style={{
-                position: "relative",
-                opacity: batch.upcoming ? 0.6 : 1,
-                cursor: batch.upcoming ? "default" : "pointer",
-              }}
-            >
-              {/* Coming Soon Tag */}
-              {batch.upcoming && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                    left: 10,
-                    background: "#ff9800",
-                    padding: "4px 10px",
-                    borderRadius: "4px",
-                    fontWeight: "bold",
-                    color: "#000",
-                    fontSize: "13px",
-                    zIndex: 99,
-                  }}
-                >
-                  Coming Soon
-                </div>
-              )}
-
-              {/* Favourite Heart (Black → Red) */}
-              {!batch.upcoming && (
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleFavorite(batch.id);
-                  }}
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                    right: 10,
-                    fontSize: "26px",
-                    cursor: "pointer",
-                    // ❤️ Red if fav, 🤍 White/Black if not
-                    color: favorites.includes(batch.id) ? "red" : "white",
-                    filter: favorites.includes(batch.id) ? "none" : "invert(0)", // Makes heart blackish
-                  }}
-                >
-                  {favorites.includes(batch.id) ? "❤️" : "🖤"}
-                </span>
-              )}
-
-              <img src={batch.img} alt={batch.title} className="homepage-image" />
-              <h1 style={{ color: "#fff" }}>{batch.title}</h1>
-            </div>
-          ))}
+  {getBatchesForTab().map((batch) => (
+    <div
+      className="click-box"
+      key={batch.id}
+      onClick={() => {
+        if (!batch.upcoming) batch.redirect(navigate);
+      }}
+      style={{
+        position: "relative",
+      }}
+    >
+      {/* Coming Soon Tag (only for upcoming batch) */}
+      {batch.upcoming && (
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            left: 10,
+            background: "#ff9800",
+            padding: "4px 10px",
+            borderRadius: "4px",
+            fontWeight: "bold",
+            color: "#000",
+            fontSize: "13px",
+            zIndex: 99,
+          }}
+        >
+          Coming Soon 🔥
         </div>
-      </div>
+      )}
+
+      {/* Favorite ❤️ (only for non-upcoming) */}
+      {/* Favorite Heart (only for non-upcoming batches) */}
+{!batch.upcoming && (
+  <span
+    onClick={(e) => {
+      e.stopPropagation();
+      toggleFavorite(batch.id);
+    }}
+    style={{
+      position: "absolute",
+      top: 10,
+      right: 10,
+      fontSize: "28px",
+      cursor: "pointer",
+      userSelect: "none",
+      color: favorites.includes(batch.id) ? "red" : "black",
+      WebkitTextStroke: favorites.includes(batch.id) ? "0px" : "1px white",
+    }}
+  >
+    {favorites.includes(batch.id) ? "❤️" : "🖤"}
+  </span>
+)}
+
+      <img src={batch.img} alt={batch.title} className="homepage-image" />
+      <h1 style={{ color: "#fff" }}>{batch.title}</h1>
+    </div>
+  ))}
+</div>
     </>
   );
 };
