@@ -83,7 +83,7 @@ const ALL_BATCHES = [
 
 const Homepage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("10");
+  const [activeTab, setActiveTab] = useState("all");
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
