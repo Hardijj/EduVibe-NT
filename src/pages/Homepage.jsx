@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/global.css";
 import imageUrl10 from "../assets/10img.jpg";
 import image10old from "../assets/10imgold.jpg";
-import abhay10 from ".../public/Abhay-10.jpg";
+import abhay10 from "../assets/Abhay-10.jpg";
 import mlogo from "../assets/ntmlogo.jpg";
 
 const ALL_TABS = [
