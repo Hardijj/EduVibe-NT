@@ -7,6 +7,7 @@ import abhay10 from "../assets/Abhay-10.jpg";
 import mlogo from "../assets/ntmlogo.jpg";
 
 const ALL_TABS = [
+  { id: "all", title: "All" },   // NEW TAB
   { id: "9", title: "Class 9" },
   { id: "10", title: "Class 10" },
   { id: "11", title: "Class 11" },
@@ -102,13 +103,19 @@ const Homepage = () => {
   };
 
   const getBatchesForTab = () => {
-    const list = ALL_BATCHES.filter((b) => b.tab === activeTab);
+  let list;
 
-    const favList = list.filter((b) => favorites.includes(b.id));
-    const otherList = list.filter((b) => !favorites.includes(b.id));
+  if (activeTab === "all") {
+    list = ALL_BATCHES; // Show everything
+  } else {
+    list = ALL_BATCHES.filter((b) => b.tab === activeTab);
+  }
 
-    return [...favList, ...otherList];
-  };
+  const favList = list.filter((b) => favorites.includes(b.id));
+  const otherList = list.filter((b) => !favorites.includes(b.id));
+
+  return [...favList, ...otherList];
+};
 
   return (
     <>
