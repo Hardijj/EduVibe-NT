@@ -16,7 +16,7 @@ const ALL_TABS = [
 const ALL_BATCHES = [
   {
     id: "upcoming-x",
-    tab: "10",  // Show inside Class 10 tab
+    tab: "10",
     title: "Abhay 2025-26 Class 10",
     img: abhay10,
     redirect: () => null,
@@ -78,9 +78,6 @@ const ALL_BATCHES = [
     img: "https://i.postimg.cc/pVKv3cLR/667423824369-IMG-9619.png",
     redirect: () => (window.location.href = "https://batch-web.vercel.app"),
   },
-
-  // ⭐ UPCOMING BATCH — NON CLICKABLE ⭐
-  
 ];
 
 const Homepage = () => {
@@ -115,7 +112,6 @@ const Homepage = () => {
 
   return (
     <>
-      {/* Header */}
       <div
         style={{
           width: "100%",
@@ -194,7 +190,7 @@ const Homepage = () => {
                 </div>
               )}
 
-              {/* Favorite ❤️ */}
+              {/* Favourite Heart (Black → Red) */}
               {!batch.upcoming && (
                 <span
                   onClick={(e) => {
@@ -207,10 +203,12 @@ const Homepage = () => {
                     right: 10,
                     fontSize: "26px",
                     cursor: "pointer",
+                    // ❤️ Red if fav, 🤍 White/Black if not
                     color: favorites.includes(batch.id) ? "red" : "white",
+                    filter: favorites.includes(batch.id) ? "none" : "invert(0)", // Makes heart blackish
                   }}
                 >
-                  ❤️
+                  {favorites.includes(batch.id) ? "❤️" : "🖤"}
                 </span>
               )}
 
