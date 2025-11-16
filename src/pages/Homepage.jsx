@@ -7,7 +7,7 @@ import abhay10 from "../assets/Abhay-10.jpg";
 import mlogo from "../assets/ntmlogo.jpg";
 
 const ALL_TABS = [
-  { id: "all", title: "All" },   // NEW TAB
+  { id: "all", title: "All" },
   { id: "9", title: "Class 9" },
   { id: "10", title: "Class 10" },
   { id: "11", title: "Class 11" },
@@ -35,21 +35,27 @@ const ALL_BATCHES = [
     tab: "11",
     title: "Prarambh 2.0 Science Class 11",
     img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/183130728609_Prarambh%20BATCh%20Science%20Class%2011.png",
-    redirect: () => (window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11s.php"),
+    redirect: () =>
+      (window.location.href =
+        "https://edu-vibe-nt-live.vercel.app/api/11s.php"),
   },
   {
     id: "12",
     tab: "12",
     title: "Prarambh 2.0 Science Class 12",
     img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/337551428612_Prarambh%20BATCh%20Science%2012.jpg",
-    redirect: () => (window.location.href = "https://edu-vibe-nt-live.vercel.app/api/12s.php"),
+    redirect: () =>
+      (window.location.href =
+        "https://edu-vibe-nt-live.vercel.app/api/12s.php"),
   },
   {
     id: "11c",
     tab: "11",
     title: "Prarambh 2.0 Commerce Class 11",
     img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png",
-    redirect: () => (window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11c.php"),
+    redirect: () =>
+      (window.location.href =
+        "https://edu-vibe-nt-live.vercel.app/api/11c.php"),
   },
   {
     id: "11h",
@@ -103,19 +109,19 @@ const Homepage = () => {
   };
 
   const getBatchesForTab = () => {
-  let list;
+    let list;
 
-  if (activeTab === "all") {
-    list = ALL_BATCHES; // Show everything
-  } else {
-    list = ALL_BATCHES.filter((b) => b.tab === activeTab);
-  }
+    if (activeTab === "all") {
+      list = ALL_BATCHES; // Show everything
+    } else {
+      list = ALL_BATCHES.filter((b) => b.tab === activeTab);
+    }
 
-  const favList = list.filter((b) => favorites.includes(b.id));
-  const otherList = list.filter((b) => !favorites.includes(b.id));
+    const favList = list.filter((b) => favorites.includes(b.id));
+    const otherList = list.filter((b) => !favorites.includes(b.id));
 
-  return [...favList, ...otherList];
-};
+    return [...favList, ...otherList];
+  };
 
   return (
     <>
@@ -137,7 +143,10 @@ const Homepage = () => {
         EduVibe-NT
       </div>
 
-      <div className="container" style={{ backgroundColor: "#121212", minHeight: "100vh", paddingBottom: "60px" }}>
+      <div
+        className="container"
+        style={{ backgroundColor: "#121212", minHeight: "100vh", paddingBottom: "60px" }}
+      >
         <img src={mlogo} alt="Logo" className="big-logo" />
 
         {/* Tabs */}
@@ -164,65 +173,65 @@ const Homepage = () => {
 
         {/* Batch List */}
         <div className="batch-container">
-  {getBatchesForTab().map((batch) => (
-    <div
-      className="click-box"
-      key={batch.id}
-      onClick={() => {
-        if (!batch.upcoming) batch.redirect(navigate);
-      }}
-      style={{
-        position: "relative",
-      }}
-    >
-      {/* Coming Soon Tag (only for upcoming batch) */}
-      {batch.upcoming && (
-        <div
-          style={{
-            position: "absolute",
-            top: 10,
-            left: 10,
-            background: "#ff9800",
-            padding: "4px 10px",
-            borderRadius: "4px",
-            fontWeight: "bold",
-            color: "#000",
-            fontSize: "13px",
-            zIndex: 99,
-          }}
-        >
-          Coming Soon 🔥
+          {getBatchesForTab().map((batch) => (
+            <div
+              className="click-box"
+              key={batch.id}
+              onClick={() => {
+                if (!batch.upcoming) batch.redirect(navigate);
+              }}
+              style={{
+                position: "relative",
+              }}
+            >
+              {/* Coming Soon Tag (only for upcoming batch) */}
+              {batch.upcoming && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    left: 10,
+                    background: "#ff9800",
+                    padding: "4px 10px",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    color: "#000",
+                    fontSize: "13px",
+                    zIndex: 99,
+                  }}
+                >
+                  Coming Soon 🔥
+                </div>
+              )}
+
+              {/* Favorite Heart (only for non-upcoming batches) */}
+              {!batch.upcoming && (
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(batch.id);
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    fontSize: "28px",
+                    cursor: "pointer",
+                    userSelect: "none",
+                    color: favorites.includes(batch.id) ? "red" : "black",
+                    WebkitTextStroke: favorites.includes(batch.id) ? "0px" : "1px white",
+                  }}
+                >
+                  {favorites.includes(batch.id) ? "❤️" : "🖤"}
+                </span>
+              )}
+
+              <img src={batch.img} alt={batch.title} className="homepage-image" />
+              <h1 style={{ color: "#fff" }}>{batch.title}</h1>
+            </div>
+          ))}
         </div>
-      )}
-
-      {/* Favorite ❤️ (only for non-upcoming) */}
-      {/* Favorite Heart (only for non-upcoming batches) */}
-{!batch.upcoming && (
-  <span
-    onClick={(e) => {
-      e.stopPropagation();
-      toggleFavorite(batch.id);
-    }}
-    style={{
-      position: "absolute",
-      top: 10,
-      right: 10,
-      fontSize: "28px",
-      cursor: "pointer",
-      userSelect: "none",
-      color: favorites.includes(batch.id) ? "red" : "black",
-      WebkitTextStroke: favorites.includes(batch.id) ? "0px" : "1px white",
-    }}
-  >
-    {favorites.includes(batch.id) ? "❤️" : "🖤"}
-  </span>
-)}
-
-      <img src={batch.img} alt={batch.title} className="homepage-image" />
-      <h1 style={{ color: "#fff" }}>{batch.title}</h1>
-    </div>
-  ))}
-</div>
+      </div>
     </>
   );
 };
