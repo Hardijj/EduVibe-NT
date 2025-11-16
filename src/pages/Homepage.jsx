@@ -3,127 +3,119 @@ import { useNavigate } from "react-router-dom";
 import "../styles/global.css";
 import imageUrl10 from "../assets/10img.jpg";
 import image10old from "../assets/10imgold.jpg";
+import abhay10 from ".../public/Abhay-10.jpg";
 import mlogo from "../assets/ntmlogo.jpg";
+
+const ALL_TABS = [
+  { id: "9", title: "Class 9" },
+  { id: "10", title: "Class 10" },
+  { id: "11", title: "Class 11" },
+  { id: "12", title: "Class 12" },
+];
+
+const ALL_BATCHES = [
+  {
+    id: "upcoming-x",
+    tab: "10",  // Show inside Class 10 tab
+    title: "Abhay 2025-26 Class 10",
+    img: abhay10,
+    redirect: () => null,
+    upcoming: true,
+  },
+  {
+    id: "10",
+    tab: "10",
+    title: "Aarambh Batch 2.0 2025-26",
+    img: imageUrl10,
+    redirect: (navigate) => navigate("/subjects/10"),
+  },
+  {
+    id: "11s",
+    tab: "11",
+    title: "Prarambh 2.0 Science Class 11",
+    img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/183130728609_Prarambh%20BATCh%20Science%20Class%2011.png",
+    redirect: () => (window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11s.php"),
+  },
+  {
+    id: "12",
+    tab: "12",
+    title: "Prarambh 2.0 Science Class 12",
+    img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/337551428612_Prarambh%20BATCh%20Science%2012.jpg",
+    redirect: () => (window.location.href = "https://edu-vibe-nt-live.vercel.app/api/12s.php"),
+  },
+  {
+    id: "11c",
+    tab: "11",
+    title: "Prarambh 2.0 Commerce Class 11",
+    img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png",
+    redirect: () => (window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11c.php"),
+  },
+  {
+    id: "11h",
+    tab: "11",
+    title: "Prarambh 2.0 Humanities Class 11",
+    img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/216113028517_Prarambh%20BATCh%20Humanities%2011.png",
+    redirect: () => (window.location.href = "/subjects/111"),
+  },
+  {
+    id: "9",
+    tab: "9",
+    title: "Aarambh Batch 2.0 Class 9",
+    img: "https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/152792333113_9th%20aarambh%202.0%20banner%20app.jpg",
+    redirect: (navigate) => navigate("/subjects/9"),
+  },
+  {
+    id: "100",
+    tab: "10",
+    title: "Aarambh Batch Class 10 2024-25",
+    img: image10old,
+    redirect: () => (window.location.href = "https://batch-web.vercel.app"),
+  },
+  {
+    id: "101",
+    tab: "10",
+    title: "Abhay Batch Class 10 2024-25",
+    img: "https://i.postimg.cc/pVKv3cLR/667423824369-IMG-9619.png",
+    redirect: () => (window.location.href = "https://batch-web.vercel.app"),
+  },
+
+  // ⭐ UPCOMING BATCH — NON CLICKABLE ⭐
+  
+];
 
 const Homepage = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showPopup, setShowPopup] = useState(true);
+  const [activeTab, setActiveTab] = useState("10");
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
+    const savedFavs = JSON.parse(localStorage.getItem("favorites") || "[]");
+    setFavorites(savedFavs);
   }, []);
 
-  const handleClick = (classNumber) => {
-  // Example: redirect Class 11 Science batch to another site
-    if (classNumber === 12) {
-    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/12s.php";
-    return;
+  const toggleFavorite = (id) => {
+    let updated;
+    if (favorites.includes(id)) {
+      updated = favorites.filter((f) => f !== id);
+    } else {
+      updated = [...favorites, id];
     }
-    if (classNumber === 11) {
-    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11s.php";
-    return;
-    }
-    if (classNumber === 113) {
-    window.location.href = "https://edu-vibe-nt-live.vercel.app/api/11c.php";
-    return;
-    }
-    if (classNumber === 100 || classNumber === 101) {
-    window.location.href = "https://batch-web.vercel.app";
-    return;
-    }
-    
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  };
 
-  // Example: redirect Class 9 batch somewhere else
+  const getBatchesForTab = () => {
+    const list = ALL_BATCHES.filter((b) => b.tab === activeTab);
 
-  // Default navigation for others
-  if (!isLoggedIn) {
-    navigate(`/subjects/${classNumber}`);
-    return;
-  }
+    const favList = list.filter((b) => favorites.includes(b.id));
+    const otherList = list.filter((b) => !favorites.includes(b.id));
 
-  navigate(`/subjects/${classNumber}`);
-};
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
+    return [...favList, ...otherList];
   };
 
   return (
     <>
-      {/* Dark overlay + center popup */}
-      {showPopup && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(0,0,0,0.85)",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#1e1e1e",
-              padding: "24px",
-              borderRadius: "10px",
-              width: "90%",
-              maxWidth: "400px",
-              textAlign: "center",
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 1001,
-              color: "#fff",
-              boxShadow: "0 0 20px rgba(255,255,255,0.1)",
-            }}
-          >
-            <h2 style={{ fontWeight: "bold", marginBottom: "12px" }}>
-              Welcome to EduVibe!
-            </h2>
-            <p style={{ marginBottom: "16px", color: "#ccc" }}>
-              Explore batches and start learning with ease. This website is aboslutely free of cost. If you don't have joined the telegram channel, join it because I will give there updates 👇👇
-            </p>
-            <a
-              href="https://t.me/eduvibe_all_classes"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                backgroundColor: "#229ED9",
-                color: "#fff",
-                padding: "10px 20px",
-                borderRadius: "6px",
-                textDecoration: "none",
-                marginBottom: "10px",
-              }}
-            >
-              Join Telegram
-            </a>
-            <br />
-            <button
-              onClick={handleClosePopup}
-              style={{
-                backgroundColor: "#333",
-                color: "#fff",
-                padding: "8px 16px",
-                borderRadius: "6px",
-                border: "none",
-                cursor: "pointer",
-                marginTop: "10px",
-              }}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Dark Header */}
+      {/* Header */}
       <div
         style={{
           width: "100%",
@@ -142,49 +134,90 @@ const Homepage = () => {
         EduVibe-NT
       </div>
 
-      {/* Main content in dark mode */}
-      <div className="container" style={{ backgroundColor: "#121212", minHeight: "100vh", paddingBottom: "40px" }}>
+      <div className="container" style={{ backgroundColor: "#121212", minHeight: "100vh", paddingBottom: "60px" }}>
         <img src={mlogo} alt="Logo" className="big-logo" />
-        <h2 className="section-heading" style={{ color: "#fff" }}>Our Batches</h2>
 
+        {/* Tabs */}
+        <div style={{ display: "flex", overflowX: "auto", padding: "10px" }}>
+          {ALL_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                padding: "10px 18px",
+                marginRight: "8px",
+                backgroundColor: activeTab === tab.id ? "#fff" : "#333",
+                color: activeTab === tab.id ? "#000" : "#fff",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: "bold",
+                cursor: "pointer",
+              }}
+            >
+              {tab.title}
+            </button>
+          ))}
+        </div>
+
+        {/* Batch List */}
         <div className="batch-container">
-          <div className="click-box" onClick={() => handleClick(10)}>
-            <img
-              src={imageUrl10}
-              alt="Aarambh Batch 2025-26"
-              className="homepage-image"
-            />
-            <h1 style={{ color: "#fff" }}>Aarambh Batch 2.0 2025-26</h1>
-          </div>
+          {getBatchesForTab().map((batch) => (
+            <div
+              className="click-box"
+              key={batch.id}
+              onClick={() => {
+                if (!batch.upcoming) batch.redirect(navigate);
+              }}
+              style={{
+                position: "relative",
+                opacity: batch.upcoming ? 0.6 : 1,
+                cursor: batch.upcoming ? "default" : "pointer",
+              }}
+            >
+              {/* Coming Soon Tag */}
+              {batch.upcoming && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    left: 10,
+                    background: "#ff9800",
+                    padding: "4px 10px",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    color: "#000",
+                    fontSize: "13px",
+                    zIndex: 99,
+                  }}
+                >
+                  Coming Soon
+                </div>
+              )}
 
-          <div className="click-box" onClick={() => handleClick(11)}>
-            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/183130728609_Prarambh%20BATCh%20Science%20Class%2011.png" alt="Class 11 Batch" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Science Class 11</h1>
-          </div>
-          <div className="click-box" onClick={() => handleClick(12)}>
-            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/337551428612_Prarambh%20BATCh%20Science%2012.jpg" alt="Class 11 Batch" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Science Class 12</h1>
-          </div>
-          <div className="click-box" onClick={() => handleClick(113)}>
-            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png" alt="Class 11 Commerce" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Commerce Class 11</h1>
-          </div>
-          <div className="click-box" onClick={() => handleClick(111)}>
-            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/216113028517_Prarambh%20BATCh%20Humanities%2011.png" alt="Class 11 Arts" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Prarambh 2.0 Humanities Class 11</h1>
-          </div>
-          <div className="click-box" onClick={() => handleClick(9)}>
-            <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/152792333113_9th%20aarambh%202.0%20banner%20app.jpg" alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Aarambh batch 2.0 Class 9 </h1>
-          </div>
-          <div className="click-box" onClick={() => handleClick(100)}>
-            <img src={image10old} alt="Class 9 Aarambh Batch 2.0" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Aarambh batch Class 10 2024-25 </h1>
-          </div>
-          <div className="click-box" onClick={() => handleClick(101)}>
-            <img src="https://i.postimg.cc/pVKv3cLR/667423824369-IMG-9619.png" alt="Class 10 Abhay Batch" className="homepage-image" />
-            <h1 style={{ color: "#fff" }}>Abhay batch Class 10 2024-25 </h1>
-          </div>
+              {/* Favorite ❤️ */}
+              {!batch.upcoming && (
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(batch.id);
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    fontSize: "26px",
+                    cursor: "pointer",
+                    color: favorites.includes(batch.id) ? "red" : "white",
+                  }}
+                >
+                  ❤️
+                </span>
+              )}
+
+              <img src={batch.img} alt={batch.title} className="homepage-image" />
+              <h1 style={{ color: "#fff" }}>{batch.title}</h1>
+            </div>
+          ))}
         </div>
       </div>
     </>
