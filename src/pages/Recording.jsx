@@ -4,7 +4,7 @@ import CryptoJS from "crypto-js";
 import "../styles/LiveClasses.css";
 
 const SECRET = process.env.SECRET;
-const API_BASE = "https://viewer-ten-psi.vercel.app/view.php";
+const API_BASE = "https://viewer-nt.vercel.app/view.php";
 
 const Recording = () => {
   const { subject, chapter } = useParams();
