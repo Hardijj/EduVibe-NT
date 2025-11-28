@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
-import CryptoJS from "crypto-js";
 import "../styles/LiveClasses.css";
-
-const SECRET = process.env.SECRET;
-const API_BASE = "https://viewer-nt.vercel.app/view.php";
 
 const Recording = () => {
   const { subject, chapter } = useParams();
@@ -28,6 +24,7 @@ const Recording = () => {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState({});
 
+  // Load progress
   useEffect(() => {
     const saved = localStorage.getItem("lectureProgress");
     if (saved) setProgress(JSON.parse(saved));
@@ -50,134 +47,116 @@ const Recording = () => {
     if (localStorage.getItem("isLoggedIn") !== "true") navigate("/login");
   }, [navigate]);
 
-  // ✅ Secure fetch (unchanged)
-  const secureFetch = async (viewName) => {
-    const timestamp = Math.floor(Date.now() / 1000).toString();
-    const hash = CryptoJS.HmacSHA256(timestamp, SECRET);
-    const hashBase64 = CryptoJS.enc.Base64.stringify(hash);
-    const signature = btoa(timestamp + hashBase64);
-
-    return fetch(`${API_BASE}?byobs=1&view=${viewName}`).then((r) => r.json());
+  // ----------------------------------------------------
+  //  🔥 LOCAL JSON LOADER (Option 3 — Dynamic Import)
+  // ----------------------------------------------------
+  const localFetch = async (viewName) => {
+    try {
+      const json = await import(`../data/10/${viewName}.json`);
+      return json.default;
+    } catch (err) {
+      console.error("❌ Local JSON not found:", viewName, err);
+      return null;
+    }
   };
 
-  // ✅ MAIN FETCH — FULLY FIXED
+  // ----------------------------------------------------
+  //  🔥 MAIN FETCH (from local JSON files)
+  // ----------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
 
-      try {
-        if (onlyDpp) {
-          const pdfRes = await secureFetch(onlyDpp);
+      const actualView = view || subject.toLowerCase();
 
-          if (pdfRes.status && pdfRes.data?.list) {
-            let pdfs = pdfRes.data.list.filter(
-              (item) => item.file_type === "1" && item.file_url
-            );
+      const results = await Promise.allSettled([
+        localFetch(actualView),
+        localFetch(actualView + "notes"),
+      ]);
 
-            pdfs.sort((a, b) => Number(a.created) - Number(b.created));
+      const lectureJson =
+        results[0].status === "fulfilled" ? results[0].value : null;
 
-            if (from) {
-              const fromIndex = pdfs.findIndex(
-                (item) => item.title?.trim() === from.trim()
-              );
-              if (fromIndex !== -1) pdfs = pdfs.slice(fromIndex);
-            }
+      const notesJson =
+        results[1].status === "fulfilled" ? results[1].value : null;
 
-            setNotes(pdfs);
-          }
+      // ----------------------------
+      //  LECTURES PROCESSING
+      // ----------------------------
+      if (lectureJson?.data?.list) {
+        let list = lectureJson.data.list.filter(
+          (item) => item.video_type === "7" || item.video_type === "8"
+        );
 
-          setLoading(false);
-          return;
-        }
+        list.sort((a, b) => Number(a.start_date) - Number(b.start_date));
 
-        const actualView = view || subject.toLowerCase();
-
-        // ✅ NO MORE Promise.all — now using ALL SETTLED!
-        const results = await Promise.allSettled([
-          secureFetch(actualView),
-          secureFetch(actualView + "notes"),
-        ]);
-
-        // ✅ Extract results safely
-        const lectureJson =
-          results[0].status === "fulfilled" ? results[0].value : null;
-        const notesJson =
-          results[1].status === "fulfilled" ? results[1].value : null;
-
-        // ✅ Handle lectures safely
-        if (lectureJson?.status && lectureJson.data?.list) {
-          let list = lectureJson.data.list.filter(
-            (item) => item.video_type === "7" || item.video_type === "8"
+        if (from) {
+          const idx = list.findIndex(
+            (item) => item.title?.trim() === from.trim()
           );
-
-          list.sort((a, b) => Number(a.start_date) - Number(b.start_date));
-
-          if (from) {
-            const idx = list.findIndex(
-              (item) => item.title?.trim() === from.trim()
-            );
-            if (idx !== -1) list = list.slice(idx);
-          }
-
-          if (fromid) {
-            const idx = list.findIndex(
-              (item) => item.id?.trim() === fromid.trim()
-            );
-            if (idx !== -1) list = list.slice(idx);
-          }
-
-          if (to) {
-            const idx = list.findIndex(
-              (item) => item.title?.trim() === to.trim()
-            );
-            if (idx !== -1) list = list.slice(0, idx + 1);
-          }
-
-          if (toid) {
-            const idx = list.findIndex(
-              (item) => item.id?.trim() === toid.trim()
-            );
-            if (idx !== -1) list = list.slice(0, idx + 1);
-          }
-
-          setLectures(list);
+          if (idx !== -1) list = list.slice(idx);
         }
 
-        // ✅ Handle notes safely
-        if (notesJson?.status && notesJson.data?.list) {
-          let pdfs = notesJson.data.list.filter(
-            (item) => item.file_type === "1" && item.file_url
+        if (fromid) {
+          const idx = list.findIndex(
+            (item) => item.id?.trim() === fromid.trim()
           );
-
-          pdfs.sort((a, b) => Number(a.created) - Number(b.created));
-
-          if (fromNotes) {
-            const idx = pdfs.findIndex(
-              (item) => item.title?.trim() === fromNotes.trim()
-            );
-            if (idx !== -1) pdfs = pdfs.slice(idx);
-          }
-
-          if (toNotes) {
-            const idx = pdfs.findIndex(
-              (item) => item.title?.trim() === toNotes.trim()
-            );
-            if (idx !== -1) pdfs = pdfs.slice(0, idx + 1);
-          }
-
-          setNotes(pdfs);
+          if (idx !== -1) list = list.slice(idx);
         }
-      } catch (err) {
-        console.error("❌ Fetch error:", err);
+
+        if (to) {
+          const idx = list.findIndex(
+            (item) => item.title?.trim() === to.trim()
+          );
+          if (idx !== -1) list = list.slice(0, idx + 1);
+        }
+
+        if (toid) {
+          const idx = list.findIndex(
+            (item) => item.id?.trim() === toid.trim()
+          );
+          if (idx !== -1) list = list.slice(0, idx + 1);
+        }
+
+        setLectures(list);
+      }
+
+      // ----------------------------
+      //  PDF NOTES PROCESSING
+      // ----------------------------
+      if (notesJson?.data?.list) {
+        let pdfs = notesJson.data.list.filter(
+          (item) => item.file_type === "1" && item.file_url
+        );
+
+        pdfs.sort((a, b) => Number(a.created) - Number(b.created));
+
+        if (fromNotes) {
+          const idx = pdfs.findIndex(
+            (item) => item.title?.trim() === fromNotes.trim()
+          );
+          if (idx !== -1) pdfs = pdfs.slice(idx);
+        }
+
+        if (toNotes) {
+          const idx = pdfs.findIndex(
+            (item) => item.title?.trim() === toNotes.trim()
+          );
+          if (idx !== -1) pdfs = pdfs.slice(0, idx + 1);
+        }
+
+        setNotes(pdfs);
       }
 
       setLoading(false);
     };
 
     fetchData();
-  }, [subject, view, from, to, fromNotes, toNotes, onlyDpp]);
+  }, [subject, view, from, to, fromNotes, toNotes, fromid, toid]);
 
-  // ✅ unchanged format functions
+  // ----------------------------------------------------
+  //  UTIL FUNCTIONS (unchanged)
+  // ----------------------------------------------------
   const formatDate = (timestamp) => {
     const ts = parseInt(timestamp) * 1000;
     if (!ts || isNaN(ts)) return "—";
@@ -198,7 +177,9 @@ const Recording = () => {
     return "0 min";
   };
 
-  // ✅ UI unchanged — EXACT as your last working version
+  // ----------------------------------------------------
+  //  UI (unchanged)
+  // ----------------------------------------------------
   return (
     <div className="live-classes-container">
       <h2>
@@ -282,7 +263,10 @@ const Recording = () => {
                 >
                   <div className="live-card">
                     <img
-                      src={item.thumbnail_url || "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"}
+                      src={
+                        item.thumbnail_url ||
+                        "https://decicqog4ulhy.cloudfront.net/0/admin_v1/application_management/clientlogo/4370222540_7521371540_next_topper_logo%20%281%29.png"
+                      }
                       alt={title}
                       className="card-image"
                     />
