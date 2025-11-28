@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import "../styles/LiveClasses.css";
 
-const SECRET = "my32bitkeyforhardxsignaturefuckh";
+const SECRET = process.env.SECRET;
 const API_BASE = "https://viewer-ten-psi.vercel.app/view.php";
 
 const Recording = () => {
