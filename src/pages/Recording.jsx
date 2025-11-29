@@ -47,9 +47,7 @@ const Recording = () => {
     if (localStorage.getItem("isLoggedIn") !== "true") navigate("/login");
   }, [navigate]);
 
-  // ----------------------------------------------------
-  //  🔥 LOCAL JSON LOADER (Option 3 — Dynamic Import)
-  // ----------------------------------------------------
+  // LOCAL JSON LOADER
   const localFetch = async (viewName) => {
     try {
       const json = await import(`../data/10/${viewName}.json`);
@@ -60,29 +58,42 @@ const Recording = () => {
     }
   };
 
-  // ----------------------------------------------------
-  //  🔥 MAIN FETCH (from local JSON files)
-  // ----------------------------------------------------
+  // MAIN FETCH
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
 
       const actualView = view || subject.toLowerCase();
 
+      let lectureJson = null;
+      let notesJson = null;
+
+      // ⭐ ONLY DPP MODE — fetch only one file
+      if (onlyDpp) {
+        lectureJson = await localFetch(onlyDpp);
+
+        // Treat this file as NOTES
+        if (lectureJson?.data?.list) {
+          setNotes(lectureJson.data.list);
+        } else {
+          setNotes([]);
+        }
+
+        setLectures([]); // no lectures in DPP mode
+        setLoading(false);
+        return; // skip all other logic
+      }
+
+      // ⭐ NORMAL 2-file mode
       const results = await Promise.allSettled([
         localFetch(actualView),
         localFetch(actualView + "notes"),
       ]);
 
-      const lectureJson =
-        results[0].status === "fulfilled" ? results[0].value : null;
+      lectureJson = results[0].status === "fulfilled" ? results[0].value : null;
+      notesJson = results[1].status === "fulfilled" ? results[1].value : null;
 
-      const notesJson =
-        results[1].status === "fulfilled" ? results[1].value : null;
-
-      // ----------------------------
-      //  LECTURES PROCESSING
-      // ----------------------------
+      // LECTURES PROCESSING
       if (lectureJson?.data?.list) {
         let list = lectureJson.data.list.filter(
           (item) => item.video_type === "7" || item.video_type === "8"
@@ -121,9 +132,7 @@ const Recording = () => {
         setLectures(list);
       }
 
-      // ----------------------------
-      //  PDF NOTES PROCESSING
-      // ----------------------------
+      // NOTES PROCESSING
       if (notesJson?.data?.list) {
         let pdfs = notesJson.data.list.filter(
           (item) => item.file_type === "1" && item.file_url
@@ -152,11 +161,9 @@ const Recording = () => {
     };
 
     fetchData();
-  }, [subject, view, from, to, fromNotes, toNotes, fromid, toid]);
+  }, [subject, view, from, to, fromNotes, toNotes, fromid, toid, onlyDpp]);
 
-  // ----------------------------------------------------
-  //  UTIL FUNCTIONS (unchanged)
-  // ----------------------------------------------------
+  // UTIL
   const formatDate = (timestamp) => {
     const ts = parseInt(timestamp) * 1000;
     if (!ts || isNaN(ts)) return "—";
@@ -177,9 +184,7 @@ const Recording = () => {
     return "0 min";
   };
 
-  // ----------------------------------------------------
-  //  UI (unchanged)
-  // ----------------------------------------------------
+  // UI
   return (
     <div className="live-classes-container">
       <h2>
