@@ -27,7 +27,7 @@ const Login = () => {
         localStorage.setItem("currentToken", currentToken);
       }
 
-      const url = `https://edu-vibe-nt.vercel.app/verify/${currentToken}`;
+      const url = `https://edu-vibe-nt-old.vercel.app/verify/${currentToken}`;
       setVerifyLink(url);
       setLoading(false);
     };
