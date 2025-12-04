@@ -16,12 +16,13 @@ const ALL_TABS = [
 
 const ALL_BATCHES = [
   {
-    id: "upcoming-x",
+    id: "10",
     tab: "10",
     title: "Abhay 2025-26 Class 10",
     img: abhay10,
-    redirect: () => null,
-    upcoming: true,
+    redirect: () =>
+      (window.location.href =
+        "https://edu-vibe-nt.vercel.app/"),
   },
   {
     id: "10",
